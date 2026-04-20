@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Quest — Python Basics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1419; --surface: #1a2029; --surface-2: #232b36;
+    --border: #2d3744; --text: #e8ecf1; --muted: #8a95a5;
+    --accent: #ffd166; --accent-2: #06d6a0; --danger: #ef476f; --ink: #0f1419;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Fraunces', Georgia, serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(255,209,102,0.08), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(6,214,160,0.06), transparent 40%);
+    min-height: 100vh;
+  }
+  .container { max-width: 720px; margin: 0 auto; padding: 24px 20px 80px; }
+  .brand {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
+  }
+  .brand-name {
+    font-family: 'Space Mono', monospace; font-size: 13px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+  }
+  .brand-name span { color: var(--accent); }
+  .mode-switch {
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    letter-spacing: 0.1em; background: none; border: 1px solid var(--border);
+    color: var(--muted); padding: 6px 10px; border-radius: 999px;
+    cursor: pointer; text-transform: uppercase;
+  }
+  .screen { display: none; animation: fadeIn 0.4s ease; }
+  .screen.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  h1 {
+    font-size: clamp(32px, 7vw, 52px); font-weight: 900;
+    line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 12px;
+  }
+  h1 em { color: var(--accent); font-style: italic; }
+  h2 { font-size: 24px; font-weight: 700; margin: 28px 0 12px; letter-spacing: -0.01em; }
+  h3 { font-size: 18px; font-weight: 700; margin: 20px 0 8px; color: var(--accent-2); }
+  p { margin-bottom: 14px; color: #c9d1dc; font-size: 17px; }
+  .lede { font-size: 19px; color: var(--muted); margin-bottom: 24px; }
+  pre, code { font-family: 'Space Mono', monospace; font-size: 14px; }
+  pre {
+    background: #0a0e13; border: 1px solid var(--border);
+    border-left: 3px solid var(--accent); padding: 14px 16px; border-radius: 6px;
+    overflow-x: auto; margin: 14px 0; font-size: 13px; line-height: 1.5;
+  }
+  code { background: var(--surface-2); padding: 2px 6px; border-radius: 4px; font-size: 14px; color: var(--accent); }
+  pre code { background: none; padding: 0; color: #e8ecf1; font-size: 13px; }
+  .kw { color: #ff9ec7; } .str { color: var(--accent-2); }
+  .num { color: var(--accent); } .cmt { color: #5a6775; font-style: italic; }
+  .btn {
+    font-family: 'Space Mono', monospace; font-size: 13px;
+    letter-spacing: 0.1em; text-transform: uppercase; padding: 14px 22px;
+    border: none; border-radius: 6px; cursor: pointer; font-weight: 700;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    text-decoration: none; display: inline-block;
+  }
+  .btn-primary { background: var(--accent); color: var(--ink); }
+  .btn-primary:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+  .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-send {
+    background: var(--accent-2); color: var(--ink);
+    width: 100%; padding: 18px 22px; font-size: 15px;
+    margin: 20px 0 12px; text-align: center;
+  }
+  .btn-send:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(6,214,160,0.3); }
+  .send-hint {
+    text-align: center; color: var(--muted); font-size: 13px;
+    font-family: 'Space Mono', monospace; margin-bottom: 20px;
+  }
+  .send-hint.sent { color: var(--accent-2); }
+  .input {
+    width: 100%; padding: 14px 16px; font-size: 16px;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); border-radius: 6px; margin: 8px 0 20px; font-family: inherit;
+  }
+  .input:focus { outline: none; border-color: var(--accent); }
+  .progress {
+    font-family: 'Space Mono', monospace; font-size: 12px;
+    color: var(--muted); letter-spacing: 0.15em; margin-bottom: 8px; text-transform: uppercase;
+  }
+  .progress-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 32px; }
+  .progress-fill { height: 100%; background: var(--accent); transition: width 0.4s ease; width: 0%; }
+  .question { font-size: 22px; font-weight: 700; line-height: 1.4; margin-bottom: 24px; letter-spacing: -0.01em; }
+  .choices { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  .choice {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 16px 18px; border-radius: 6px; cursor: pointer;
+    display: flex; align-items: center; gap: 14px;
+    transition: all 0.15s ease; text-align: left;
+    font-family: inherit; font-size: 16px; color: var(--text); width: 100%;
+  }
+  .choice.selected { border-color: var(--accent); background: rgba(255,209,102,0.08); }
+  .choice-letter {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; flex-shrink: 0;
+    background: var(--surface-2); border-radius: 50%;
+    font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: var(--muted);
+  }
+  .choice.selected .choice-letter { background: var(--accent); color: var(--ink); }
+  .choice code { background: var(--bg); }
+  .score-card {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 32px 28px; border-radius: 8px; text-align: center; margin-bottom: 24px;
+  }
+  .score-number {
+    font-size: 80px; font-weight: 900; line-height: 1;
+    font-family: 'Fraunces', serif; letter-spacing: -0.04em; margin: 8px 0;
+  }
+  .score-number.pass { color: var(--accent-2); }
+  .score-number.fail { color: var(--danger); }
+  .score-label {
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+  }
+  .verdict {
+    padding: 16px; border-radius: 6px; margin-bottom: 24px;
+    font-family: 'Space Mono', monospace; font-size: 13px;
+    letter-spacing: 0.05em; text-align: center;
+  }
+  .verdict.pass { background: rgba(6,214,160,0.1); color: var(--accent-2); border: 1px solid rgba(6,214,160,0.3); }
+  .verdict.fail { background: rgba(239,71,111,0.1); color: var(--danger); border: 1px solid rgba(239,71,111,0.3); }
+  .unlock-code {
+    background: var(--surface-2); border: 2px dashed var(--accent);
+    padding: 20px; border-radius: 8px; text-align: center;
+    margin: 20px 0; font-family: 'Space Mono', monospace;
+  }
+  .unlock-code-label {
+    font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 8px;
+  }
+  .unlock-code-value { font-size: 32px; font-weight: 700; color: var(--accent); letter-spacing: 0.2em; }
+  .review-item {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 14px 16px; border-radius: 6px; margin-bottom: 10px; font-size: 15px;
+  }
+  .review-item.correct { border-left: 3px solid var(--accent-2); }
+  .review-item.wrong { border-left: 3px solid var(--danger); }
+  .review-q { font-weight: 700; margin-bottom: 6px; }
+  .review-a { font-size: 14px; color: var(--muted); font-family: 'Space Mono', monospace; }
+  .review-a .good { color: var(--accent-2); }
+  .review-a .bad { color: var(--danger); text-decoration: line-through; }
+  .dash-header {
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+  }
+  .dash-title { font-size: 36px; font-weight: 900; margin-bottom: 28px; letter-spacing: -0.02em; }
+  .attempt {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 18px 20px; border-radius: 8px; margin-bottom: 12px;
+    display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  }
+  .attempt-meta { flex: 1; min-width: 0; }
+  .attempt-name { font-weight: 700; font-size: 17px; margin-bottom: 4px; }
+  .attempt-time { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); }
+  .attempt-score {
+    font-family: 'Fraunces', serif; font-size: 28px; font-weight: 900;
+    letter-spacing: -0.02em; flex-shrink: 0;
+  }
+  .attempt-score.pass { color: var(--accent-2); }
+  .attempt-score.fail { color: var(--danger); }
+  .empty { text-align: center; color: var(--muted); padding: 60px 20px; font-style: italic; }
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .parent-gate { max-width: 400px; margin: 80px auto; text-align: center; }
+  .concept {
+    background: var(--surface); border: 1px solid var(--border);
+    padding: 18px 20px; border-radius: 8px; margin: 14px 0;
+  }
+  .concept-num {
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase;
+    margin-bottom: 6px; display: block;
+  }
+  .info-banner {
+    background: rgba(6,214,160,0.08); border: 1px solid rgba(6,214,160,0.3);
+    color: var(--accent-2); padding: 12px 16px; border-radius: 6px;
+    margin-bottom: 20px; font-size: 14px; font-family: 'Space Mono', monospace;
+  }
+  @media (max-width: 480px) {
+    .container { padding: 16px 16px 60px; }
+    h1 { font-size: 36px; }
+    .score-number { font-size: 64px; }
+    .unlock-code-value { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="brand">
+    <div class="brand-name">Code <span>Quest</span> / Python 01</div>
+    <button class="mode-switch" id="modeSwitch">Parent View</button>
+  </div>
+
+  <div class="screen active" id="screen-start">
+    <h1>Earn your <em>screen time.</em></h1>
+    <p class="lede">Learn a little Python, take a 10-question quiz, and unlock your hour. You need 80% to pass.</p>
+    <label class="dash-header" for="playerName">Your Name</label>
+    <input class="input" id="playerName" placeholder="Type your name here" maxlength="30" autocomplete="off">
+    <button class="btn btn-primary" id="btnStartLesson">Start Lesson &rarr;</button>
+  </div>
+
+  <div class="screen" id="screen-lesson">
+    <div class="progress">Lesson &middot; Python Basics</div>
+    <h1 style="font-size: 32px; margin-bottom: 16px;">Talking to the computer.</h1>
+    <p class="lede">Python is how you tell a computer what to do. Here are the four things you need to know for this quiz.</p>
+
+    <div class="concept">
+      <span class="concept-num">Concept 01</span>
+      <h3>Variables store stuff</h3>
+      <p>A variable is a labeled box. You put a value in, then use the label later.</p>
+<pre><code><span class="kw">name</span> = <span class="str">"Alex"</span>
+<span class="kw">age</span> = <span class="num">12</span>
+<span class="kw">is_cool</span> = <span class="num">True</span></code></pre>
+    </div>
+
+    <div class="concept">
+      <span class="concept-num">Concept 02</span>
+      <h3>print() shows output</h3>
+      <p><code>print()</code> displays whatever you put inside the parentheses.</p>
+<pre><code><span class="kw">print</span>(<span class="str">"Hello, world!"</span>)   <span class="cmt"># Hello, world!</span>
+<span class="kw">print</span>(<span class="num">5</span> + <span class="num">3</span>)              <span class="cmt"># 8</span>
+<span class="kw">print</span>(name)               <span class="cmt"># Alex</span></code></pre>
+    </div>
+
+    <div class="concept">
+      <span class="concept-num">Concept 03</span>
+      <h3>Data types</h3>
+      <p>Python knows different kinds of data:</p>
+      <p style="font-family: 'Space Mono', monospace; font-size: 14px;">
+        &bull; <code>str</code> &mdash; text in quotes: <code>"hello"</code><br>
+        &bull; <code>int</code> &mdash; whole numbers: <code>42</code><br>
+        &bull; <code>float</code> &mdash; decimals: <code>3.14</code><br>
+        &bull; <code>bool</code> &mdash; <code>True</code> or <code>False</code>
+      </p>
+    </div>
+
+    <div class="concept">
+      <span class="concept-num">Concept 04</span>
+      <h3>if / else makes decisions</h3>
+      <p>Code can choose what to do based on a condition.</p>
+<pre><code><span class="kw">age</span> = <span class="num">12</span>
+<span class="kw">if</span> age &gt;= <span class="num">13</span>:
+    <span class="kw">print</span>(<span class="str">"Teenager"</span>)
+<span class="kw">else</span>:
+    <span class="kw">print</span>(<span class="str">"Not yet"</span>)
+<span class="cmt"># Prints: Not yet</span></code></pre>
+    </div>
+
+    <p style="margin-top: 24px;">That's it. Read through once more if you need to &mdash; then take the quiz.</p>
+    <button class="btn btn-primary" id="btnStartQuiz">Start Quiz &rarr;</button>
+  </div>
+
+  <div class="screen" id="screen-quiz">
+    <div class="progress" id="qProgress">Question 1 of 10</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="question" id="qText"></div>
+    <div class="choices" id="qChoices"></div>
+    <button class="btn btn-primary" id="btnNext" disabled>Next &rarr;</button>
+  </div>
+
+  <div class="screen" id="screen-results">
+    <div class="score-card">
+      <div class="score-label">Your Score</div>
+      <div class="score-number" id="scoreNum">0</div>
+      <div class="score-label" id="scoreFraction">0 / 10</div>
+    </div>
+    <div class="verdict" id="verdict"></div>
+
+    <div class="unlock-code" id="unlockCodeBlock" style="display:none;">
+      <div class="unlock-code-label">Verification Code</div>
+      <div class="unlock-code-value" id="unlockCode">----</div>
+    </div>
+
+    <a class="btn btn-send" id="btnSendEmail" href="#">&#9993;&nbsp;&nbsp;Send Results to Parent</a>
+    <div class="send-hint" id="sendHint">Tap above &mdash; this will open your Mail app with the results ready. Just tap Send.</div>
+
+    <h2>Review</h2>
+    <div id="reviewList"></div>
+    <div class="btn-row" style="margin-top: 24px;">
+      <button class="btn btn-ghost" id="btnRetry">Try Again</button>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-parent-gate">
+    <div class="parent-gate">
+      <div class="brand-name" style="margin-bottom: 16px;">Parent &middot; Restricted</div>
+      <h2 style="margin: 0 0 16px;">Enter parent PIN</h2>
+      <input class="input" id="pinInput" type="password" inputmode="numeric" placeholder="4-digit PIN" maxlength="4">
+      <div class="btn-row" style="justify-content: center;">
+        <button class="btn btn-ghost" id="btnBackFromGate">Back</button>
+        <button class="btn btn-primary" id="btnUnlock">Unlock</button>
+      </div>
+      <p id="pinError" style="color: var(--danger); font-size: 13px; margin-top: 12px; display: none;">Wrong PIN.</p>
+      <p style="color: var(--muted); font-size: 12px; margin-top: 20px;">Default PIN: <code>1234</code> &mdash; change it inside.</p>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-parent">
+    <div class="dash-header">Parent Dashboard</div>
+    <div class="dash-title">Quiz results.</div>
+    <div class="info-banner" id="storageStatus"></div>
+    <div id="attemptsList"></div>
+    <div class="btn-row" style="margin-top: 24px;">
+      <button class="btn btn-ghost" id="btnExit">Exit</button>
+      <button class="btn btn-ghost" id="btnVerifyCode">Verify Code</button>
+      <button class="btn btn-ghost" id="btnChangePin">Change PIN</button>
+      <button class="btn btn-ghost" id="btnClearResults">Clear All</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  // ====== CONFIG ======
+  var PARENT_EMAIL = 'smartz.kth@gmail.com';
+  // ====================
+
+  var QUESTIONS = [
+    {
+      q: 'What does this code print?<pre><code><span class="kw">print</span>(<span class="str">"Hello"</span>)</code></pre>',
+      plain: 'What does this code print? print("Hello")',
+      choices: ['Hello', '"Hello"', 'print', 'Error'],
+      plainChoices: ['Hello', '"Hello"', 'print', 'Error'],
+      answer: 0
+    },
+    {
+      q: 'Which line correctly creates a variable called <code>score</code> equal to 100?',
+      plain: 'Which line correctly creates a variable called score equal to 100?',
+      choices: ['<code>score == 100</code>', '<code>score = 100</code>', '<code>100 = score</code>', '<code>var score = 100</code>'],
+      plainChoices: ['score == 100', 'score = 100', '100 = score', 'var score = 100'],
+      answer: 1
+    },
+    {
+      q: 'What data type is the value <code>"42"</code> (with the quotes)?',
+      plain: 'What data type is the value "42" (with the quotes)?',
+      choices: ['int', 'float', 'str', 'bool'],
+      plainChoices: ['int', 'float', 'str', 'bool'],
+      answer: 2
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">print</span>(<span class="num">7</span> + <span class="num">3</span> * <span class="num">2</span>)</code></pre>',
+      plain: 'What does this code print? print(7 + 3 * 2)',
+      choices: ['20', '13', '17', '10'],
+      plainChoices: ['20', '13', '17', '10'],
+      answer: 1
+    },
+    {
+      q: 'Which of these is a boolean value?',
+      plain: 'Which of these is a boolean value?',
+      choices: ['<code>"True"</code>', '<code>1</code>', '<code>True</code>', '<code>true</code>'],
+      plainChoices: ['"True"', '1', 'True', 'true'],
+      answer: 2
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">age</span> = <span class="num">15</span>\n<span class="kw">if</span> age &gt;= <span class="num">13</span>:\n    <span class="kw">print</span>(<span class="str">"Teen"</span>)\n<span class="kw">else</span>:\n    <span class="kw">print</span>(<span class="str">"Kid"</span>)</code></pre>',
+      plain: 'What does this code print? age=15; if age>=13: print("Teen") else: print("Kid")',
+      choices: ['Kid', 'Teen', 'Both', 'Nothing'],
+      plainChoices: ['Kid', 'Teen', 'Both', 'Nothing'],
+      answer: 1
+    },
+    {
+      q: 'What symbol starts a comment in Python?',
+      plain: 'What symbol starts a comment in Python?',
+      choices: ['<code>//</code>', '<code>#</code>', '<code>--</code>', '<code>/*</code>'],
+      plainChoices: ['//', '#', '--', '/*'],
+      answer: 1
+    },
+    {
+      q: 'What data type is <code>3.14</code>?',
+      plain: 'What data type is 3.14?',
+      choices: ['int', 'float', 'str', 'bool'],
+      plainChoices: ['int', 'float', 'str', 'bool'],
+      answer: 1
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">name</span> = <span class="str">"Sam"</span>\n<span class="kw">print</span>(<span class="str">"Hi, "</span> + name)</code></pre>',
+      plain: 'What does this code print? name="Sam"; print("Hi, " + name)',
+      choices: ['Hi, name', 'Hi, Sam', 'Hi, "Sam"', 'Error'],
+      plainChoices: ['Hi, name', 'Hi, Sam', 'Hi, "Sam"', 'Error'],
+      answer: 1
+    },
+    {
+      q: 'Which comparison is true when <code>x = 10</code>?',
+      plain: 'Which comparison is true when x = 10?',
+      choices: ['<code>x == 5</code>', '<code>x &gt; 20</code>', '<code>x &gt;= 10</code>', '<code>x != 10</code>'],
+      plainChoices: ['x == 5', 'x > 20', 'x >= 10', 'x != 10'],
+      answer: 2
+    }
+  ];
+
+  var PASS_THRESHOLD = 0.8;
+  var STORAGE_KEY = 'codequest_attempts_v1';
+  var PIN_KEY = 'codequest_pin_v1';
+
+  var state = { playerName: '', currentQ: 0, answers: [], selectedChoice: null };
+
+  var memStore = {};
+  function storageGet(key) {
+    try { return localStorage.getItem(key); } catch(e) { return memStore[key] || null; }
+  }
+  function storageSet(key, value) {
+    try { localStorage.setItem(key, value); return true; } catch(e) { memStore[key] = value; return false; }
+  }
+  function hasRealStorage() {
+    try { localStorage.setItem('__t__', '1'); localStorage.removeItem('__t__'); return true; }
+    catch(e) { return false; }
+  }
+
+  function getAttempts() {
+    var raw = storageGet(STORAGE_KEY);
+    if (!raw) return [];
+    try { return JSON.parse(raw); } catch(e) { return []; }
+  }
+  function saveAttempt(attempt) {
+    var attempts = getAttempts();
+    attempts.unshift(attempt);
+    storageSet(STORAGE_KEY, JSON.stringify(attempts.slice(0, 50)));
+  }
+  function clearAttempts() { storageSet(STORAGE_KEY, JSON.stringify([])); }
+  function getPin() { return storageGet(PIN_KEY) || '1234'; }
+  function setPin(newPin) { storageSet(PIN_KEY, newPin); }
+
+  function makeUnlockCode(score, passed) {
+    if (!passed) return null;
+    var today = new Date();
+    var daySeed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+    var checksum = ((score * 37 + daySeed) % 9000) + 1000;
+    return String(score < 10 ? '0' + score : score) + '-' + checksum;
+  }
+  function verifyUnlockCode(code) {
+    var match = /^(\d{2})-(\d{4})$/.exec(code.trim());
+    if (!match) return { valid: false };
+    var score = parseInt(match[1], 10);
+    var provided = parseInt(match[2], 10);
+    var today = new Date();
+    var daySeed = today.getFullYear() * 10000 + (today.getMonth() + 1) * 100 + today.getDate();
+    var expected = ((score * 37 + daySeed) % 9000) + 1000;
+    return {
+      valid: provided === expected && score >= Math.ceil(QUESTIONS.length * PASS_THRESHOLD),
+      score: score,
+      total: QUESTIONS.length
+    };
+  }
+
+  function show(screenId) {
+    var screens = document.querySelectorAll('.screen');
+    for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+    document.getElementById(screenId).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, function(c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  function buildEmailBody(attempt, verificationCode) {
+    var letters = ['A', 'B', 'C', 'D'];
+    var date = new Date(attempt.timestamp);
+    var when = date.toLocaleString();
+    var lines = [];
+    lines.push('CODE QUEST — QUIZ RESULTS');
+    lines.push('');
+    lines.push('Name: ' + attempt.name);
+    lines.push('Topic: Python 01 — Basics');
+    lines.push('Date: ' + when);
+    lines.push('Score: ' + attempt.score + ' / ' + attempt.total + '  (' + attempt.percent + '%)');
+    lines.push('Status: ' + (attempt.passed ? 'PASSED ✓' : 'NOT PASSED ✗ (need 80%)'));
+    if (verificationCode) {
+      lines.push('Verification Code: ' + verificationCode);
+    }
+    lines.push('');
+    lines.push('─────────────────────────────');
+    lines.push('QUESTION BY QUESTION');
+    lines.push('─────────────────────────────');
+    lines.push('');
+    QUESTIONS.forEach(function(q, i) {
+      var userAns = attempt.answers[i];
+      var isCorrect = userAns === q.answer;
+      lines.push('Q' + (i + 1) + '. ' + q.plain);
+      lines.push('  His answer: ' + letters[userAns] + ') ' + q.plainChoices[userAns] + (isCorrect ? '  ✓' : '  ✗'));
+      if (!isCorrect) {
+        lines.push('  Correct:    ' + letters[q.answer] + ') ' + q.plainChoices[q.answer]);
+      }
+      lines.push('');
+    });
+    lines.push('─────────────────────────────');
+    lines.push('Sent automatically from Code Quest');
+    return lines.join('\n');
+  }
+
+  function buildMailtoLink(attempt, verificationCode) {
+    var status = attempt.passed ? 'PASSED' : 'NOT PASSED';
+    var subject = 'Code Quest — ' + attempt.name + ' — ' + attempt.percent + '% ' + status;
+    var body = buildEmailBody(attempt, verificationCode);
+    return 'mailto:' + encodeURIComponent(PARENT_EMAIL) +
+      '?subject=' + encodeURIComponent(subject) +
+      '&body=' + encodeURIComponent(body);
+  }
+
+  // ====== EVENT WIRING ======
+  document.getElementById('btnStartLesson').addEventListener('click', function() {
+    var name = document.getElementById('playerName').value.trim();
+    if (!name) { document.getElementById('playerName').focus(); return; }
+    state.playerName = name;
+    show('screen-lesson');
+  });
+
+  document.getElementById('btnStartQuiz').addEventListener('click', function() {
+    state.currentQ = 0;
+    state.answers = [];
+    state.selectedChoice = null;
+    renderQuestion();
+    show('screen-quiz');
+  });
+
+  function renderQuestion() {
+    var q = QUESTIONS[state.currentQ];
+    document.getElementById('qProgress').textContent = 'Question ' + (state.currentQ + 1) + ' of ' + QUESTIONS.length;
+    document.getElementById('progressFill').style.width = ((state.currentQ) / QUESTIONS.length * 100) + '%';
+    document.getElementById('qText').innerHTML = q.q;
+
+    var choicesEl = document.getElementById('qChoices');
+    choicesEl.innerHTML = '';
+    var letters = ['A', 'B', 'C', 'D'];
+    q.choices.forEach(function(choice, i) {
+      var btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.innerHTML = '<span class="choice-letter">' + letters[i] + '</span><span>' + choice + '</span>';
+      btn.addEventListener('click', function() { selectChoice(i, btn); });
+      choicesEl.appendChild(btn);
+    });
+
+    state.selectedChoice = null;
+    document.getElementById('btnNext').disabled = true;
+    document.getElementById('btnNext').textContent =
+      state.currentQ === QUESTIONS.length - 1 ? 'Finish \u2192' : 'Next \u2192';
+  }
+
+  function selectChoice(index, btnEl) {
+    var choices = document.querySelectorAll('.choice');
+    for (var i = 0; i < choices.length; i++) choices[i].classList.remove('selected');
+    btnEl.classList.add('selected');
+    state.selectedChoice = index;
+    document.getElementById('btnNext').disabled = false;
+  }
+
+  document.getElementById('btnNext').addEventListener('click', function() {
+    state.answers.push(state.selectedChoice);
+    if (state.currentQ < QUESTIONS.length - 1) {
+      state.currentQ++;
+      renderQuestion();
+    } else {
+      finishQuiz();
+    }
+  });
+
+  function finishQuiz() {
+    var correct = 0;
+    state.answers.forEach(function(a, i) { if (a === QUESTIONS[i].answer) correct++; });
+    var total = QUESTIONS.length;
+    var pct = Math.round((correct / total) * 100);
+    var passed = correct / total >= PASS_THRESHOLD;
+
+    var attempt = {
+      name: state.playerName,
+      score: correct, total: total, percent: pct, passed: passed,
+      timestamp: new Date().toISOString(),
+      answers: state.answers
+    };
+    saveAttempt(attempt);
+
+    var scoreEl = document.getElementById('scoreNum');
+    scoreEl.textContent = pct + '%';
+    scoreEl.className = 'score-number ' + (passed ? 'pass' : 'fail');
+    document.getElementById('scoreFraction').textContent = correct + ' / ' + total + ' correct';
+
+    var verdict = document.getElementById('verdict');
+    if (passed) {
+      verdict.className = 'verdict pass';
+      verdict.textContent = '\u2713 PASSED \u2014 Screen time unlocked';
+    } else {
+      verdict.className = 'verdict fail';
+      verdict.textContent = '\u2717 NEED 80% \u2014 try again';
+    }
+
+    var verificationCode = passed ? makeUnlockCode(correct, passed) : null;
+
+    var codeBlock = document.getElementById('unlockCodeBlock');
+    if (passed) {
+      document.getElementById('unlockCode').textContent = verificationCode;
+      codeBlock.style.display = 'block';
+    } else {
+      codeBlock.style.display = 'none';
+    }
+
+    // Set up the send-email link
+    var sendBtn = document.getElementById('btnSendEmail');
+    sendBtn.href = buildMailtoLink(attempt, verificationCode);
+    var hintEl = document.getElementById('sendHint');
+    hintEl.textContent = 'Tap above — this will open your Mail app with the results ready. Just tap Send.';
+    hintEl.classList.remove('sent');
+
+    sendBtn.onclick = function() {
+      setTimeout(function() {
+        hintEl.textContent = '\u2713 Mail app opened — make sure you tap Send in Mail';
+        hintEl.classList.add('sent');
+      }, 500);
+    };
+
+    var reviewEl = document.getElementById('reviewList');
+    reviewEl.innerHTML = '';
+    var letters = ['A', 'B', 'C', 'D'];
+    QUESTIONS.forEach(function(q, i) {
+      var userAns = state.answers[i];
+      var isCorrect = userAns === q.answer;
+      var item = document.createElement('div');
+      item.className = 'review-item ' + (isCorrect ? 'correct' : 'wrong');
+      var html = '<div class="review-q">Q' + (i+1) + '. ' + q.q + '</div>';
+      if (isCorrect) {
+        html += '<div class="review-a"><span class="good">\u2713 ' + letters[userAns] + ': ' + q.choices[userAns] + '</span></div>';
+      } else {
+        html += '<div class="review-a"><span class="bad">\u2717 Your answer: ' + letters[userAns] + '</span><br><span class="good">\u2713 Correct: ' + letters[q.answer] + ': ' + q.choices[q.answer] + '</span></div>';
+      }
+      item.innerHTML = html;
+      reviewEl.appendChild(item);
+    });
+
+    show('screen-results');
+  }
+
+  document.getElementById('btnRetry').addEventListener('click', function() {
+    state.currentQ = 0;
+    state.answers = [];
+    renderQuestion();
+    show('screen-quiz');
+  });
+
+  document.getElementById('modeSwitch').addEventListener('click', function() {
+    document.getElementById('pinInput').value = '';
+    document.getElementById('pinError').style.display = 'none';
+    show('screen-parent-gate');
+  });
+
+  document.getElementById('btnBackFromGate').addEventListener('click', function() {
+    show('screen-start');
+  });
+
+  document.getElementById('btnUnlock').addEventListener('click', function() {
+    var entered = document.getElementById('pinInput').value;
+    if (entered === getPin()) {
+      renderParentDashboard();
+      show('screen-parent');
+    } else {
+      document.getElementById('pinError').style.display = 'block';
+    }
+  });
+
+  document.getElementById('pinInput').addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') document.getElementById('btnUnlock').click();
+  });
+
+  function renderParentDashboard() {
+    var statusEl = document.getElementById('storageStatus');
+    if (hasRealStorage()) {
+      statusEl.textContent = '\u2713 Results saved on this device';
+      statusEl.style.color = '';
+    } else {
+      statusEl.textContent = '! Results not persistent on this device \u2014 use Verify Code';
+      statusEl.style.color = 'var(--accent)';
+    }
+
+    var attempts = getAttempts();
+    var listEl = document.getElementById('attemptsList');
+    if (attempts.length === 0) {
+      listEl.innerHTML = '<div class="empty">No quiz attempts saved on this device yet.</div>';
+      return;
+    }
+    listEl.innerHTML = '';
+    attempts.forEach(function(a) {
+      var date = new Date(a.timestamp);
+      var when = date.toLocaleString([], {
+        month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit'
+      });
+      var item = document.createElement('div');
+      item.className = 'attempt';
+      item.innerHTML =
+        '<div class="attempt-meta">' +
+          '<div class="attempt-name">' + escapeHtml(a.name) + ' ' + (a.passed ? '\u2713' : '\u2717') + '</div>' +
+          '<div class="attempt-time">' + when + ' \u00b7 ' + a.score + '/' + a.total + '</div>' +
+        '</div>' +
+        '<div class="attempt-score ' + (a.passed ? 'pass' : 'fail') + '">' + a.percent + '%</div>';
+      listEl.appendChild(item);
+    });
+  }
+
+  document.getElementById('btnExit').addEventListener('click', function() { show('screen-start'); });
+
+  document.getElementById('btnClearResults').addEventListener('click', function() {
+    if (confirm('Delete all saved quiz results? This cannot be undone.')) {
+      clearAttempts();
+      renderParentDashboard();
+    }
+  });
+
+  document.getElementById('btnChangePin').addEventListener('click', function() {
+    var newPin = prompt('Enter a new 4-digit PIN:');
+    if (newPin && /^\d{4}$/.test(newPin)) {
+      setPin(newPin);
+      alert('PIN updated.');
+    } else if (newPin !== null) {
+      alert('PIN must be exactly 4 digits.');
+    }
+  });
+
+  document.getElementById('btnVerifyCode').addEventListener('click', function() {
+    var code = prompt('Enter the verification code from the email (e.g. 08-1234):');
+    if (!code) return;
+    var result = verifyUnlockCode(code);
+    if (result.valid) {
+      alert('\u2713 VALID CODE\n\nScore: ' + result.score + ' out of ' + result.total + '\nPassed today\'s quiz. Grant screen time.');
+    } else {
+      alert('\u2717 INVALID CODE\n\nThis code is either wrong, from a different day, or not a passing score. Do not grant screen time.');
+    }
+  });
+
+})();
+</script>
+</body>
+</html>
