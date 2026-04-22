@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Quest — Python Loops & Lists</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1419; --surface: #1a2029; --surface-2: #232b36;
+    --border: #2d3744; --text: #e8ecf1; --muted: #8a95a5;
+    --accent: #ffd166; --accent-2: #06d6a0; --danger: #ef476f; --ink: #0f1419;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Fraunces', Georgia, serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(255,209,102,0.08), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(6,214,160,0.06), transparent 40%);
+    min-height: 100vh;
+  }
+  .container { max-width: 720px; margin: 0 auto; padding: 24px 20px 80px; }
+  .brand {
+    display: flex; align-items: baseline; justify-content: space-between;
+    margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
+  }
+  .brand-name {
+    font-family: 'Space Mono', monospace; font-size: 13px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+  }
+  .brand-name span { color: var(--accent); }
+  .back-link {
+    font-family: 'Space Mono', monospace; font-size: 11px;
+    letter-spacing: 0.1em; background: none; border: 1px solid var(--border);
+    color: var(--muted); padding: 6px 10px; border-radius: 999px;
+    text-transform: uppercase; text-decoration: none; display: inline-block;
+  }
+  .screen { display: none; animation: fadeIn 0.4s ease; }
+  .screen.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  h1 { font-size: clamp(32px, 7vw, 52px); font-weight: 900; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 12px; }
+  h1 em { color: var(--accent); font-style: italic; }
+  h2 { font-size: 24px; font-weight: 700; margin: 28px 0 12px; letter-spacing: -0.01em; }
+  h3 { font-size: 18px; font-weight: 700; margin: 20px 0 8px; color: var(--accent-2); }
+  p { margin-bottom: 14px; color: #c9d1dc; font-size: 17px; }
+  .lede { font-size: 19px; color: var(--muted); margin-bottom: 24px; }
+  pre, code { font-family: 'Space Mono', monospace; font-size: 14px; }
+  pre { background: #0a0e13; border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 14px 16px; border-radius: 6px; overflow-x: auto; margin: 14px 0; font-size: 13px; line-height: 1.5; }
+  code { background: var(--surface-2); padding: 2px 6px; border-radius: 4px; font-size: 14px; color: var(--accent); }
+  pre code { background: none; padding: 0; color: #e8ecf1; font-size: 13px; }
+  .kw { color: #ff9ec7; } .str { color: var(--accent-2); } .num { color: var(--accent); } .cmt { color: #5a6775; font-style: italic; }
+  .btn { font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; padding: 14px 22px; border: none; border-radius: 6px; cursor: pointer; font-weight: 700; transition: transform 0.15s ease, box-shadow 0.15s ease; text-decoration: none; display: inline-block; }
+  .btn-primary { background: var(--accent); color: var(--ink); }
+  .btn-primary:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+  .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-send { background: var(--accent-2); color: var(--ink); width: 100%; padding: 18px 22px; font-size: 15px; margin: 20px 0 12px; text-align: center; }
+  .send-hint { text-align: center; color: var(--muted); font-size: 13px; font-family: 'Space Mono', monospace; margin-bottom: 20px; }
+  .send-hint.sent { color: var(--accent-2); }
+  .input { width: 100%; padding: 14px 16px; font-size: 16px; background: var(--surface); border: 1px solid var(--border); color: var(--text); border-radius: 6px; margin: 8px 0 20px; font-family: inherit; }
+  .input:focus { outline: none; border-color: var(--accent); }
+  .progress { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.15em; margin-bottom: 8px; text-transform: uppercase; }
+  .progress-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 32px; }
+  .progress-fill { height: 100%; background: var(--accent); transition: width 0.4s ease; width: 0%; }
+  .question { font-size: 22px; font-weight: 700; line-height: 1.4; margin-bottom: 24px; letter-spacing: -0.01em; }
+  .choices { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  .choice { background: var(--surface); border: 1px solid var(--border); padding: 16px 18px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 14px; transition: all 0.15s ease; text-align: left; font-family: inherit; font-size: 16px; color: var(--text); width: 100%; }
+  .choice.selected { border-color: var(--accent); background: rgba(255,209,102,0.08); }
+  .choice-letter { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; flex-shrink: 0; background: var(--surface-2); border-radius: 50%; font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: var(--muted); }
+  .choice.selected .choice-letter { background: var(--accent); color: var(--ink); }
+  .choice code { background: var(--bg); }
+  .score-card { background: var(--surface); border: 1px solid var(--border); padding: 32px 28px; border-radius: 8px; text-align: center; margin-bottom: 24px; }
+  .score-number { font-size: 80px; font-weight: 900; line-height: 1; font-family: 'Fraunces', serif; letter-spacing: -0.04em; margin: 8px 0; }
+  .score-number.pass { color: var(--accent-2); }
+  .score-number.fail { color: var(--danger); }
+  .score-label { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .verdict { padding: 16px; border-radius: 6px; margin-bottom: 24px; font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.05em; text-align: center; }
+  .verdict.pass { background: rgba(6,214,160,0.1); color: var(--accent-2); border: 1px solid rgba(6,214,160,0.3); }
+  .verdict.fail { background: rgba(239,71,111,0.1); color: var(--danger); border: 1px solid rgba(239,71,111,0.3); }
+  .unlock-code { background: var(--surface-2); border: 2px dashed var(--accent); padding: 20px; border-radius: 8px; text-align: center; margin: 20px 0; font-family: 'Space Mono', monospace; }
+  .unlock-code-label { font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .unlock-code-value { font-size: 32px; font-weight: 700; color: var(--accent); letter-spacing: 0.2em; }
+  .review-item { background: var(--surface); border: 1px solid var(--border); padding: 14px 16px; border-radius: 6px; margin-bottom: 10px; font-size: 15px; }
+  .review-item.correct { border-left: 3px solid var(--accent-2); }
+  .review-item.wrong { border-left: 3px solid var(--danger); }
+  .review-q { font-weight: 700; margin-bottom: 6px; }
+  .review-a { font-size: 14px; color: var(--muted); font-family: 'Space Mono', monospace; }
+  .review-a .good { color: var(--accent-2); }
+  .review-a .bad { color: var(--danger); text-decoration: line-through; }
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .concept { background: var(--surface); border: 1px solid var(--border); padding: 18px 20px; border-radius: 8px; margin: 14px 0; }
+  .concept-num { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 6px; display: block; }
+  @media (max-width: 480px) {
+    .container { padding: 16px 16px 60px; }
+    h1 { font-size: 36px; }
+    .score-number { font-size: 64px; }
+    .unlock-code-value { font-size: 28px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="brand">
+    <div class="brand-name">Code <span>Quest</span> / Coding</div>
+    <a class="back-link" href="index.html">&larr; Home</a>
+  </div>
+
+  <div class="screen active" id="screen-start">
+    <h1>Python <em>Loops & Lists.</em></h1>
+    <p class="lede">22 April 2026 &middot; Learn how to store groups of things and repeat actions. 20 questions, 80% to pass.</p>
+    <label class="brand-name" style="display:block;margin-bottom:6px;" for="playerName">Your Name</label>
+    <input class="input" id="playerName" placeholder="Type your name here" maxlength="30" autocomplete="off">
+    <button class="btn btn-primary" id="btnStartLesson">Start Lesson &rarr;</button>
+  </div>
+
+  <div class="screen" id="screen-lesson">
+    <div class="progress">Lesson &middot; Loops & Lists</div>
+    <h1 style="font-size: 32px; margin-bottom: 16px;">Groups and repeats.</h1>
+    <p class="lede">Yesterday you learned variables. Today: storing lots of things in one variable, then doing stuff to each one.</p>
+
+    <div class="concept">
+      <span class="concept-num">Concept 01</span>
+      <h3>Lists hold many things</h3>
+      <p>A <strong>list</strong> is like a row of boxes, each holding a value. Use square brackets <code>[ ]</code>.</p>
+<pre><code><span class="kw">fruits</span> = [<span class="str">"apple"</span>, <span class="str">"banana"</span>, <span class="str">"cherry"</span>]
+<span class="kw">numbers</span> = [<span class="num">10</span>, <span class="num">20</span>, <span class="num">30</span>, <span class="num">40</span>]</code></pre>
+    </div>
+
+    <div class="concept">
+      <span class="concept-num">Concept 02</span>
+      <h3>Index starts at 0</h3>
+      <p>To get one item, use its position number inside <code>[ ]</code>. The first item is <strong>0</strong>, not 1.</p>
+<pre><code><span class="kw">fruits</span> = [<span class="str">"apple"</span>, <span class="str">"banana"</span>, <span class="str">"cherry"</span>]
+<span class="kw">print</span>(fruits[<span class="num">0</span>])   <span class="cmt"># apple</span>
+<span class="kw">print</span>(fruits[<span class="num">1</span>])   <span class="cmt"># banana</span>
+<span class="kw">print</span>(fruits[<span class="num">2</span>])   <span class="cmt"># cherry</span></code></pre>
+    </div>
+
+    <div class="concept">
+      <span class="concept-num">Concept 03</span>
+      <h3>len() counts items</h3>
+      <p><code>len()</code> tells you how many items are in a list.</p>
+<pre><code><span class="kw">fruits</span> = [<span class="str">"apple"</span>, <span class="str">"banana"</span>, <span class="str">"cherry"</span>]
+<span class="kw">print</span>(<span class="kw">len</span>(fruits))   <span class="cmt"># 3</span></code></pre>
+    </div>
+
+    <div class="concept">
+      <span class="concept-num">Concept 04</span>
+      <h3>for loops repeat actions</h3>
+      <p>A <strong>for loop</strong> does something to each item in a list.</p>
+<pre><code><span class="kw">fruits</span> = [<span class="str">"apple"</span>, <span class="str">"banana"</span>, <span class="str">"cherry"</span>]
+<span class="kw">for</span> fruit <span class="kw">in</span> fruits:
+    <span class="kw">print</span>(fruit)
+<span class="cmt"># Prints:</span>
+<span class="cmt"># apple</span>
+<span class="cmt"># banana</span>
+<span class="cmt"># cherry</span></code></pre>
+    </div>
+
+    <div class="concept">
+      <span class="concept-num">Concept 05</span>
+      <h3>range() makes number sequences</h3>
+      <p><code>range(5)</code> gives you <code>0, 1, 2, 3, 4</code> (stops before 5). Great for counting loops.</p>
+<pre><code><span class="kw">for</span> i <span class="kw">in</span> <span class="kw">range</span>(<span class="num">3</span>):
+    <span class="kw">print</span>(i)
+<span class="cmt"># Prints: 0, then 1, then 2</span></code></pre>
+    </div>
+
+    <div class="concept">
+      <span class="concept-num">Concept 06</span>
+      <h3>append() adds to a list</h3>
+      <p>To add an item to the end of a list, use <code>.append()</code>.</p>
+<pre><code><span class="kw">fruits</span> = [<span class="str">"apple"</span>, <span class="str">"banana"</span>]
+fruits.append(<span class="str">"cherry"</span>)
+<span class="kw">print</span>(fruits)
+<span class="cmt"># ["apple", "banana", "cherry"]</span></code></pre>
+    </div>
+
+    <p style="margin-top: 24px;">Take your time with these — loops are powerful once you get them. Ready?</p>
+    <button class="btn btn-primary" id="btnStartQuiz">Start Quiz &rarr;</button>
+  </div>
+
+  <div class="screen" id="screen-quiz">
+    <div class="progress" id="qProgress">Question 1 of 20</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="question" id="qText"></div>
+    <div class="choices" id="qChoices"></div>
+    <button class="btn btn-primary" id="btnNext" disabled>Next &rarr;</button>
+  </div>
+
+  <div class="screen" id="screen-results">
+    <div class="score-card">
+      <div class="score-label">Your Score</div>
+      <div class="score-number" id="scoreNum">0</div>
+      <div class="score-label" id="scoreFraction">0 / 20</div>
+    </div>
+    <div class="verdict" id="verdict"></div>
+
+    <div class="unlock-code" id="unlockCodeBlock" style="display:none;">
+      <div class="unlock-code-label">Verification Code</div>
+      <div class="unlock-code-value" id="unlockCode">----</div>
+    </div>
+
+    <a class="btn btn-send" id="btnSendEmail" href="#">&#9993;&nbsp;&nbsp;Send Results to Parent</a>
+    <div class="send-hint" id="sendHint">Tap above &mdash; this will open your Mail app with the results ready. Just tap Send.</div>
+
+    <h2>Review</h2>
+    <div id="reviewList"></div>
+    <div class="btn-row" style="margin-top: 24px;">
+      <a class="btn btn-ghost" href="index.html">&larr; Back to Home</a>
+      <button class="btn btn-ghost" id="btnRetry">Try Again</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  var PARENT_EMAIL = 'smartz.kth@gmail.com';
+  var QUIZ_TOPIC = 'Python Loops & Lists';
+
+  var QUESTIONS = [
+    {
+      q: 'How do you create a list in Python?',
+      plain: 'How do you create a list in Python?',
+      choices: ['<code>fruits = (apple, banana)</code>', '<code>fruits = ["apple", "banana"]</code>', '<code>fruits = {apple, banana}</code>', '<code>fruits = &lt;apple, banana&gt;</code>'],
+      plainChoices: ['fruits = (apple, banana)', 'fruits = ["apple", "banana"]', 'fruits = {apple, banana}', 'fruits = <apple, banana>'],
+      answer: 1
+    },
+    {
+      q: 'What is the index of the first item in a Python list?',
+      plain: 'What is the index of the first item in a Python list?',
+      choices: ['0', '1', '-1', 'first'],
+      plainChoices: ['0', '1', '-1', 'first'],
+      answer: 0
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">colors</span> = [<span class="str">"red"</span>, <span class="str">"green"</span>, <span class="str">"blue"</span>]\n<span class="kw">print</span>(colors[<span class="num">1</span>])</code></pre>',
+      plain: 'What does this code print? colors = ["red", "green", "blue"]; print(colors[1])',
+      choices: ['red', 'green', 'blue', 'Error'],
+      plainChoices: ['red', 'green', 'blue', 'Error'],
+      answer: 1
+    },
+    {
+      q: 'What does <code>len([10, 20, 30, 40])</code> return?',
+      plain: 'What does len([10, 20, 30, 40]) return?',
+      choices: ['3', '4', '10', '100'],
+      plainChoices: ['3', '4', '10', '100'],
+      answer: 1
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">for</span> i <span class="kw">in</span> <span class="kw">range</span>(<span class="num">3</span>):\n    <span class="kw">print</span>(i)</code></pre>',
+      plain: 'What does this code print? for i in range(3): print(i)',
+      choices: ['1, 2, 3', '0, 1, 2', '0, 1, 2, 3', '1, 2'],
+      plainChoices: ['1, 2, 3', '0, 1, 2', '0, 1, 2, 3', '1, 2'],
+      answer: 1
+    },
+    {
+      q: 'Which method adds an item to the end of a list?',
+      plain: 'Which method adds an item to the end of a list?',
+      choices: ['<code>.add()</code>', '<code>.push()</code>', '<code>.append()</code>', '<code>.insert()</code>'],
+      plainChoices: ['.add()', '.push()', '.append()', '.insert()'],
+      answer: 2
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">nums</span> = [<span class="num">5</span>, <span class="num">10</span>, <span class="num">15</span>]\n<span class="kw">for</span> n <span class="kw">in</span> nums:\n    <span class="kw">print</span>(n)</code></pre>',
+      plain: 'What does this code print? nums = [5, 10, 15]; for n in nums: print(n)',
+      choices: ['0, 1, 2', '5, 10, 15', '3', 'nums'],
+      plainChoices: ['0, 1, 2', '5, 10, 15', '3', 'nums'],
+      answer: 1
+    },
+    {
+      q: 'What keyword starts a for loop in Python?',
+      plain: 'What keyword starts a for loop in Python?',
+      choices: ['<code>loop</code>', '<code>repeat</code>', '<code>for</code>', '<code>each</code>'],
+      plainChoices: ['loop', 'repeat', 'for', 'each'],
+      answer: 2
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">pets</span> = [<span class="str">"cat"</span>, <span class="str">"dog"</span>, <span class="str">"bird"</span>]\n<span class="kw">print</span>(pets[<span class="num">2</span>])</code></pre>',
+      plain: 'What does this code print? pets = ["cat", "dog", "bird"]; print(pets[2])',
+      choices: ['cat', 'dog', 'bird', 'Error'],
+      plainChoices: ['cat', 'dog', 'bird', 'Error'],
+      answer: 2
+    },
+    {
+      q: 'Which of these creates a list of numbers from 1 to 5?',
+      plain: 'Which of these creates a list of numbers from 1 to 5?',
+      choices: ['<code>[1-5]</code>', '<code>[1, 2, 3, 4, 5]</code>', '<code>(1, 2, 3, 4, 5)</code>', '<code>{1, 2, 3, 4, 5}</code>'],
+      plainChoices: ['[1-5]', '[1, 2, 3, 4, 5]', '(1, 2, 3, 4, 5)', '{1, 2, 3, 4, 5}'],
+      answer: 1
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">nums</span> = [<span class="num">1</span>, <span class="num">2</span>, <span class="num">3</span>]\nnums.append(<span class="num">4</span>)\n<span class="kw">print</span>(nums)</code></pre>',
+      plain: 'What does this code print? nums = [1, 2, 3]; nums.append(4); print(nums)',
+      choices: ['[1, 2, 3]', '[1, 2, 3, 4]', '[4, 1, 2, 3]', '4'],
+      plainChoices: ['[1, 2, 3]', '[1, 2, 3, 4]', '[4, 1, 2, 3]', '4'],
+      answer: 1
+    },
+    {
+      q: 'What does <code>range(5)</code> produce?',
+      plain: 'What does range(5) produce?',
+      choices: ['1, 2, 3, 4, 5', '0, 1, 2, 3, 4', '0, 1, 2, 3, 4, 5', 'only the number 5'],
+      plainChoices: ['1, 2, 3, 4, 5', '0, 1, 2, 3, 4', '0, 1, 2, 3, 4, 5', 'only the number 5'],
+      answer: 1
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">total</span> = <span class="num">0</span>\n<span class="kw">for</span> i <span class="kw">in</span> <span class="kw">range</span>(<span class="num">4</span>):\n    total = total + i\n<span class="kw">print</span>(total)</code></pre>',
+      plain: 'What does this code print? total=0; for i in range(4): total = total + i; print(total)',
+      choices: ['4', '6', '10', '0'],
+      plainChoices: ['4', '6', '10', '0'],
+      answer: 1
+    },
+    {
+      q: 'How do you get the last item of a list <code>fruits</code> if you know it has 3 items?',
+      plain: 'How do you get the last item of a list fruits if you know it has 3 items?',
+      choices: ['<code>fruits[3]</code>', '<code>fruits[2]</code>', '<code>fruits[last]</code>', '<code>fruits(3)</code>'],
+      plainChoices: ['fruits[3]', 'fruits[2]', 'fruits[last]', 'fruits(3)'],
+      answer: 1
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">animals</span> = [<span class="str">"lion"</span>, <span class="str">"tiger"</span>]\n<span class="kw">print</span>(<span class="kw">len</span>(animals))</code></pre>',
+      plain: 'What does this code print? animals = ["lion", "tiger"]; print(len(animals))',
+      choices: ['1', '2', '3', '10'],
+      plainChoices: ['1', '2', '3', '10'],
+      answer: 1
+    },
+    {
+      q: 'Which symbol is used to create a list?',
+      plain: 'Which symbol is used to create a list?',
+      choices: ['<code>( )</code>', '<code>{ }</code>', '<code>[ ]</code>', '<code>&lt; &gt;</code>'],
+      plainChoices: ['( )', '{ }', '[ ]', '< >'],
+      answer: 2
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">for</span> x <span class="kw">in</span> [<span class="num">2</span>, <span class="num">4</span>, <span class="num">6</span>]:\n    <span class="kw">print</span>(x * <span class="num">10</span>)</code></pre>',
+      plain: 'What does this code print? for x in [2, 4, 6]: print(x * 10)',
+      choices: ['2, 4, 6', '20, 40, 60', '10, 20, 30', '246'],
+      plainChoices: ['2, 4, 6', '20, 40, 60', '10, 20, 30', '246'],
+      answer: 1
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">words</span> = [<span class="str">"hi"</span>]\nwords.append(<span class="str">"bye"</span>)\nwords.append(<span class="str">"yo"</span>)\n<span class="kw">print</span>(<span class="kw">len</span>(words))</code></pre>',
+      plain: 'What does this code print? words = ["hi"]; words.append("bye"); words.append("yo"); print(len(words))',
+      choices: ['1', '2', '3', '4'],
+      plainChoices: ['1', '2', '3', '4'],
+      answer: 2
+    },
+    {
+      q: 'In the loop <code>for item in my_list:</code>, what is <code>item</code>?',
+      plain: 'In the loop for item in my_list:, what is item?',
+      choices: ['the whole list', 'each value from the list, one at a time', 'the length of the list', 'the number 0'],
+      plainChoices: ['the whole list', 'each value from the list, one at a time', 'the length of the list', 'the number 0'],
+      answer: 1
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">scores</span> = [<span class="num">85</span>, <span class="num">90</span>, <span class="num">95</span>]\n<span class="kw">for</span> s <span class="kw">in</span> scores:\n    <span class="kw">if</span> s &gt;= <span class="num">90</span>:\n        <span class="kw">print</span>(<span class="str">"Great!"</span>)</code></pre>',
+      plain: 'What does this code print? scores = [85, 90, 95]; for s in scores: if s >= 90: print("Great!")',
+      choices: ['Great! (once)', 'Great! Great! (twice)', 'Great! Great! Great! (three times)', 'Nothing'],
+      plainChoices: ['Great! (once)', 'Great! Great! (twice)', 'Great! Great! Great! (three times)', 'Nothing'],
+      answer: 1
+    }
+  ];
+
+  var PASS_THRESHOLD = 0.8;
+  var STORAGE_KEY = 'codequest_attempts_v1';
+
+  var state = { playerName: '', currentQ: 0, answers: [], selectedChoice: null };
+
+  function storageGet(k) { try { return localStorage.getItem(k); } catch(e) { return null; } }
+  function storageSet(k, v) { try { localStorage.setItem(k, v); return true; } catch(e) { return false; } }
+  function getAttempts() { var r = storageGet(STORAGE_KEY); if (!r) return []; try { return JSON.parse(r); } catch(e) { return []; } }
+  function saveAttempt(a) { var arr = getAttempts(); arr.unshift(a); storageSet(STORAGE_KEY, JSON.stringify(arr.slice(0, 100))); }
+
+  function makeUnlockCode(score, passed) {
+    if (!passed) return null;
+    var t = new Date();
+    var seed = t.getFullYear() * 10000 + (t.getMonth() + 1) * 100 + t.getDate();
+    var checksum = ((score * 37 + seed) % 9000) + 1000;
+    return String(score < 10 ? '0' + score : score) + '-' + checksum;
+  }
+
+  function show(id) {
+    var screens = document.querySelectorAll('.screen');
+    for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function buildEmailBody(attempt, code) {
+    var letters = ['A', 'B', 'C', 'D'];
+    var when = new Date(attempt.timestamp).toLocaleString();
+    var lines = [];
+    lines.push('CODE QUEST — QUIZ RESULTS');
+    lines.push('');
+    lines.push('Name: ' + attempt.name);
+    lines.push('Topic: ' + QUIZ_TOPIC);
+    lines.push('Date: ' + when);
+    lines.push('Score: ' + attempt.score + ' / ' + attempt.total + '  (' + attempt.percent + '%)');
+    lines.push('Status: ' + (attempt.passed ? 'PASSED ✓' : 'NOT PASSED ✗ (need 80%)'));
+    if (code) lines.push('Verification Code: ' + code);
+    lines.push('');
+    lines.push('─────────────────────────────');
+    lines.push('QUESTION BY QUESTION');
+    lines.push('─────────────────────────────');
+    lines.push('');
+    QUESTIONS.forEach(function(q, i) {
+      var ua = attempt.answers[i];
+      var ok = ua === q.answer;
+      lines.push('Q' + (i + 1) + '. ' + q.plain);
+      lines.push('  His answer: ' + letters[ua] + ') ' + q.plainChoices[ua] + (ok ? '  ✓' : '  ✗'));
+      if (!ok) lines.push('  Correct:    ' + letters[q.answer] + ') ' + q.plainChoices[q.answer]);
+      lines.push('');
+    });
+    lines.push('─────────────────────────────');
+    lines.push('Sent automatically from Code Quest');
+    return lines.join('\n');
+  }
+
+  function buildMailto(attempt, code) {
+    var status = attempt.passed ? 'PASSED' : 'NOT PASSED';
+    var subject = 'Code Quest — ' + attempt.name + ' — ' + QUIZ_TOPIC + ' — ' + attempt.percent + '% ' + status;
+    return 'mailto:' + encodeURIComponent(PARENT_EMAIL) + '?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(buildEmailBody(attempt, code));
+  }
+
+  document.getElementById('btnStartLesson').addEventListener('click', function() {
+    var name = document.getElementById('playerName').value.trim();
+    if (!name) { document.getElementById('playerName').focus(); return; }
+    state.playerName = name;
+    show('screen-lesson');
+  });
+
+  document.getElementById('btnStartQuiz').addEventListener('click', function() {
+    state.currentQ = 0; state.answers = []; state.selectedChoice = null;
+    renderQuestion(); show('screen-quiz');
+  });
+
+  function renderQuestion() {
+    var q = QUESTIONS[state.currentQ];
+    document.getElementById('qProgress').textContent = 'Question ' + (state.currentQ + 1) + ' of ' + QUESTIONS.length;
+    document.getElementById('progressFill').style.width = ((state.currentQ) / QUESTIONS.length * 100) + '%';
+    document.getElementById('qText').innerHTML = q.q;
+    var choicesEl = document.getElementById('qChoices');
+    choicesEl.innerHTML = '';
+    var letters = ['A', 'B', 'C', 'D'];
+    q.choices.forEach(function(choice, i) {
+      var btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.innerHTML = '<span class="choice-letter">' + letters[i] + '</span><span>' + choice + '</span>';
+      btn.addEventListener('click', function() { selectChoice(i, btn); });
+      choicesEl.appendChild(btn);
+    });
+    state.selectedChoice = null;
+    document.getElementById('btnNext').disabled = true;
+    document.getElementById('btnNext').textContent = state.currentQ === QUESTIONS.length - 1 ? 'Finish \u2192' : 'Next \u2192';
+  }
+
+  function selectChoice(i, btn) {
+    var c = document.querySelectorAll('.choice');
+    for (var j = 0; j < c.length; j++) c[j].classList.remove('selected');
+    btn.classList.add('selected');
+    state.selectedChoice = i;
+    document.getElementById('btnNext').disabled = false;
+  }
+
+  document.getElementById('btnNext').addEventListener('click', function() {
+    state.answers.push(state.selectedChoice);
+    if (state.currentQ < QUESTIONS.length - 1) { state.currentQ++; renderQuestion(); }
+    else finishQuiz();
+  });
+
+  function finishQuiz() {
+    var correct = 0;
+    state.answers.forEach(function(a, i) { if (a === QUESTIONS[i].answer) correct++; });
+    var total = QUESTIONS.length;
+    var pct = Math.round((correct / total) * 100);
+    var passed = correct / total >= PASS_THRESHOLD;
+
+    var attempt = {
+      name: state.playerName, score: correct, total: total, percent: pct, passed: passed,
+      timestamp: new Date().toISOString(), answers: state.answers, topic: QUIZ_TOPIC
+    };
+    saveAttempt(attempt);
+
+    var scoreEl = document.getElementById('scoreNum');
+    scoreEl.textContent = pct + '%';
+    scoreEl.className = 'score-number ' + (passed ? 'pass' : 'fail');
+    document.getElementById('scoreFraction').textContent = correct + ' / ' + total + ' correct';
+
+    var v = document.getElementById('verdict');
+    if (passed) { v.className = 'verdict pass'; v.textContent = '\u2713 PASSED \u2014 Screen time unlocked'; }
+    else { v.className = 'verdict fail'; v.textContent = '\u2717 NEED 80% (16/20) \u2014 try again'; }
+
+    var code = passed ? makeUnlockCode(correct, passed) : null;
+    var cb = document.getElementById('unlockCodeBlock');
+    if (passed) { document.getElementById('unlockCode').textContent = code; cb.style.display = 'block'; }
+    else cb.style.display = 'none';
+
+    var sendBtn = document.getElementById('btnSendEmail');
+    sendBtn.href = buildMailto(attempt, code);
+    var hint = document.getElementById('sendHint');
+    hint.textContent = 'Tap above — this will open your Mail app with the results ready. Just tap Send.';
+    hint.classList.remove('sent');
+    sendBtn.onclick = function() {
+      setTimeout(function() {
+        hint.textContent = '\u2713 Mail app opened — make sure you tap Send in Mail';
+        hint.classList.add('sent');
+      }, 500);
+    };
+
+    var rl = document.getElementById('reviewList');
+    rl.innerHTML = '';
+    var letters = ['A', 'B', 'C', 'D'];
+    QUESTIONS.forEach(function(q, i) {
+      var ua = state.answers[i];
+      var ok = ua === q.answer;
+      var item = document.createElement('div');
+      item.className = 'review-item ' + (ok ? 'correct' : 'wrong');
+      var html = '<div class="review-q">Q' + (i+1) + '. ' + q.q + '</div>';
+      if (ok) html += '<div class="review-a"><span class="good">\u2713 ' + letters[ua] + ': ' + q.choices[ua] + '</span></div>';
+      else html += '<div class="review-a"><span class="bad">\u2717 Your answer: ' + letters[ua] + '</span><br><span class="good">\u2713 Correct: ' + letters[q.answer] + ': ' + q.choices[q.answer] + '</span></div>';
+      item.innerHTML = html;
+      rl.appendChild(item);
+    });
+
+    show('screen-results');
+  }
+
+  document.getElementById('btnRetry').addEventListener('click', function() {
+    state.currentQ = 0; state.answers = [];
+    renderQuestion(); show('screen-quiz');
+  });
+
+})();
+</script>
+</body>
+</html>

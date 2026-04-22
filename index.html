@@ -26,7 +26,6 @@
     min-height: 100vh;
   }
   .container { max-width: 720px; margin: 0 auto; padding: 24px 20px 80px; }
-
   .brand {
     display: flex; align-items: baseline; justify-content: space-between;
     margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
@@ -43,14 +42,12 @@
     cursor: pointer; text-transform: uppercase;
     text-decoration: none; display: inline-block;
   }
-
   h1 {
     font-size: clamp(36px, 8vw, 60px); font-weight: 900;
     line-height: 1.02; letter-spacing: -0.03em; margin-bottom: 8px;
   }
   h1 em { color: var(--accent); font-style: italic; }
   .lede { font-size: 18px; color: var(--muted); margin-bottom: 32px; }
-
   .today-card {
     background: linear-gradient(135deg, rgba(255,209,102,0.12), rgba(6,214,160,0.08));
     border: 1px solid var(--accent);
@@ -85,13 +82,11 @@
     transition: transform 0.15s ease, box-shadow 0.15s ease;
   }
   .btn-take:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(255,209,102,0.3); }
-
   .section-label {
     font-family: 'Space Mono', monospace; font-size: 11px;
     letter-spacing: 0.25em; text-transform: uppercase; color: var(--muted);
     margin-bottom: 14px; display: block;
   }
-
   .quiz-list { display: flex; flex-direction: column; gap: 10px; }
   .quiz-row {
     background: var(--surface); border: 1px solid var(--border);
@@ -123,13 +118,6 @@
   .quiz-arrow {
     color: var(--muted); font-size: 18px; flex-shrink: 0;
   }
-
-  .empty-state {
-    text-align: center; color: var(--muted); padding: 40px 20px;
-    font-style: italic; background: var(--surface);
-    border: 1px dashed var(--border); border-radius: 8px;
-  }
-
   .screen { display: none; }
   .screen.active { display: block; }
   .parent-gate { max-width: 400px; margin: 80px auto; text-align: center; }
@@ -147,7 +135,6 @@
   .btn-primary { background: var(--accent); color: var(--ink); }
   .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
   .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
-
   .dash-header {
     font-family: 'Space Mono', monospace; font-size: 11px;
     letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
@@ -161,7 +148,6 @@
   .empty {
     text-align: center; color: var(--muted); padding: 60px 20px; font-style: italic;
   }
-
   @media (max-width: 480px) {
     .container { padding: 16px 16px 60px; }
     h1 { font-size: 38px; }
@@ -173,7 +159,6 @@
 <body>
 <div class="container">
 
-  <!-- HOME SCREEN -->
   <div class="screen active" id="screen-home">
     <div class="brand">
       <div class="brand-name">Code <span>Quest</span> / Daily</div>
@@ -184,20 +169,29 @@
     <p class="lede">Daily learning quiz. Pass with 80%+ to unlock your hour of screen time.</p>
 
     <!-- ============================================ -->
-    <!-- TODAY'S QUIZ — UPDATE THIS BLOCK EACH DAY    -->
+    <!-- TODAY'S QUIZ                                  -->
     <!-- ============================================ -->
     <div class="today-card">
-      <div class="today-meta">21 Apr 2026 · English</div>
-      <div class="today-title">Grammar P4</div>
-      <div class="today-topic">Tenses, articles, pronouns, prepositions · 20 questions</div>
-      <a class="btn-take" href="2026-04-21-grammar-p4.html">Start Quiz &rarr;</a>
+      <div class="today-meta">22 Apr 2026 · Coding</div>
+      <div class="today-title">Python Loops & Lists</div>
+      <div class="today-topic">Lists, indexing, for loops, range(), append() · 20 questions</div>
+      <a class="btn-take" href="2026-04-22-python-loops-lists.html">Start Quiz &rarr;</a>
     </div>
 
     <!-- ============================================ -->
-    <!-- ARCHIVE — ADD A NEW <a> EACH DAY AT THE TOP   -->
+    <!-- ARCHIVE                                       -->
     <!-- ============================================ -->
     <div class="section-label">Past Quizzes</div>
     <div class="quiz-list" id="quizList">
+
+      <a class="quiz-row" href="2026-04-21-grammar-p4.html">
+        <span class="quiz-tag tag-english">English</span>
+        <div class="quiz-info">
+          <div class="quiz-title">Grammar P4</div>
+          <div class="quiz-date">21 Apr 2026 · 20 questions</div>
+        </div>
+        <span class="quiz-arrow">&rarr;</span>
+      </a>
 
       <a class="quiz-row" href="2026-04-21-python-basics.html">
         <span class="quiz-tag tag-coding">Coding</span>
@@ -211,7 +205,6 @@
     </div>
   </div>
 
-  <!-- PARENT GATE -->
   <div class="screen" id="screen-parent-gate">
     <div class="brand">
       <div class="brand-name">Code <span>Quest</span> / Daily</div>
@@ -229,7 +222,6 @@
     </div>
   </div>
 
-  <!-- PARENT DASHBOARD -->
   <div class="screen" id="screen-parent">
     <div class="brand">
       <div class="brand-name">Code <span>Quest</span> / Daily</div>
@@ -251,7 +243,6 @@
 <script>
 (function() {
   'use strict';
-
   var STORAGE_KEY = 'codequest_attempts_v1';
   var PIN_KEY = 'codequest_pin_v1';
 
@@ -327,7 +318,6 @@
       statusEl.textContent = '! Storage not available — use Verify Code';
       statusEl.style.color = 'var(--accent)';
     }
-
     var attempts = getAttempts();
     var listEl = document.getElementById('attemptsList');
     if (attempts.length === 0) {
