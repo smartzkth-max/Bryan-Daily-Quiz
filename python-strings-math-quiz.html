@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python Strings & Math — Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1419; --surface: #1a2029; --surface-2: #232b36;
+    --border: #2d3744; --text: #e8ecf1; --muted: #8a95a5;
+    --accent: #ffd166; --accent-2: #06d6a0; --danger: #ef476f; --ink: #0f1419;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Fraunces', Georgia, serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(255,209,102,0.08), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(6,214,160,0.06), transparent 40%);
+    min-height: 100vh;
+  }
+  .container { max-width: 720px; margin: 0 auto; padding: 24px 20px 80px; }
+  .brand {
+    margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
+  }
+  .brand-name {
+    font-family: 'Space Mono', monospace; font-size: 13px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+  }
+  .brand-name span { color: var(--accent); }
+  .screen { display: none; animation: fadeIn 0.4s ease; }
+  .screen.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  h1 { font-size: clamp(32px, 7vw, 52px); font-weight: 900; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 12px; }
+  h1 em { color: var(--accent); font-style: italic; }
+  h2 { font-size: 24px; font-weight: 700; margin: 28px 0 12px; letter-spacing: -0.01em; }
+  h3 { font-size: 18px; font-weight: 700; margin: 20px 0 8px; color: var(--accent-2); }
+  p { margin-bottom: 14px; color: #c9d1dc; font-size: 17px; }
+  .lede { font-size: 19px; color: var(--muted); margin-bottom: 24px; }
+  pre, code { font-family: 'Space Mono', monospace; font-size: 14px; }
+  pre { background: #0a0e13; border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 14px 16px; border-radius: 6px; overflow-x: auto; margin: 14px 0; font-size: 13px; line-height: 1.5; }
+  code { background: var(--surface-2); padding: 2px 6px; border-radius: 4px; font-size: 14px; color: var(--accent); }
+  pre code { background: none; padding: 0; color: #e8ecf1; font-size: 13px; }
+  .kw { color: #ff9ec7; } .str { color: var(--accent-2); } .num { color: var(--accent); } .cmt { color: #5a6775; font-style: italic; }
+  .btn { font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; padding: 14px 22px; border: none; border-radius: 6px; cursor: pointer; font-weight: 700; transition: transform 0.15s ease, box-shadow 0.15s ease; text-decoration: none; display: inline-block; }
+  .btn-primary { background: var(--accent); color: var(--ink); }
+  .btn-primary:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+  .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-watch { background: #ff0000; color: white; width: 100%; padding: 16px 22px; font-size: 14px; margin: 0 0 24px; text-align: center; }
+  .progress { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.15em; margin-bottom: 8px; text-transform: uppercase; }
+  .progress-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 32px; }
+  .progress-fill { height: 100%; background: var(--accent); transition: width 0.4s ease; width: 0%; }
+  .question { font-size: 22px; font-weight: 700; line-height: 1.4; margin-bottom: 24px; letter-spacing: -0.01em; }
+  .choices { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  .choice { background: var(--surface); border: 1px solid var(--border); padding: 16px 18px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 14px; transition: all 0.15s ease; text-align: left; font-family: inherit; font-size: 16px; color: var(--text); width: 100%; }
+  .choice.selected { border-color: var(--accent); background: rgba(255,209,102,0.08); }
+  .choice-letter { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; flex-shrink: 0; background: var(--surface-2); border-radius: 50%; font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: var(--muted); }
+  .choice.selected .choice-letter { background: var(--accent); color: var(--ink); }
+  .choice code { background: var(--bg); }
+  .score-card { background: var(--surface); border: 1px solid var(--border); padding: 32px 28px; border-radius: 8px; text-align: center; margin-bottom: 24px; }
+  .score-number { font-size: 80px; font-weight: 900; line-height: 1; font-family: 'Fraunces', serif; letter-spacing: -0.04em; margin: 8px 0; }
+  .score-number.pass { color: var(--accent-2); }
+  .score-number.fail { color: var(--danger); }
+  .score-label { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .verdict { padding: 16px; border-radius: 6px; margin-bottom: 24px; font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.05em; text-align: center; }
+  .verdict.pass { background: rgba(6,214,160,0.1); color: var(--accent-2); border: 1px solid rgba(6,214,160,0.3); }
+  .verdict.fail { background: rgba(239,71,111,0.1); color: var(--danger); border: 1px solid rgba(239,71,111,0.3); }
+  .review-item { background: var(--surface); border: 1px solid var(--border); padding: 14px 16px; border-radius: 6px; margin-bottom: 10px; font-size: 15px; }
+  .review-item.correct { border-left: 3px solid var(--accent-2); }
+  .review-item.wrong { border-left: 3px solid var(--danger); }
+  .review-q { font-weight: 700; margin-bottom: 6px; }
+  .review-a { font-size: 14px; color: var(--muted); font-family: 'Space Mono', monospace; }
+  .review-a .good { color: var(--accent-2); }
+  .review-a .bad { color: var(--danger); text-decoration: line-through; }
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .video-block { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid #ff0000; padding: 18px 20px; border-radius: 8px; margin: 20px 0; }
+  .video-block h3 { color: var(--text); margin-top: 0; }
+  .video-block p { font-size: 15px; }
+  .timestamps { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--muted); }
+  .timestamps strong { color: var(--accent); }
+  .concept { background: var(--surface); border: 1px solid var(--border); padding: 18px 20px; border-radius: 8px; margin: 14px 0; }
+  .concept-num { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 6px; display: block; }
+  @media (max-width: 480px) {
+    .container { padding: 16px 16px 60px; }
+    h1 { font-size: 36px; }
+    .score-number { font-size: 64px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="brand">
+    <div class="brand-name">Python <span>Strings & Math</span> / Lesson 2</div>
+  </div>
+
+  <!-- START SCREEN -->
+  <div class="screen active" id="screen-start">
+    <h1>Strings &amp; <em>Math.</em></h1>
+    <p class="lede">Continue with Mosh from 37:36 to 55:00. Today: f-strings, string methods, math operators, and operator precedence. 20 questions.</p>
+
+    <div class="video-block">
+      <h3>&#9654;&nbsp;Watch this section first</h3>
+      <p>Pick up where you left off in Mosh's <strong>"Python Full Course for Beginners"</strong>.</p>
+      <p class="timestamps">
+        <strong>37:36</strong> &mdash; Formatted Strings (f-strings)<br>
+        <strong>41:39</strong> &mdash; String Methods<br>
+        <strong>48:33</strong> &mdash; Arithmetic Operators<br>
+        <strong>51:33</strong> &mdash; Operator Precedence<br>
+        <strong>53:44</strong> &mdash; Math Functions<br>
+        <strong>55:00</strong> &mdash; (stop here for today)
+      </p>
+    </div>
+
+    <a class="btn btn-watch" href="https://youtu.be/_uQrJ0TkZlc?t=2256" target="_blank">&#9654;&nbsp;&nbsp;Open Mosh Video at 37:36</a>
+
+    <button class="btn btn-primary" id="btnStartLesson">I've watched it &mdash; Quick Review &rarr;</button>
+  </div>
+
+  <!-- LESSON / REVIEW SCREEN -->
+  <div class="screen" id="screen-lesson">
+    <div class="progress">Quick Review &middot; Strings &amp; Math</div>
+    <h1 style="font-size: 32px; margin-bottom: 16px;">The big ideas.</h1>
+    <p class="lede">Refresh on the five concepts before the quiz.</p>
+
+    <div class="concept">
+      <span class="concept-num">Concept 01</span>
+      <h3>Formatted strings (f-strings)</h3>
+      <p>Put an <code>f</code> before a string to plug variables right in using <code>{ }</code>.</p>
+<pre><code><span class="kw">first</span> = <span class="str">"John"</span>
+<span class="kw">last</span> = <span class="str">"Smith"</span>
+<span class="kw">message</span> = <span class="str">f"Hi, I am {first} {last}"</span>
+<span class="kw">print</span>(message)
+<span class="cmt"># Hi, I am John Smith</span></code></pre>
+    </div>
+
+    <div class="concept">
+      <span class="concept-num">Concept 02</span>
+      <h3>String methods (built-in tools)</h3>
+      <p>Strings come with useful methods. Use a <strong>dot</strong> to call them.</p>
+<pre><code><span class="kw">course</span> = <span class="str">"Python for Beginners"</span>
+
+<span class="kw">print</span>(<span class="kw">len</span>(course))           <span class="cmt"># 20</span>
+<span class="kw">print</span>(course.upper())       <span class="cmt"># PYTHON FOR BEGINNERS</span>
+<span class="kw">print</span>(course.lower())       <span class="cmt"># python for beginners</span>
+<span class="kw">print</span>(course.find(<span class="str">"P"</span>))     <span class="cmt"># 0  (position)</span>
+<span class="kw">print</span>(course.replace(<span class="str">"P"</span>, <span class="str">"-"</span>))   <span class="cmt"># -ython for Beginners</span>
+<span class="kw">print</span>(<span class="str">"Python"</span> <span class="kw">in</span> course)  <span class="cmt"># True</span></code></pre>
+      <p><strong>Important:</strong> <code>upper()</code> and <code>lower()</code> do NOT change the original string — they return a new one.</p>
+    </div>
+
+    <div class="concept">
+      <span class="concept-num">Concept 03</span>
+      <h3>Arithmetic operators</h3>
+      <p>The basic math operators in Python:</p>
+      <p style="font-family: 'Space Mono', monospace; font-size: 14px;">
+        &bull; <code>+</code> add &mdash; <code>10 + 3 = 13</code><br>
+        &bull; <code>-</code> subtract &mdash; <code>10 - 3 = 7</code><br>
+        &bull; <code>*</code> multiply &mdash; <code>10 * 3 = 30</code><br>
+        &bull; <code>/</code> divide &mdash; <code>10 / 3 = 3.333</code> (always float)<br>
+        &bull; <code>//</code> integer divide &mdash; <code>10 // 3 = 3</code> (drops decimal)<br>
+        &bull; <code>%</code> remainder &mdash; <code>10 % 3 = 1</code> (what's left over)<br>
+        &bull; <code>**</code> exponent &mdash; <code>10 ** 3 = 1000</code> (power)
+      </p>
+    </div>
+
+    <div class="concept">
+      <span class="concept-num">Concept 04</span>
+      <h3>Operator precedence</h3>
+      <p>The order Python does math: <strong>1)</strong> <code>**</code> first, <strong>2)</strong> <code>* / // %</code> next, <strong>3)</strong> <code>+ -</code> last. Use <code>( )</code> to force a different order.</p>
+<pre><code><span class="kw">print</span>(<span class="num">10</span> + <span class="num">3</span> * <span class="num">2</span>)        <span class="cmt"># 16  (multiply first)</span>
+<span class="kw">print</span>((<span class="num">10</span> + <span class="num">3</span>) * <span class="num">2</span>)      <span class="cmt"># 26  (parentheses first)</span></code></pre>
+    </div>
+
+    <div class="concept">
+      <span class="concept-num">Concept 05</span>
+      <h3>Math functions</h3>
+      <p>Built-in: <code>round()</code> rounds, <code>abs()</code> gives absolute value (always positive). For more, <code>import math</code>.</p>
+<pre><code><span class="kw">print</span>(<span class="kw">round</span>(<span class="num">2.9</span>))         <span class="cmt"># 3</span>
+<span class="kw">print</span>(<span class="kw">abs</span>(<span class="num">-2.9</span>))         <span class="cmt"># 2.9</span>
+
+<span class="kw">import</span> math
+<span class="kw">print</span>(math.ceil(<span class="num">2.2</span>))    <span class="cmt"># 3 (rounds up)</span>
+<span class="kw">print</span>(math.floor(<span class="num">2.9</span>))   <span class="cmt"># 2 (rounds down)</span></code></pre>
+    </div>
+
+    <p style="margin-top: 24px;">Ready? Take the quiz!</p>
+    <button class="btn btn-primary" id="btnStartQuiz">Start Quiz &rarr;</button>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div class="screen" id="screen-quiz">
+    <div class="progress" id="qProgress">Question 1 of 20</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="question" id="qText"></div>
+    <div class="choices" id="qChoices"></div>
+    <button class="btn btn-primary" id="btnNext" disabled>Next &rarr;</button>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div class="screen" id="screen-results">
+    <div class="score-card">
+      <div class="score-label">Your Score</div>
+      <div class="score-number" id="scoreNum">0</div>
+      <div class="score-label" id="scoreFraction">0 / 20</div>
+    </div>
+    <div class="verdict" id="verdict"></div>
+
+    <h2>Review</h2>
+    <div id="reviewList"></div>
+    <div class="btn-row" style="margin-top: 24px;">
+      <button class="btn btn-ghost" id="btnRetry">Try Again</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  var QUESTIONS = [
+    // ===== Formatted Strings (Q1-3) =====
+    {
+      q: 'What letter goes before a quote to make a formatted string?',
+      choices: ['<code>s</code>', '<code>f</code>', '<code>p</code>', '<code>r</code>'],
+      answer: 1
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">name</span> = <span class="str">"Bryan"</span>\n<span class="kw">print</span>(<span class="str">f"Hi {name}"</span>)</code></pre>',
+      choices: ['Hi {name}', 'Hi Bryan', 'f Hi Bryan', 'Error'],
+      answer: 1
+    },
+    {
+      q: 'Which line correctly uses an f-string to combine <code>age = 12</code> into a sentence?',
+      choices: ['<code>print("I am " + age)</code>', '<code>print(f"I am {age}")</code>', '<code>print("I am {age}")</code>', '<code>print(f"I am " age)</code>'],
+      answer: 1
+    },
+
+    // ===== String Methods (Q4-9) =====
+    {
+      q: 'What does <code>"hello".upper()</code> return?',
+      choices: ['<code>"hello"</code>', '<code>"Hello"</code>', '<code>"HELLO"</code>', 'Error'],
+      answer: 2
+    },
+    {
+      q: 'What does <code>"PYTHON".lower()</code> return?',
+      choices: ['<code>"PYTHON"</code>', '<code>"python"</code>', '<code>"Python"</code>', 'Error'],
+      answer: 1
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">course</span> = <span class="str">"Python"</span>\n<span class="kw">print</span>(course.find(<span class="str">"t"</span>))</code></pre>',
+      choices: ['0', '1', '2', '3'],
+      answer: 2
+    },
+    {
+      q: 'What does <code>"cat".replace("c", "b")</code> return?',
+      choices: ['<code>"cat"</code>', '<code>"bat"</code>', '<code>"cab"</code>', 'Error'],
+      answer: 1
+    },
+    {
+      q: 'What does <code>"hi" in "hi there"</code> return?',
+      choices: ['<code>True</code>', '<code>False</code>', '<code>"hi"</code>', '<code>0</code>'],
+      answer: 0
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">name</span> = <span class="str">"Bryan"</span>\nname.upper()\n<span class="kw">print</span>(name)</code></pre>',
+      choices: ['BRYAN', 'Bryan', 'bryan', 'Error'],
+      answer: 1
+    },
+
+    // ===== Arithmetic (Q10-14) =====
+    {
+      q: 'What does <code>10 / 3</code> give in Python?',
+      choices: ['3', '3.333...', '4', '1'],
+      answer: 1
+    },
+    {
+      q: 'What does <code>10 // 3</code> give?',
+      choices: ['3', '3.333...', '4', '1'],
+      answer: 0
+    },
+    {
+      q: 'What does <code>10 % 3</code> give? (the leftover after dividing)',
+      choices: ['3', '3.333...', '0', '1'],
+      answer: 3
+    },
+    {
+      q: 'What does <code>2 ** 4</code> give? (2 to the power of 4)',
+      choices: ['8', '16', '24', '6'],
+      answer: 1
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">x</span> = <span class="num">10</span>\nx += <span class="num">5</span>\n<span class="kw">print</span>(x)</code></pre>',
+      choices: ['5', '10', '15', '50'],
+      answer: 2
+    },
+
+    // ===== Operator Precedence (Q15-17) =====
+    {
+      q: 'What does <code>print(2 + 3 * 4)</code> print?',
+      choices: ['20', '14', '24', '9'],
+      answer: 1
+    },
+    {
+      q: 'What does <code>print((2 + 3) * 4)</code> print?',
+      choices: ['20', '14', '24', '9'],
+      answer: 0
+    },
+    {
+      q: 'Which operator does Python do FIRST in <code>2 + 3 ** 2</code>?',
+      choices: ['<code>+</code>', '<code>**</code>', 'Whichever comes first', 'Both at the same time'],
+      answer: 1
+    },
+
+    // ===== Math Functions (Q18-20) =====
+    {
+      q: 'What does <code>round(2.9)</code> return?',
+      choices: ['2', '3', '2.9', '2.0'],
+      answer: 1
+    },
+    {
+      q: 'What does <code>abs(-7)</code> return?',
+      choices: ['<code>-7</code>', '<code>7</code>', '<code>0</code>', 'Error'],
+      answer: 1
+    },
+    {
+      q: 'What do you need to write before using <code>math.ceil()</code>?',
+      choices: ['<code>start math</code>', '<code>import math</code>', '<code>use math</code>', 'Nothing, it works automatically'],
+      answer: 1
+    }
+  ];
+
+  var PASS_THRESHOLD = 0.8;
+  var state = { currentQ: 0, answers: [], selectedChoice: null };
+
+  function show(id) {
+    var screens = document.querySelectorAll('.screen');
+    for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.getElementById('btnStartLesson').addEventListener('click', function() {
+    show('screen-lesson');
+  });
+
+  document.getElementById('btnStartQuiz').addEventListener('click', function() {
+    state.currentQ = 0; state.answers = []; state.selectedChoice = null;
+    renderQuestion(); show('screen-quiz');
+  });
+
+  function renderQuestion() {
+    var q = QUESTIONS[state.currentQ];
+    document.getElementById('qProgress').textContent = 'Question ' + (state.currentQ + 1) + ' of ' + QUESTIONS.length;
+    document.getElementById('progressFill').style.width = ((state.currentQ) / QUESTIONS.length * 100) + '%';
+    document.getElementById('qText').innerHTML = q.q;
+    var choicesEl = document.getElementById('qChoices');
+    choicesEl.innerHTML = '';
+    var letters = ['A', 'B', 'C', 'D'];
+    q.choices.forEach(function(choice, i) {
+      var btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.innerHTML = '<span class="choice-letter">' + letters[i] + '</span><span>' + choice + '</span>';
+      btn.addEventListener('click', function() { selectChoice(i, btn); });
+      choicesEl.appendChild(btn);
+    });
+    state.selectedChoice = null;
+    document.getElementById('btnNext').disabled = true;
+    document.getElementById('btnNext').textContent = state.currentQ === QUESTIONS.length - 1 ? 'Finish \u2192' : 'Next \u2192';
+  }
+
+  function selectChoice(i, btn) {
+    var c = document.querySelectorAll('.choice');
+    for (var j = 0; j < c.length; j++) c[j].classList.remove('selected');
+    btn.classList.add('selected');
+    state.selectedChoice = i;
+    document.getElementById('btnNext').disabled = false;
+  }
+
+  document.getElementById('btnNext').addEventListener('click', function() {
+    state.answers.push(state.selectedChoice);
+    if (state.currentQ < QUESTIONS.length - 1) { state.currentQ++; renderQuestion(); }
+    else finishQuiz();
+  });
+
+  function finishQuiz() {
+    var correct = 0;
+    state.answers.forEach(function(a, i) { if (a === QUESTIONS[i].answer) correct++; });
+    var total = QUESTIONS.length;
+    var pct = Math.round((correct / total) * 100);
+    var passed = correct / total >= PASS_THRESHOLD;
+
+    var scoreEl = document.getElementById('scoreNum');
+    scoreEl.textContent = pct + '%';
+    scoreEl.className = 'score-number ' + (passed ? 'pass' : 'fail');
+    document.getElementById('scoreFraction').textContent = correct + ' / ' + total + ' correct';
+
+    var v = document.getElementById('verdict');
+    if (passed) { v.className = 'verdict pass'; v.textContent = '\u2713 GREAT JOB \u2014 You passed!'; }
+    else { v.className = 'verdict fail'; v.textContent = '\u2717 NEED 80% (16/20) \u2014 try again'; }
+
+    var rl = document.getElementById('reviewList');
+    rl.innerHTML = '';
+    var letters = ['A', 'B', 'C', 'D'];
+    QUESTIONS.forEach(function(q, i) {
+      var ua = state.answers[i];
+      var ok = ua === q.answer;
+      var item = document.createElement('div');
+      item.className = 'review-item ' + (ok ? 'correct' : 'wrong');
+      var html = '<div class="review-q">Q' + (i+1) + '. ' + q.q + '</div>';
+      if (ok) html += '<div class="review-a"><span class="good">\u2713 ' + letters[ua] + ': ' + q.choices[ua] + '</span></div>';
+      else html += '<div class="review-a"><span class="bad">\u2717 Your answer: ' + letters[ua] + '</span><br><span class="good">\u2713 Correct: ' + letters[q.answer] + ': ' + q.choices[q.answer] + '</span></div>';
+      item.innerHTML = html;
+      rl.appendChild(item);
+    });
+
+    show('screen-results');
+  }
+
+  document.getElementById('btnRetry').addEventListener('click', function() {
+    state.currentQ = 0; state.answers = [];
+    renderQuestion(); show('screen-quiz');
+  });
+
+})();
+</script>
+</body>
+</html>
