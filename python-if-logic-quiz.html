@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Python If & Logic — Quiz</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;0,9..144,900;1,9..144,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f1419; --surface: #1a2029; --surface-2: #232b36;
+    --border: #2d3744; --text: #e8ecf1; --muted: #8a95a5;
+    --accent: #ffd166; --accent-2: #06d6a0; --danger: #ef476f; --ink: #0f1419;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Fraunces', Georgia, serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(255,209,102,0.08), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(6,214,160,0.06), transparent 40%);
+    min-height: 100vh;
+  }
+  .container { max-width: 720px; margin: 0 auto; padding: 24px 20px 80px; }
+  .brand {
+    margin-bottom: 28px; padding-bottom: 16px; border-bottom: 1px solid var(--border);
+  }
+  .brand-name {
+    font-family: 'Space Mono', monospace; font-size: 13px;
+    letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted);
+  }
+  .brand-name span { color: var(--accent); }
+  .screen { display: none; animation: fadeIn 0.4s ease; }
+  .screen.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  h1 { font-size: clamp(32px, 7vw, 52px); font-weight: 900; line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 12px; }
+  h1 em { color: var(--accent); font-style: italic; }
+  h2 { font-size: 24px; font-weight: 700; margin: 28px 0 12px; letter-spacing: -0.01em; }
+  h3 { font-size: 18px; font-weight: 700; margin: 20px 0 8px; color: var(--accent-2); }
+  p { margin-bottom: 14px; color: #c9d1dc; font-size: 17px; }
+  .lede { font-size: 19px; color: var(--muted); margin-bottom: 24px; }
+  pre, code { font-family: 'Space Mono', monospace; font-size: 14px; }
+  pre { background: #0a0e13; border: 1px solid var(--border); border-left: 3px solid var(--accent); padding: 14px 16px; border-radius: 6px; overflow-x: auto; margin: 14px 0; font-size: 13px; line-height: 1.5; }
+  code { background: var(--surface-2); padding: 2px 6px; border-radius: 4px; font-size: 14px; color: var(--accent); }
+  pre code { background: none; padding: 0; color: #e8ecf1; font-size: 13px; }
+  .kw { color: #ff9ec7; } .str { color: var(--accent-2); } .num { color: var(--accent); } .cmt { color: #5a6775; font-style: italic; }
+  .btn { font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase; padding: 14px 22px; border: none; border-radius: 6px; cursor: pointer; font-weight: 700; transition: transform 0.15s ease, box-shadow 0.15s ease; text-decoration: none; display: inline-block; }
+  .btn-primary { background: var(--accent); color: var(--ink); }
+  .btn-primary:disabled { background: var(--border); color: var(--muted); cursor: not-allowed; }
+  .btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border); }
+  .btn-watch { background: #ff0000; color: white; width: 100%; padding: 16px 22px; font-size: 14px; margin: 0 0 24px; text-align: center; }
+  .progress { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); letter-spacing: 0.15em; margin-bottom: 8px; text-transform: uppercase; }
+  .progress-bar { height: 3px; background: var(--border); border-radius: 2px; overflow: hidden; margin-bottom: 32px; }
+  .progress-fill { height: 100%; background: var(--accent); transition: width 0.4s ease; width: 0%; }
+  .question { font-size: 22px; font-weight: 700; line-height: 1.4; margin-bottom: 24px; letter-spacing: -0.01em; }
+  .choices { display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+  .choice { background: var(--surface); border: 1px solid var(--border); padding: 16px 18px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; gap: 14px; transition: all 0.15s ease; text-align: left; font-family: inherit; font-size: 16px; color: var(--text); width: 100%; }
+  .choice.selected { border-color: var(--accent); background: rgba(255,209,102,0.08); }
+  .choice-letter { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; flex-shrink: 0; background: var(--surface-2); border-radius: 50%; font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; color: var(--muted); }
+  .choice.selected .choice-letter { background: var(--accent); color: var(--ink); }
+  .choice code { background: var(--bg); }
+  .score-card { background: var(--surface); border: 1px solid var(--border); padding: 32px 28px; border-radius: 8px; text-align: center; margin-bottom: 24px; }
+  .score-number { font-size: 80px; font-weight: 900; line-height: 1; font-family: 'Fraunces', serif; letter-spacing: -0.04em; margin: 8px 0; }
+  .score-number.pass { color: var(--accent-2); }
+  .score-number.fail { color: var(--danger); }
+  .score-label { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--muted); }
+  .verdict { padding: 16px; border-radius: 6px; margin-bottom: 24px; font-family: 'Space Mono', monospace; font-size: 13px; letter-spacing: 0.05em; text-align: center; }
+  .verdict.pass { background: rgba(6,214,160,0.1); color: var(--accent-2); border: 1px solid rgba(6,214,160,0.3); }
+  .verdict.fail { background: rgba(239,71,111,0.1); color: var(--danger); border: 1px solid rgba(239,71,111,0.3); }
+  .review-item { background: var(--surface); border: 1px solid var(--border); padding: 14px 16px; border-radius: 6px; margin-bottom: 10px; font-size: 15px; }
+  .review-item.correct { border-left: 3px solid var(--accent-2); }
+  .review-item.wrong { border-left: 3px solid var(--danger); }
+  .review-q { font-weight: 700; margin-bottom: 6px; }
+  .review-a { font-size: 14px; color: var(--muted); font-family: 'Space Mono', monospace; }
+  .review-a .good { color: var(--accent-2); }
+  .review-a .bad { color: var(--danger); text-decoration: line-through; }
+  .btn-row { display: flex; gap: 10px; flex-wrap: wrap; }
+  .video-block { background: var(--surface); border: 1px solid var(--border); border-left: 3px solid #ff0000; padding: 18px 20px; border-radius: 8px; margin: 20px 0; }
+  .video-block h3 { color: var(--text); margin-top: 0; }
+  .video-block p { font-size: 15px; }
+  .timestamps { font-family: 'Space Mono', monospace; font-size: 13px; color: var(--muted); }
+  .timestamps strong { color: var(--accent); }
+  .concept { background: var(--surface); border: 1px solid var(--border); padding: 18px 20px; border-radius: 8px; margin: 14px 0; }
+  .concept-num { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--accent); text-transform: uppercase; margin-bottom: 6px; display: block; }
+  @media (max-width: 480px) {
+    .container { padding: 16px 16px 60px; }
+    h1 { font-size: 36px; }
+    .score-number { font-size: 64px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="brand">
+    <div class="brand-name">Python <span>If &amp; Logic</span> / Lesson 3</div>
+  </div>
+
+  <!-- START SCREEN -->
+  <div class="screen active" id="screen-start">
+    <h1>If &amp; <em>Logic.</em></h1>
+    <p class="lede">Continue with Mosh from 55:00 to 1:11:25. Today: making decisions in code with if/elif/else and combining conditions. 20 questions.</p>
+
+    <div class="video-block">
+      <h3>&#9654;&nbsp;Watch this section first</h3>
+      <p>Pick up where you left off in Mosh's <strong>"Python Full Course for Beginners"</strong>.</p>
+      <p class="timestamps">
+        <strong>55:00</strong> &mdash; If Statements<br>
+        <strong>1:00:43</strong> &mdash; Logical Operators (and / or / not)<br>
+        <strong>1:04:54</strong> &mdash; Comparison Operators<br>
+        <strong>1:08:32</strong> &mdash; Weight Converter Program<br>
+        <strong>1:11:25</strong> &mdash; (stop here for today)
+      </p>
+    </div>
+
+    <a class="btn btn-watch" href="https://youtu.be/_uQrJ0TkZlc?t=3300" target="_blank">&#9654;&nbsp;&nbsp;Open Mosh Video at 55:00</a>
+
+    <button class="btn btn-primary" id="btnStartLesson">I've watched it &mdash; Quick Review &rarr;</button>
+  </div>
+
+  <!-- LESSON / REVIEW SCREEN -->
+  <div class="screen" id="screen-lesson">
+    <div class="progress">Quick Review &middot; If &amp; Logic</div>
+    <h1 style="font-size: 32px; margin-bottom: 16px;">Making decisions.</h1>
+    <p class="lede">Refresh on the four concepts before the quiz.</p>
+
+    <div class="concept">
+      <span class="concept-num">Concept 01</span>
+      <h3>If / elif / else</h3>
+      <p>Tells Python to do different things based on a condition. <strong>Indentation matters!</strong></p>
+<pre><code><span class="kw">temp</span> = <span class="num">25</span>
+
+<span class="kw">if</span> temp &gt; <span class="num">30</span>:
+    <span class="kw">print</span>(<span class="str">"It's hot"</span>)
+<span class="kw">elif</span> temp &gt; <span class="num">20</span>:
+    <span class="kw">print</span>(<span class="str">"It's warm"</span>)
+<span class="kw">else</span>:
+    <span class="kw">print</span>(<span class="str">"It's cold"</span>)
+<span class="cmt"># Prints: It's warm</span></code></pre>
+      <p><code>elif</code> means "else if" — only checked if the previous condition was False.</p>
+    </div>
+
+    <div class="concept">
+      <span class="concept-num">Concept 02</span>
+      <h3>Comparison operators</h3>
+      <p>How to compare two values. They always give back <code>True</code> or <code>False</code>.</p>
+      <p style="font-family: 'Space Mono', monospace; font-size: 14px;">
+        &bull; <code>==</code> equals (note: TWO equal signs!)<br>
+        &bull; <code>!=</code> not equal<br>
+        &bull; <code>&gt;</code> greater than<br>
+        &bull; <code>&lt;</code> less than<br>
+        &bull; <code>&gt;=</code> greater than or equal<br>
+        &bull; <code>&lt;=</code> less than or equal
+      </p>
+      <p><strong>Important:</strong> <code>=</code> assigns a value, <code>==</code> compares values. Don't mix them up.</p>
+    </div>
+
+    <div class="concept">
+      <span class="concept-num">Concept 03</span>
+      <h3>Logical operators: and, or, not</h3>
+      <p>Combine multiple conditions.</p>
+<pre><code><span class="kw">age</span> = <span class="num">15</span>
+
+<span class="cmt"># 'and' = ALL conditions must be True</span>
+<span class="kw">if</span> age &gt;= <span class="num">13</span> <span class="kw">and</span> age &lt;= <span class="num">19</span>:
+    <span class="kw">print</span>(<span class="str">"Teenager"</span>)
+
+<span class="cmt"># 'or' = AT LEAST ONE condition must be True</span>
+<span class="kw">if</span> age &lt; <span class="num">5</span> <span class="kw">or</span> age &gt; <span class="num">65</span>:
+    <span class="kw">print</span>(<span class="str">"Free entry"</span>)
+
+<span class="cmt"># 'not' = flips True to False</span>
+<span class="kw">is_hot</span> = <span class="num">False</span>
+<span class="kw">if</span> <span class="kw">not</span> is_hot:
+    <span class="kw">print</span>(<span class="str">"Bring a jacket"</span>)</code></pre>
+    </div>
+
+    <div class="concept">
+      <span class="concept-num">Concept 04</span>
+      <h3>Weight converter (putting it together)</h3>
+      <p>This is the kind of small program you can build with what you know now.</p>
+<pre><code><span class="kw">weight</span> = <span class="kw">int</span>(<span class="kw">input</span>(<span class="str">"Weight: "</span>))
+<span class="kw">unit</span> = <span class="kw">input</span>(<span class="str">"(L)bs or (K)g: "</span>)
+
+<span class="kw">if</span> unit.upper() == <span class="str">"L"</span>:
+    <span class="kw">converted</span> = weight * <span class="num">0.45</span>
+    <span class="kw">print</span>(<span class="str">f"You are {converted} kilos"</span>)
+<span class="kw">else</span>:
+    <span class="kw">converted</span> = weight / <span class="num">0.45</span>
+    <span class="kw">print</span>(<span class="str">f"You are {converted} pounds"</span>)</code></pre>
+      <p>This combines: <code>input()</code>, <code>int()</code>, math, <code>if/else</code>, comparison, string method, f-string. Almost everything you've learned!</p>
+    </div>
+
+    <p style="margin-top: 24px;">Ready? Take the quiz!</p>
+    <button class="btn btn-primary" id="btnStartQuiz">Start Quiz &rarr;</button>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div class="screen" id="screen-quiz">
+    <div class="progress" id="qProgress">Question 1 of 20</div>
+    <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+    <div class="question" id="qText"></div>
+    <div class="choices" id="qChoices"></div>
+    <button class="btn btn-primary" id="btnNext" disabled>Next &rarr;</button>
+  </div>
+
+  <!-- RESULTS SCREEN -->
+  <div class="screen" id="screen-results">
+    <div class="score-card">
+      <div class="score-label">Your Score</div>
+      <div class="score-number" id="scoreNum">0</div>
+      <div class="score-label" id="scoreFraction">0 / 20</div>
+    </div>
+    <div class="verdict" id="verdict"></div>
+
+    <h2>Review</h2>
+    <div id="reviewList"></div>
+    <div class="btn-row" style="margin-top: 24px;">
+      <button class="btn btn-ghost" id="btnRetry">Try Again</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  'use strict';
+
+  var QUESTIONS = [
+    // ===== If statements (Q1-6) =====
+    {
+      q: 'What does this code print?<pre><code><span class="kw">x</span> = <span class="num">10</span>\n<span class="kw">if</span> x &gt; <span class="num">5</span>:\n    <span class="kw">print</span>(<span class="str">"Big"</span>)</code></pre>',
+      choices: ['Big', 'Nothing', '10', 'Error'],
+      answer: 0
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">age</span> = <span class="num">10</span>\n<span class="kw">if</span> age &gt;= <span class="num">18</span>:\n    <span class="kw">print</span>(<span class="str">"Adult"</span>)\n<span class="kw">else</span>:\n    <span class="kw">print</span>(<span class="str">"Kid"</span>)</code></pre>',
+      choices: ['Adult', 'Kid', 'Both', 'Nothing'],
+      answer: 1
+    },
+    {
+      q: 'What does <code>elif</code> mean?',
+      choices: ['Else, if', 'End loop if', 'Exit if', 'Equal if'],
+      answer: 0
+    },
+    {
+      q: 'What is wrong with this code?<pre><code><span class="kw">if</span> x &gt; <span class="num">5</span>:\n<span class="kw">print</span>(<span class="str">"Hi"</span>)</code></pre>',
+      choices: ['Nothing wrong', 'The print line should be indented', 'Should use ; not :', 'Should be <code>If</code> with capital I'],
+      answer: 1
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">temp</span> = <span class="num">22</span>\n<span class="kw">if</span> temp &gt; <span class="num">30</span>:\n    <span class="kw">print</span>(<span class="str">"Hot"</span>)\n<span class="kw">elif</span> temp &gt; <span class="num">20</span>:\n    <span class="kw">print</span>(<span class="str">"Warm"</span>)\n<span class="kw">else</span>:\n    <span class="kw">print</span>(<span class="str">"Cold"</span>)</code></pre>',
+      choices: ['Hot', 'Warm', 'Cold', 'Hot Warm Cold'],
+      answer: 1
+    },
+    {
+      q: 'What punctuation goes at the end of an <code>if</code> line?',
+      choices: ['<code>;</code>', '<code>:</code>', '<code>.</code>', 'Nothing'],
+      answer: 1
+    },
+
+    // ===== Comparison operators (Q7-12) =====
+    {
+      q: 'Which operator means "equal to" in Python?',
+      choices: ['<code>=</code>', '<code>==</code>', '<code>!=</code>', '<code>eq</code>'],
+      answer: 1
+    },
+    {
+      q: 'Which operator means "not equal to"?',
+      choices: ['<code>=/=</code>', '<code>!==</code>', '<code>!=</code>', '<code>&lt;&gt;</code>'],
+      answer: 2
+    },
+    {
+      q: 'What does <code>5 == 5</code> return?',
+      choices: ['<code>True</code>', '<code>False</code>', '<code>5</code>', 'Error'],
+      answer: 0
+    },
+    {
+      q: 'What does <code>10 != 5</code> return?',
+      choices: ['<code>True</code>', '<code>False</code>', '<code>5</code>', 'Error'],
+      answer: 0
+    },
+    {
+      q: 'What is the difference between <code>=</code> and <code>==</code>?',
+      choices: ['No difference', '<code>=</code> assigns a value, <code>==</code> compares values', '<code>=</code> compares, <code>==</code> assigns', 'Both compare values'],
+      answer: 1
+    },
+    {
+      q: 'What does <code>"hello" == "Hello"</code> return?',
+      choices: ['<code>True</code>', '<code>False</code>', 'Error', '<code>"hello"</code>'],
+      answer: 1
+    },
+
+    // ===== Logical operators (Q13-17) =====
+    {
+      q: 'When does <code>and</code> return True?',
+      choices: ['When at least one side is True', 'When both sides are True', 'Always', 'Never'],
+      answer: 1
+    },
+    {
+      q: 'When does <code>or</code> return True?',
+      choices: ['When both sides are True', 'When at least one side is True', 'Only when both are False', 'Always'],
+      answer: 1
+    },
+    {
+      q: 'What does <code>True and False</code> return?',
+      choices: ['<code>True</code>', '<code>False</code>', '<code>True and False</code>', 'Error'],
+      answer: 1
+    },
+    {
+      q: 'What does <code>True or False</code> return?',
+      choices: ['<code>True</code>', '<code>False</code>', 'Both', 'Error'],
+      answer: 0
+    },
+    {
+      q: 'What does <code>not True</code> return?',
+      choices: ['<code>True</code>', '<code>False</code>', '<code>None</code>', 'Error'],
+      answer: 1
+    },
+
+    // ===== Combined / Weight converter style (Q18-20) =====
+    {
+      q: 'What does this code print when <code>age = 16</code>?<pre><code><span class="kw">if</span> age &gt;= <span class="num">13</span> <span class="kw">and</span> age &lt;= <span class="num">19</span>:\n    <span class="kw">print</span>(<span class="str">"Teen"</span>)\n<span class="kw">else</span>:\n    <span class="kw">print</span>(<span class="str">"Not teen"</span>)</code></pre>',
+      choices: ['Teen', 'Not teen', 'Both', 'Nothing'],
+      answer: 0
+    },
+    {
+      q: 'What does this code print when <code>age = 20</code>?<pre><code><span class="kw">if</span> age &lt; <span class="num">5</span> <span class="kw">or</span> age &gt; <span class="num">65</span>:\n    <span class="kw">print</span>(<span class="str">"Free"</span>)\n<span class="kw">else</span>:\n    <span class="kw">print</span>(<span class="str">"Pay"</span>)</code></pre>',
+      choices: ['Free', 'Pay', 'Both', 'Nothing'],
+      answer: 1
+    },
+    {
+      q: 'What does this code print?<pre><code><span class="kw">unit</span> = <span class="str">"k"</span>\n<span class="kw">if</span> unit.upper() == <span class="str">"K"</span>:\n    <span class="kw">print</span>(<span class="str">"Kilos"</span>)\n<span class="kw">else</span>:\n    <span class="kw">print</span>(<span class="str">"Pounds"</span>)</code></pre>',
+      choices: ['Kilos', 'Pounds', 'Error (lowercase k)', 'Nothing'],
+      answer: 0
+    }
+  ];
+
+  var PASS_THRESHOLD = 0.8;
+  var state = { currentQ: 0, answers: [], selectedChoice: null };
+
+  function show(id) {
+    var screens = document.querySelectorAll('.screen');
+    for (var i = 0; i < screens.length; i++) screens[i].classList.remove('active');
+    document.getElementById(id).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  document.getElementById('btnStartLesson').addEventListener('click', function() {
+    show('screen-lesson');
+  });
+
+  document.getElementById('btnStartQuiz').addEventListener('click', function() {
+    state.currentQ = 0; state.answers = []; state.selectedChoice = null;
+    renderQuestion(); show('screen-quiz');
+  });
+
+  function renderQuestion() {
+    var q = QUESTIONS[state.currentQ];
+    document.getElementById('qProgress').textContent = 'Question ' + (state.currentQ + 1) + ' of ' + QUESTIONS.length;
+    document.getElementById('progressFill').style.width = ((state.currentQ) / QUESTIONS.length * 100) + '%';
+    document.getElementById('qText').innerHTML = q.q;
+    var choicesEl = document.getElementById('qChoices');
+    choicesEl.innerHTML = '';
+    var letters = ['A', 'B', 'C', 'D'];
+    q.choices.forEach(function(choice, i) {
+      var btn = document.createElement('button');
+      btn.className = 'choice';
+      btn.innerHTML = '<span class="choice-letter">' + letters[i] + '</span><span>' + choice + '</span>';
+      btn.addEventListener('click', function() { selectChoice(i, btn); });
+      choicesEl.appendChild(btn);
+    });
+    state.selectedChoice = null;
+    document.getElementById('btnNext').disabled = true;
+    document.getElementById('btnNext').textContent = state.currentQ === QUESTIONS.length - 1 ? 'Finish \u2192' : 'Next \u2192';
+  }
+
+  function selectChoice(i, btn) {
+    var c = document.querySelectorAll('.choice');
+    for (var j = 0; j < c.length; j++) c[j].classList.remove('selected');
+    btn.classList.add('selected');
+    state.selectedChoice = i;
+    document.getElementById('btnNext').disabled = false;
+  }
+
+  document.getElementById('btnNext').addEventListener('click', function() {
+    state.answers.push(state.selectedChoice);
+    if (state.currentQ < QUESTIONS.length - 1) { state.currentQ++; renderQuestion(); }
+    else finishQuiz();
+  });
+
+  function finishQuiz() {
+    var correct = 0;
+    state.answers.forEach(function(a, i) { if (a === QUESTIONS[i].answer) correct++; });
+    var total = QUESTIONS.length;
+    var pct = Math.round((correct / total) * 100);
+    var passed = correct / total >= PASS_THRESHOLD;
+
+    var scoreEl = document.getElementById('scoreNum');
+    scoreEl.textContent = pct + '%';
+    scoreEl.className = 'score-number ' + (passed ? 'pass' : 'fail');
+    document.getElementById('scoreFraction').textContent = correct + ' / ' + total + ' correct';
+
+    var v = document.getElementById('verdict');
+    if (passed) { v.className = 'verdict pass'; v.textContent = '\u2713 GREAT JOB \u2014 You passed!'; }
+    else { v.className = 'verdict fail'; v.textContent = '\u2717 NEED 80% (16/20) \u2014 try again'; }
+
+    var rl = document.getElementById('reviewList');
+    rl.innerHTML = '';
+    var letters = ['A', 'B', 'C', 'D'];
+    QUESTIONS.forEach(function(q, i) {
+      var ua = state.answers[i];
+      var ok = ua === q.answer;
+      var item = document.createElement('div');
+      item.className = 'review-item ' + (ok ? 'correct' : 'wrong');
+      var html = '<div class="review-q">Q' + (i+1) + '. ' + q.q + '</div>';
+      if (ok) html += '<div class="review-a"><span class="good">\u2713 ' + letters[ua] + ': ' + q.choices[ua] + '</span></div>';
+      else html += '<div class="review-a"><span class="bad">\u2717 Your answer: ' + letters[ua] + '</span><br><span class="good">\u2713 Correct: ' + letters[q.answer] + ': ' + q.choices[q.answer] + '</span></div>';
+      item.innerHTML = html;
+      rl.appendChild(item);
+    });
+
+    show('screen-results');
+  }
+
+  document.getElementById('btnRetry').addEventListener('click', function() {
+    state.currentQ = 0; state.answers = [];
+    renderQuestion(); show('screen-quiz');
+  });
+
+})();
+</script>
+</body>
+</html>
