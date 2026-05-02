@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>P4 English Mock WA - Paper 2 Practice (iPad Safe)</title>
+  <style>
+    :root{
+      --bg:#f6f7fb; --card:#ffffff; --ink:#172033; --muted:#62708a; --line:#d9e0ef;
+      --brand:#3157d5; --brand2:#eef3ff; --good:#157347; --bad:#b02a37; --warn:#b58105;
+      --shadow:0 8px 28px rgba(24,38,75,.10); --radius:18px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0; padding:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif; color:var(--ink); background:var(--bg); -webkit-text-size-adjust:100%;}
+    body{line-height:1.45}
+    button,input,select,textarea{font:inherit}
+    .app{max-width:1180px; margin:0 auto; padding:18px 18px 48px;}
+    .topbar{position:sticky; top:0; z-index:20; margin:-18px -18px 18px; padding:14px 18px; backdrop-filter:blur(14px); background:rgba(246,247,251,.92); border-bottom:1px solid rgba(217,224,239,.8);}
+    .topbar-inner{max-width:1180px; margin:0 auto; display:flex; gap:12px; align-items:center; justify-content:space-between;}
+    .title{font-weight:800; font-size:20px; letter-spacing:-.01em}
+    .subtitle{font-size:13px; color:var(--muted)}
+    .timer{font-weight:800; color:var(--brand); background:#fff; border:1px solid var(--line); border-radius:999px; padding:8px 12px; min-width:125px; text-align:center; box-shadow:0 2px 10px rgba(0,0,0,.04)}
+    .hero{background:linear-gradient(135deg,#ffffff,#edf3ff); border:1px solid var(--line); box-shadow:var(--shadow); border-radius:var(--radius); padding:26px; margin:18px 0;}
+    .hero h1{font-size:32px; margin:0 0 8px; letter-spacing:-.03em}.hero p{color:var(--muted); margin:8px 0}.chips{display:flex; flex-wrap:wrap; gap:8px; margin-top:14px}.chip{background:#fff; border:1px solid var(--line); color:#34415b; padding:7px 10px; border-radius:999px; font-size:13px; font-weight:650}
+    .grid{display:grid; grid-template-columns:1fr; gap:16px}.section{background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden}.section-head{padding:18px 20px; border-bottom:1px solid var(--line); background:linear-gradient(180deg,#fff,#fbfcff); display:flex; justify-content:space-between; gap:12px; align-items:start}.section h2{margin:0; font-size:20px}.section small{display:block; color:var(--muted); margin-top:3px}.marks-badge{white-space:nowrap; background:var(--brand2); color:var(--brand); border:1px solid #dbe5ff; padding:7px 10px; border-radius:999px; font-weight:800; font-size:13px}.section-body{padding:18px 20px}.q{border:1px solid #edf0f7; border-radius:15px; padding:15px; margin:0 0 14px; background:#fff}.q:last-child{margin-bottom:0}.q-title{display:flex; gap:8px; align-items:flex-start; margin-bottom:10px}.qno{font-weight:900; color:var(--brand); min-width:42px}.challenge{font-size:12px; font-weight:800; color:#7a5200; background:#fff3cd; border:1px solid #ffe69c; border-radius:999px; padding:2px 7px; margin-left:6px}.option{display:flex; gap:10px; align-items:flex-start; padding:10px 10px; border:1px solid #e8edf7; border-radius:12px; margin:8px 0; cursor:pointer}.option:hover{background:#fbfcff}.option input{margin-top:3px; transform:scale(1.2)}.inline-input{width:160px; max-width:100%; padding:10px 12px; border-radius:12px; border:1px solid #cbd5e1; margin:3px 6px; background:#fff}.wide-input{width:100%; padding:12px 13px; border-radius:12px; border:1px solid #cbd5e1; margin-top:8px}.passage{background:#f8fafc; border:1px solid #e2e8f0; border-radius:15px; padding:16px; margin-bottom:16px}.passage p{margin:0 0 12px}.passage p:last-child{margin-bottom:0}.wordbank{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 16px}.word{font-weight:800; background:#f1f5f9; border:1px solid #dbe3ee; padding:8px 11px; border-radius:999px}.toolbar{display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:10px 0}.btn{border:0; border-radius:12px; padding:11px 14px; font-weight:800; cursor:pointer; background:#edf2ff; color:var(--brand)}.btn:hover{filter:brightness(.98)}.btn.primary{background:var(--brand); color:#fff}.btn.good{background:#dff4e8; color:var(--good)}.btn.bad{background:#ffe4e6; color:var(--bad)}.btn.warn{background:#fff3cd; color:#7a5200}.btn.gray{background:#f1f5f9; color:#334155}.btn.active{outline:3px solid rgba(49,87,213,.20)}.actions{display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end; margin-top:18px}.canvas-wrap{border:1px solid #cbd5e1; border-radius:14px; overflow:hidden; background:repeating-linear-gradient(to bottom,#fff 0,#fff 31px,#d8e2f2 32px); box-shadow:inset 0 0 0 1px rgba(255,255,255,.8); position:relative; touch-action:none; overscroll-behavior:contain; -webkit-user-select:none; user-select:none; -webkit-touch-callout:none}.canvas-wrap.drawing{position:relative}canvas.answer-canvas{width:100%; height:260px; display:block; touch-action:none; background:transparent; cursor:crosshair; -webkit-user-select:none; user-select:none; -webkit-touch-callout:none}.hint{font-size:13px; color:var(--muted)}.status{padding:12px 14px; border-radius:14px; background:#f8fafc; border:1px solid #e2e8f0; color:#475569}.score-card{display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:12px; margin:15px 0}.metric{background:#fff; border:1px solid var(--line); border-radius:16px; padding:15px; box-shadow:0 4px 14px rgba(0,0,0,.04)}.metric .num{font-size:28px; font-weight:900; color:var(--brand)}.metric .label{color:var(--muted); font-size:13px}.mark-row{display:grid; grid-template-columns:minmax(0,1.35fr) minmax(0,.75fr); gap:14px; align-items:start}.student-answer{background:#fff; border:1px solid var(--line); border-radius:14px; padding:12px}.model-answer{background:#f8fafc; border:1px solid #e2e8f0; border-radius:14px; padding:12px; color:#334155}.answer-img{width:100%; min-height:130px; border:1px solid #cbd5e1; border-radius:12px; background:repeating-linear-gradient(to bottom,#fff 0,#fff 31px,#d8e2f2 32px); object-fit:contain}.mark-controls{display:flex; flex-wrap:wrap; gap:8px; margin:10px 0}.comment{width:100%; min-height:54px; border:1px solid #cbd5e1; border-radius:12px; padding:10px 12px}.correct{color:var(--good); font-weight:900}.wrong{color:var(--bad); font-weight:900}.partial{color:var(--warn); font-weight:900}.tabs{display:flex; overflow:auto; gap:8px; padding:10px 0; margin-bottom:10px}.tab{white-space:nowrap; border:1px solid var(--line); background:#fff; color:#475569; padding:8px 11px; border-radius:999px; font-weight:800; cursor:pointer}.tab.active{background:var(--brand); color:#fff; border-color:var(--brand)}.hidden{display:none !important}.footer-note{font-size:12px; color:var(--muted); text-align:center; margin-top:26px}.review-item{border:1px solid #e2e8f0; border-radius:15px; padding:14px; margin-bottom:12px; background:#fff}.review-item.good-bg{background:#f5fff8}.review-item.bad-bg{background:#fff8f8}.review-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}.kbd{font-family:ui-monospace,SFMono-Regular,Menlo,monospace; background:#f1f5f9; border:1px solid #e2e8f0; padding:2px 5px; border-radius:6px}@media(max-width:760px){.topbar-inner{align-items:flex-start}.title{font-size:17px}.timer{min-width:auto}.hero{padding:20px}.hero h1{font-size:26px}.section-head{flex-direction:column}.mark-row,.review-grid{grid-template-columns:1fr}.qno{min-width:36px}.app{padding:14px 12px 34px}.topbar{margin:-14px -12px 14px; padding:12px}.section-body{padding:15px}.canvas-wrap canvas.answer-canvas{height:230px}}
+    @media print{.topbar,.actions,.toolbar,.tabs,.btn{display:none!important}.section{break-inside:avoid; box-shadow:none}.app{max-width:100%; padding:0}.q{break-inside:avoid}}
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div>
+        <div class="title">P4 English Mock WA — Paper 2 Practice (iPad Safe)</div>
+        <div class="subtitle">50 marks · 1 h 15 min · Auto-save enabled</div>
+      </div>
+      <div class="timer" id="timer">Not started</div>
+    </div>
+  </div>
+  <main class="app" id="app"></main>
+
+<script>
+(function(){
+  const STORE_KEY = 'p4_english_mock_wa_v2';
+  const PAPER_MINUTES = 75;
+  const TOTAL_MARKS = 50;
+  const data = {
+    sections:[
+      {id:'A', title:'Section A — Grammar MCQ', marks:8, note:'Choose the correct answer. Each question carries 1 mark.', type:'mcq', questions:[
+        {id:'A1', q:'Neither the pupils nor their teacher ____ late for the assembly yesterday.', options:['is','are','was','were'], answer:'was', why:'With “neither…nor”, the verb agrees with the nearer subject. “teacher” is singular, so use “was”.', challenge:true},
+        {id:'A2', q:'The captain, together with his teammates, ____ training every Friday.', options:['attend','attends','are attending','have attended'], answer:'attends', why:'The main subject is “captain”, which is singular. The phrase “together with his teammates” does not change the verb.', challenge:true},
+        {id:'A3', q:'If Mira had listened carefully, she ____ the instructions.', options:['understands','will understand','would understand','would have understood'], answer:'would have understood', why:'This is a third conditional sentence: If + had + past participle, would have + past participle.', challenge:true},
+        {id:'A4', q:'Please put the books ____ the shelf before you leave the classroom.', options:['in','on','at','by'], answer:'on', why:'We place books on a shelf.'},
+        {id:'A5', q:'Either James or his brothers ____ responsible for cleaning the room today.', options:['is','are','was','has'], answer:'are', why:'With “either…or”, the verb agrees with the nearer subject. “brothers” is plural, so use “are”.', challenge:true},
+        {id:'A6', q:'The children ____ quietly when the librarian entered the room.', options:['read','reads','were reading','has read'], answer:'were reading', why:'The action was happening at that time in the past, so use past continuous tense.'},
+        {id:'A7', q:'My father has worked in that office ____ ten years.', options:['since','for','during','from'], answer:'for', why:'Use “for” with a period of time.'},
+        {id:'A8', q:'The vase broke ____ it slipped from Amy’s hands.', options:['although','because','unless','while'], answer:'because', why:'“Because” gives the reason why the vase broke.'}
+      ]},
+      {id:'B', title:'Section B — Vocabulary MCQ', marks:6, note:'Choose the word closest in meaning to the underlined word.', type:'mcq', questions:[
+        {id:'B1', q:'After running five rounds, the boys were <u>exhausted</u>.', options:['angry','tired','hungry','excited'], answer:'tired', why:'“Exhausted” means very tired.'},
+        {id:'B2', q:'Lina was <u>delighted</u> when she received the prize.', options:['sad','afraid','pleased','confused'], answer:'pleased', why:'“Delighted” means very pleased or happy.'},
+        {id:'B3', q:'The path through the forest was too <u>narrow</u> for two people to walk side by side.', options:['wide','long','thin','straight'], answer:'thin', why:'In this context, “narrow” means not wide.'},
+        {id:'B4', q:'The tourists <u>gazed</u> at the fireworks in amazement.', options:['stared','shouted','laughed','pointed'], answer:'stared', why:'“Gazed” means looked steadily for some time.'},
+        {id:'B5', q:'The frightened kitten <u>fled</u> when it heard the loud noise.', options:['hid','ran away','jumped up','sat down'], answer:'ran away', why:'“Fled” means ran away quickly.'},
+        {id:'B6', q:'Ryan was <u>reluctant</u> to speak in front of the class.', options:['eager','unwilling','proud','ready'], answer:'unwilling', why:'“Reluctant” means unwilling or not wanting to do something.', challenge:true}
+      ]},
+      {id:'C', title:'Section C — Grammar Cloze', marks:8, note:'Fill in each blank with a suitable word. Each blank carries 1 mark.', type:'cloze', blanks:[
+        {id:'C1', before:'Last Saturday, my family went ', after:' a picnic at East Coast Park.', answer:'for', why:'We say “went for a picnic”.'},
+        {id:'C2', before:'We packed sandwiches ', after:' drinks into a large basket.', answer:'and', why:'“And” joins two items.'},
+        {id:'C3', before:'Just ', after:' we reached the park, dark clouds appeared in the sky.', answer:'when', why:'“When” shows the time the event happened.'},
+        {id:'C4', before:'My sister quickly placed the mat ', after:' a shelter.', answer:'under', why:'The mat was placed below the shelter.'},
+        {id:'C5', before:'We waited there ', after:' the rain was too heavy.', answer:'because', why:'“Because” gives the reason.'},
+        {id:'C6', before:'The rain stopped after twenty minutes, ', after:' the grass was still wet.', answer:'but', why:'“But” shows contrast.'},
+        {id:'C7', before:'We shared our food ', after:' a friendly family beside us.', answer:'with', why:'We share something with someone.'},
+        {id:'C8', before:'We cleaned the area ', after:' leaving the park.', answer:'before', why:'They cleaned first, then left.'}
+      ]},
+      {id:'D', title:'Section D — Editing', marks:4, note:'Correct the underlined word in each sentence. Each correction carries 1 mark.', type:'editing', questions:[
+        {id:'D1', q:'I hope to <u>recieve</u> your reply soon.', answer:'receive', why:'The correct spelling is “receive”.'},
+        {id:'D2', q:'The garden was filled with <u>beautyful</u> flowers.', answer:'beautiful', why:'The correct spelling is “beautiful”.'},
+        {id:'D3', q:'The boys <u>was</u> playing football in the field.', answer:'were', why:'“Boys” is plural, so use “were”.'},
+        {id:'D4', q:'Chocolate cake is my <u>favourtie</u> dessert.', answer:'favourite', why:'The correct spelling is “favourite”.'}
+      ]},
+      {id:'E', title:'Section E — Synthesis / Transformation', marks:3, note:'Combine the sentences using the given word. Each question carries 1 mark.', type:'synthesis', questions:[
+        {id:'E1', prompt:'Ali was tired. He finished his homework.', use:'although', answer:'Although Ali was tired, he finished his homework.', keywords:['although','ali','tired','finished','homework'], why:'Use “Although” to show contrast between being tired and still finishing the homework.'},
+        {id:'E2', prompt:'The rain was heavy. The pupils continued playing.', use:'despite', answer:'Despite the heavy rain, the pupils continued playing.', keywords:['despite','rain','pupils','continued','playing'], why:'After “despite”, use a noun phrase such as “the heavy rain”.', challenge:true},
+        {id:'E3', prompt:'Mrs Tan is our form teacher. She is very kind.', use:'who', answer:'Mrs Tan, who is our form teacher, is very kind.', keywords:['mrs tan','who','form teacher','kind'], why:'Use “who” to add information about a person.'}
+      ]},
+      {id:'F', title:'Section F — Vocabulary Cloze', marks:5, note:'Choose the most suitable word from the word bank. Each blank carries 1 mark.', type:'vocabcloze', words:['enormous','rescued','cautiously','shelter','horizon'], blanks:[
+        {id:'F1', before:'Dark clouds gathered along the ', after:' as the family walked along the beach.', answer:'horizon', why:'The horizon is the line where the sky seems to meet the land or sea.'},
+        {id:'F2', before:'An ', after:' wave crashed against the rocks.', answer:'enormous', why:'“Enormous” means very large.'},
+        {id:'F3', before:'The children ran towards a nearby ', after:' to stay dry.', answer:'shelter', why:'A shelter protects people from rain or danger.'},
+        {id:'F4', before:'Their father stepped ', after:' across the slippery ground.', answer:'cautiously', why:'“Cautiously” means carefully.'},
+        {id:'F5', before:'Later, a lifeguard ', after:' a small dog that had been trapped near the rocks.', answer:'rescued', why:'“Rescued” means saved from danger.'}
+      ]},
+      {id:'G', title:'Section G — Comprehension', marks:16, note:'Read the passage. Write your answers on the lined canvas using Apple Pencil or finger.', type:'comprehension', passage:[
+        'Ravi was walking home after his football practice when he noticed a brown wallet lying near a bench in the playground. At first, he looked around to see if anyone was searching for it, but the playground was almost empty.',
+        'He picked up the wallet and opened it carefully. Inside, there were a few ten-dollar notes, some coins and a student pass. Ravi felt nervous. He had never found so much money before.',
+        'For a moment, he wondered if he should keep the wallet. He had been saving up for a new football, and the money in the wallet would be more than enough. However, he remembered what his parents often told him: “Honesty is doing the right thing even when no one is watching.”',
+        'Without wasting another minute, Ravi hurried to the community centre beside the playground. At the counter, he handed the wallet to the staff member and explained where he had found it.',
+        'The staff member checked the student pass and made an announcement. Soon, a worried boy and his grandfather arrived. The boy’s eyes lit up when he saw the wallet.',
+        '“Thank you so much,” the grandfather said. “We were about to give up looking for it. My grandson needs the pass for school tomorrow.”',
+        'Ravi smiled. As he continued his walk home, he felt proud. He still did not have enough money for the football, but he knew he had gained something more valuable than a new ball.'
+      ], questions:[
+        {id:'G1', marks:1, q:'Where did Ravi find the wallet?', answer:'He found it near a bench in the playground.', why:'This is stated in paragraph 1.'},
+        {id:'G2', marks:1, q:'Name two things Ravi saw inside the wallet.', answer:'He saw money and a student pass. Accept: ten-dollar notes, coins, student pass.', why:'Paragraph 2 lists the items inside the wallet.'},
+        {id:'G3', marks:2, q:'Why was Ravi tempted to keep the wallet?', answer:'He had been saving up for a new football, and the money in the wallet would be enough to buy it.', why:'This answer must link the money to Ravi’s wish to buy a football.'},
+        {id:'G4', marks:2, q:'Why did Ravi decide to return the wallet instead of keeping it?', answer:'He remembered his parents’ lesson about honesty and chose to do the right thing.', why:'The key idea is honesty and doing the right thing.'},
+        {id:'G5', marks:2, q:'Which phrase in the passage tells us that Ravi acted quickly?', answer:'“Without wasting another minute”', why:'This phrase shows that Ravi did not delay.'},
+        {id:'G6', marks:2, q:'What can you infer about Ravi’s character? Give a reason from the passage.', answer:'Ravi is honest and responsible because he returned the wallet to the community centre instead of keeping it.', why:'For inference questions, give a trait and evidence.'},
+        {id:'G7', marks:2, q:'Why did the boy need the student pass?', answer:'He needed it for school the next day.', why:'The grandfather says this in paragraph 6.', challenge:true},
+        {id:'G8', marks:4, q:'Do you think Ravi gained something more valuable than a new ball? Explain your answer clearly.', answer:'Yes. Ravi gained a sense of pride and showed honesty. He also earned the gratitude of the boy and his grandfather. These values are more important than getting a new football.', why:'A strong answer gives an opinion and explains it with values or evidence from the story.', challenge:true}
+      ]}
+    ]
+  };
+
+  let state = loadState();
+  let currentTool = {mode:'pen', color:'#111111', width:3};
+  let activeTab = 'all';
+  let timerInterval = null;
+
+  function loadState(){
+    try{
+      const raw = localStorage.getItem(STORE_KEY);
+      if(raw) return JSON.parse(raw);
+    }catch(e){}
+    return {startedAt:null, submitted:false, published:false, answers:{}, marks:{}, comments:{}, canvas:{}, markedAt:null};
+  }
+  function saveState(){
+    try{
+      localStorage.setItem(STORE_KEY, JSON.stringify(state));
+      window.__lastSaveError = '';
+    }catch(e){
+      window.__lastSaveError = e && e.message ? e.message : 'Storage failed';
+      console.warn('Auto-save failed:', e);
+    }
+  }
+  function esc(s){ return String(s ?? '').replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c])); }
+  function norm(s){ return String(s ?? '').toLowerCase().trim().replace(/[“”]/g,'"').replace(/[‘’]/g,"'").replace(/[.,!?;:]/g,'').replace(/\s+/g,' '); }
+  function allQuestions(){
+    const arr=[];
+    data.sections.forEach(sec=>{
+      if(sec.type==='mcq' || sec.type==='editing' || sec.type==='synthesis') sec.questions.forEach(q=>arr.push({...q, section:sec.id, type:sec.type, max:1}));
+      if(sec.type==='cloze' || sec.type==='vocabcloze') sec.blanks.forEach(q=>arr.push({...q, section:sec.id, type:sec.type, max:1}));
+      if(sec.type==='comprehension') sec.questions.forEach(q=>arr.push({...q, section:sec.id, type:sec.type, max:q.marks}));
+    });
+    return arr;
+  }
+  function getQuestion(id){ return allQuestions().find(q=>q.id===id); }
+  function sectionOf(id){ return data.sections.find(s=>s.id===id[0]); }
+  function autoMark(q){
+    const ans = state.answers[q.id];
+    if(q.type==='mcq') return ans === q.answer ? 1 : 0;
+    if(q.type==='editing' || q.type==='cloze' || q.type==='vocabcloze') return norm(ans) === norm(q.answer) ? 1 : 0;
+    if(q.type==='synthesis'){
+      const n = norm(ans);
+      if(!n) return 0;
+      const hits = (q.keywords||[]).filter(k=>n.includes(norm(k))).length;
+      return hits >= Math.max(3, q.keywords.length-1) ? 1 : 0;
+    }
+    return 0;
+  }
+  function markFor(q){
+    if(state.marks[q.id] !== undefined && state.marks[q.id] !== null && state.marks[q.id] !== '') return Number(state.marks[q.id]);
+    if(q.type !== 'comprehension') return autoMark(q);
+    return 0;
+  }
+  function totalScore(){ return allQuestions().reduce((sum,q)=>sum + markFor(q),0); }
+  function sectionScore(secId){ return allQuestions().filter(q=>q.section===secId).reduce((sum,q)=>sum + markFor(q),0); }
+  function gradeBand(score){
+    const pct = score/TOTAL_MARKS*100;
+    if(pct>=90) return 'AL1'; if(pct>=85) return 'AL2'; if(pct>=80) return 'AL3'; if(pct>=75) return 'AL4'; if(pct>=65) return 'AL5'; if(pct>=45) return 'AL6'; if(pct>=20) return 'AL7'; return 'AL8';
+  }
+  function setAnswer(id, val){ state.answers[id]=val; saveState(); }
+  function startPaper(){ state.startedAt = Date.now(); saveState(); render(); }
+  function submitPaper(){
+    if(!confirm('Submit the paper and enter Marking Mode? Bryan can still review after marking.')) return;
+    state.submitted = true;
+    state.published = false;
+    allQuestions().forEach(q=>{ if(state.marks[q.id] === undefined) state.marks[q.id] = autoMark(q); });
+    saveState(); render();
+  }
+  function publishResults(){ state.published=true; state.markedAt=Date.now(); saveState(); render(); }
+  function resetAll(){
+    if(!confirm('Clear all answers, drawings, marks and timer?')) return;
+    localStorage.removeItem(STORE_KEY); state = loadState(); render();
+  }
+  function backToPaper(){ state.submitted=false; state.published=false; saveState(); render(); }
+  function ensureStarted(){ if(!state.startedAt){ state.startedAt=Date.now(); saveState(); startTimer(); } }
+
+  function startTimer(){
+    clearInterval(timerInterval);
+    const el = document.getElementById('timer');
+    function tick(){
+      if(!state.startedAt){ el.textContent='Not started'; return; }
+      const end = state.startedAt + PAPER_MINUTES*60*1000;
+      let remain = Math.max(0, end - Date.now());
+      const mm = Math.floor(remain/60000), ss = Math.floor((remain%60000)/1000);
+      el.textContent = remain>0 ? `${String(mm).padStart(2,'0')}:${String(ss).padStart(2,'0')} left` : 'Time up';
+      if(remain===0) el.style.color='var(--bad)'; else el.style.color='var(--brand)';
+    }
+    tick(); timerInterval=setInterval(tick,1000);
+  }
+
+  function render(){
+    startTimer();
+    const app=document.getElementById('app');
+    if(!state.startedAt){ app.innerHTML = startScreen(); attachGlobal(); return; }
+    if(state.published){ app.innerHTML = reviewScreen(); attachGlobal(); return; }
+    if(state.submitted){ app.innerHTML = markingScreen(); attachGlobal(); return; }
+    app.innerHTML = paperScreen();
+    attachGlobal();
+    setupCanvases();
+  }
+
+  function startScreen(){
+    return `<div class="hero">
+      <h1>P4 English Mock WA</h1>
+      <p>This standalone practice paper includes objective questions, cloze passages, synthesis, vocabulary cloze, and comprehension handwriting canvases for Apple Pencil.</p>
+      <div class="chips"><span class="chip">50 marks</span><span class="chip">1 h 15 min</span><span class="chip">Auto-save</span><span class="chip">Parent marking mode</span><span class="chip">Apple Pencil lined canvas</span></div>
+      <div class="actions" style="justify-content:flex-start"><button class="btn primary" data-action="start">Start Paper</button><button class="btn gray" data-action="reset">Reset Saved Data</button></div>
+      <p class="hint">Best on iPad Safari using an https link, for example GitHub Pages. Avoid opening from the iPad Files app preview because JavaScript/storage can be limited.</p>
+    </div>`;
+  }
+
+  function paperScreen(){
+    const secHtml = data.sections.map(renderSection).join('');
+    return `<div class="hero">
+      <h1>Practice under exam conditions</h1>
+      <p>Write clearly. For Section G, use Apple Pencil or finger on the lined answer boxes. Your work is saved automatically on this device.</p>
+      <div class="score-card"><div class="metric"><div class="num">50</div><div class="label">Total marks</div></div><div class="metric"><div class="num">75</div><div class="label">Minutes</div></div><div class="metric"><div class="num">7</div><div class="label">Sections</div></div></div>
+    </div>
+    <div class="tabs">${data.sections.map(s=>`<button class="tab" data-scroll="${s.id}">${s.id}. ${esc(s.title.split('—')[1]||s.title)}</button>`).join('')}</div>
+    <div class="grid">${secHtml}</div>
+    <div class="actions"><button class="btn gray" data-action="reset">Reset</button><button class="btn primary" data-action="submit">Submit for Marking</button></div>
+    <div class="footer-note">Created as a standalone local HTML practice file. Answers and handwriting are stored in this browser only.</div>`;
+  }
+
+  function renderSection(sec){
+    let body='';
+    if(sec.type==='mcq') body = sec.questions.map(q=>renderMCQ(q)).join('');
+    if(sec.type==='cloze') body = renderCloze(sec);
+    if(sec.type==='editing') body = sec.questions.map(q=>renderEditing(q)).join('');
+    if(sec.type==='synthesis') body = sec.questions.map(q=>renderSynthesis(q)).join('');
+    if(sec.type==='vocabcloze') body = renderVocabCloze(sec);
+    if(sec.type==='comprehension') body = renderComprehension(sec);
+    return `<section class="section" id="sec-${sec.id}"><div class="section-head"><div><h2>${esc(sec.title)}</h2><small>${esc(sec.note)}</small></div><div class="marks-badge">${sec.marks} marks</div></div><div class="section-body">${body}</div></section>`;
+  }
+  function renderMCQ(q){
+    return `<div class="q"><div class="q-title"><span class="qno">${q.id}</span><div>${q.q}${q.challenge?'<span class="challenge">Challenge</span>':''}</div></div>
+      ${q.options.map(opt=>`<label class="option"><input type="radio" name="${q.id}" value="${esc(opt)}" ${state.answers[q.id]===opt?'checked':''} data-answer="${q.id}"><span>${esc(opt)}</span></label>`).join('')}
+    </div>`;
+  }
+  function renderCloze(sec){
+    return `<div class="passage">${sec.blanks.map(b=>`${esc(b.before)} <input class="inline-input" value="${esc(state.answers[b.id]||'')}" data-textanswer="${b.id}" placeholder="${b.id}" /> ${esc(b.after)}`).join(' ')}</div>`;
+  }
+  function renderEditing(q){
+    return `<div class="q"><div class="q-title"><span class="qno">${q.id}</span><div>${q.q}</div></div><input class="wide-input" value="${esc(state.answers[q.id]||'')}" data-textanswer="${q.id}" placeholder="Write the correct word" /></div>`;
+  }
+  function renderSynthesis(q){
+    return `<div class="q"><div class="q-title"><span class="qno">${q.id}</span><div><b>Use: ${esc(q.use)}</b><br>${esc(q.prompt)}${q.challenge?'<span class="challenge">Challenge</span>':''}</div></div><input class="wide-input" value="${esc(state.answers[q.id]||'')}" data-textanswer="${q.id}" placeholder="Write one complete sentence" /></div>`;
+  }
+  function renderVocabCloze(sec){
+    return `<div class="wordbank">${sec.words.map(w=>`<span class="word">${esc(w)}</span>`).join('')}</div><div class="passage">${sec.blanks.map(b=>`${esc(b.before)} <select class="inline-input" data-textanswer="${b.id}"><option value="">${b.id}</option>${sec.words.map(w=>`<option value="${esc(w)}" ${state.answers[b.id]===w?'selected':''}>${esc(w)}</option>`).join('')}</select> ${esc(b.after)}`).join(' ')}</div>`;
+  }
+  function renderComprehension(sec){
+    const passage = `<div class="passage"><b>The Lost Wallet</b>${sec.passage.map((p,i)=>`<p><b>${i+1}.</b> ${esc(p)}</p>`).join('')}</div>`;
+    const qs = sec.questions.map(q=>`<div class="q"><div class="q-title"><span class="qno">${q.id}</span><div>${esc(q.q)} <b>(${q.marks} mark${q.marks>1?'s':''})</b>${q.challenge?'<span class="challenge">Challenge</span>':''}</div></div>
+      <div class="toolbar" data-toolbar="${q.id}">
+        <button type="button" class="btn gray tool-btn" data-tool="pen" data-canvas-id="${q.id}">Pen</button>
+        <button type="button" class="btn gray tool-btn" data-tool="eraser" data-canvas-id="${q.id}">Eraser</button>
+        <button type="button" class="btn gray color-btn" data-color="#111111" data-canvas-id="${q.id}">Black</button>
+        <button type="button" class="btn gray color-btn" data-color="#174ea6" data-canvas-id="${q.id}">Blue</button>
+        <button type="button" class="btn bad" data-clear-canvas="${q.id}">Clear</button>
+        <span class="hint">Tip: use Apple Pencil. On iPad, keep the page open in Safari, not Files Preview.</span>
+      </div>
+      <div class="canvas-wrap"><canvas class="answer-canvas" id="canvas-${q.id}" width="1000" height="300" data-canvas="${q.id}"></canvas></div>
+    </div>`).join('');
+    return passage + qs;
+  }
+
+  function markingScreen(){
+    const filteredSections = activeTab==='all' ? data.sections : data.sections.filter(s=>s.id===activeTab);
+    return `<div class="hero"><h1>Parent Marking Mode</h1><p>Objective sections have been auto-graded. You can override marks, add comments, and mark handwritten comprehension answers.</p>${scoreSummary()}<div class="actions" style="justify-content:flex-start"><button class="btn gray" data-action="backToPaper">Back to Paper</button><button class="btn good" data-action="publish">Publish Results for Bryan</button><button class="btn gray" data-action="reset">Reset All</button></div></div>
+    <div class="tabs"><button class="tab ${activeTab==='all'?'active':''}" data-tab="all">All sections</button>${data.sections.map(s=>`<button class="tab ${activeTab===s.id?'active':''}" data-tab="${s.id}">${s.id}</button>`).join('')}</div>
+    ${filteredSections.map(renderMarkingSection).join('')}`;
+  }
+  function scoreSummary(){
+    return `<div class="score-card"><div class="metric"><div class="num">${fmt(totalScore())}/${TOTAL_MARKS}</div><div class="label">Current score</div></div><div class="metric"><div class="num">${gradeBand(totalScore())}</div><div class="label">Indicative AL band</div></div>${data.sections.map(s=>`<div class="metric"><div class="num">${fmt(sectionScore(s.id))}/${s.marks}</div><div class="label">${s.id}: ${esc(s.title.split('—')[1]||s.title)}</div></div>`).join('')}</div>`;
+  }
+  function fmt(n){ return Number.isInteger(n) ? String(n) : n.toFixed(1); }
+  function renderMarkingSection(sec){
+    const qs = allQuestions().filter(q=>q.section===sec.id);
+    return `<section class="section"><div class="section-head"><div><h2>${esc(sec.title)}</h2><small>${fmt(sectionScore(sec.id))}/${sec.marks} marks</small></div><div class="marks-badge">${sec.marks} marks</div></div><div class="section-body">${qs.map(renderMarkingQuestion).join('')}</div></section>`;
+  }
+  function renderMarkingQuestion(q){
+    const mark = markFor(q), max=q.max;
+    let student='';
+    if(q.type==='mcq') student = esc(state.answers[q.id] || '(No answer)');
+    else if(q.type==='comprehension') student = state.canvas[q.id] ? `<img class="answer-img" src="${state.canvas[q.id]}" alt="Handwritten answer for ${q.id}">` : '<span class="hint">No handwritten answer saved.</span>';
+    else student = esc(state.answers[q.id] || '(No answer)');
+    const okClass = mark===max ? 'correct' : mark>0 ? 'partial' : 'wrong';
+    const titleText = q.q || `${q.before || ''} ___ ${q.after || ''}` || q.prompt;
+    const markButtons = q.type==='comprehension' ? compButtons(q) : objectiveButtons(q);
+    return `<div class="q" id="mark-${q.id}"><div class="q-title"><span class="qno">${q.id}</span><div>${titleText} ${q.challenge?'<span class="challenge">Challenge</span>':''}<br><span class="${okClass}">Marked: ${fmt(mark)}/${max}</span></div></div>
+      <div class="mark-row"><div class="student-answer"><b>Bryan's answer</b><div style="margin-top:8px">${student}</div></div><div class="model-answer"><b>Model answer</b><div style="margin-top:8px">${esc(q.answer)}</div><hr style="border:0;border-top:1px solid #e2e8f0"><b>Why</b><div>${esc(q.why||'Review the answer against the model answer.')}</div></div></div>
+      <div class="mark-controls">${markButtons}<label class="hint" style="display:flex;align-items:center;gap:6px">Manual mark <input type="number" min="0" max="${max}" step="0.5" value="${esc(mark)}" data-mark="${q.id}" style="width:80px;padding:8px;border:1px solid #cbd5e1;border-radius:10px"></label></div>
+      <textarea class="comment" data-comment="${q.id}" placeholder="Comment for Bryan (optional)">${esc(state.comments[q.id]||'')}</textarea>
+    </div>`;
+  }
+  function objectiveButtons(q){
+    return `<button class="btn bad" data-setmark="${q.id}" data-value="0">✗ 0</button><button class="btn good" data-setmark="${q.id}" data-value="${q.max}">✓ ${q.max}</button><button class="btn gray" data-setmark="${q.id}" data-value="auto">Auto</button>`;
+  }
+  function compButtons(q){
+    const half = q.max/2;
+    return `<button class="btn bad" data-setmark="${q.id}" data-value="0">✗ 0</button><button class="btn warn" data-setmark="${q.id}" data-value="${half}">½ ${fmt(half)}</button><button class="btn good" data-setmark="${q.id}" data-value="${q.max}">✓ ${q.max}</button>`;
+  }
+
+  function reviewScreen(){
+    return `<div class="hero"><h1>Results Review</h1><p>Review the score, weak sections, model answers and comments.</p>${scoreSummary()}<div class="status"><b>Suggested focus:</b> ${focusAdvice()}</div><div class="actions" style="justify-content:flex-start"><button class="btn gray" data-action="marking">Back to Marking</button><button class="btn gray" onclick="window.print()">Print / Save PDF</button><button class="btn gray" data-action="reset">Start Fresh</button></div></div>${data.sections.map(renderReviewSection).join('')}`;
+  }
+  function focusAdvice(){
+    const weak = data.sections.map(s=>({s, pct:sectionScore(s.id)/s.marks})).sort((a,b)=>a.pct-b.pct).slice(0,2).map(x=>x.s.id + ' ' + (x.s.title.split('—')[1]||x.s.title).trim());
+    return `Revise ${weak.join(' and ')} first. Then redo the challenge questions.`;
+  }
+  function renderReviewSection(sec){
+    const qs=allQuestions().filter(q=>q.section===sec.id);
+    return `<section class="section"><div class="section-head"><div><h2>${esc(sec.title)}</h2><small>${fmt(sectionScore(sec.id))}/${sec.marks} marks</small></div><div class="marks-badge">${fmt(sectionScore(sec.id))}/${sec.marks}</div></div><div class="section-body">${qs.map(renderReviewQuestion).join('')}</div></section>`;
+  }
+  function renderReviewQuestion(q){
+    const mark=markFor(q), max=q.max, cls=mark===max?'good-bg':'bad-bg';
+    const student = q.type==='comprehension' ? (state.canvas[q.id] ? `<img class="answer-img" src="${state.canvas[q.id]}" alt="Handwritten answer">` : '<span class="hint">No answer</span>') : esc(state.answers[q.id] || '(No answer)');
+    const titleText = q.q || `${q.before || ''} ___ ${q.after || ''}` || q.prompt;
+    return `<div class="review-item ${cls}"><div class="q-title"><span class="qno">${q.id}</span><div>${titleText}<br><b>Score: ${fmt(mark)}/${max}</b></div></div><div class="review-grid"><div><b>Your answer</b><div>${student}</div></div><div><b>Model answer</b><div>${esc(q.answer)}</div><p><b>Why:</b> ${esc(q.why||'Compare your answer with the model answer.')}</p>${state.comments[q.id]?`<p><b>Parent comment:</b> ${esc(state.comments[q.id])}</p>`:''}</div></div></div>`;
+  }
+
+  function attachGlobal(){
+    document.querySelectorAll('[data-action]').forEach(btn=>btn.addEventListener('click',()=>{
+      const a=btn.dataset.action;
+      if(a==='start') startPaper(); if(a==='submit') submitPaper(); if(a==='reset') resetAll(); if(a==='publish') publishResults(); if(a==='backToPaper') backToPaper(); if(a==='marking'){state.published=false; saveState(); render();}
+    }));
+    document.querySelectorAll('[data-scroll]').forEach(btn=>btn.addEventListener('click',()=>document.getElementById('sec-'+btn.dataset.scroll)?.scrollIntoView({behavior:'smooth',block:'start'})));
+    document.querySelectorAll('[data-answer]').forEach(input=>input.addEventListener('change',e=>{ensureStarted(); setAnswer(e.target.dataset.answer, e.target.value);}));
+    document.querySelectorAll('[data-textanswer]').forEach(input=>input.addEventListener('input',e=>{ensureStarted(); setAnswer(e.target.dataset.textanswer, e.target.value);}));
+    document.querySelectorAll('[data-setmark]').forEach(btn=>btn.addEventListener('click',()=>{
+      const id=btn.dataset.setmark; const q=getQuestion(id); const v=btn.dataset.value;
+      state.marks[id] = v==='auto' ? autoMark(q) : Number(v); saveState(); render();
+    }));
+    document.querySelectorAll('[data-mark]').forEach(input=>input.addEventListener('input',e=>{ const id=e.target.dataset.mark; const q=getQuestion(id); let v=Number(e.target.value); if(Number.isNaN(v)) v=0; v=Math.max(0,Math.min(q.max,v)); state.marks[id]=v; saveState(); renderDebounced(); }));
+    document.querySelectorAll('[data-comment]').forEach(input=>input.addEventListener('input',e=>{ state.comments[e.target.dataset.comment]=e.target.value; saveState(); }));
+    document.querySelectorAll('[data-tab]').forEach(btn=>btn.addEventListener('click',()=>{ activeTab=btn.dataset.tab; render(); }));
+    document.querySelectorAll('[data-clear-canvas]').forEach(btn=>btn.addEventListener('click',()=>{ clearCanvas(btn.dataset.clearCanvas); }));
+    document.querySelectorAll('.tool-btn').forEach(btn=>btn.addEventListener('click',()=>{ currentTool.mode=btn.dataset.tool; updateToolButtons(); }));
+    document.querySelectorAll('.color-btn').forEach(btn=>btn.addEventListener('click',()=>{ currentTool.color=btn.dataset.color; currentTool.mode='pen'; updateToolButtons(); }));
+    updateToolButtons();
+  }
+  let renderDebounce=null;
+  function renderDebounced(){ clearTimeout(renderDebounce); renderDebounce=setTimeout(render,400); }
+  function updateToolButtons(){
+    document.querySelectorAll('.tool-btn').forEach(b=>b.classList.toggle('active', b.dataset.tool===currentTool.mode));
+    document.querySelectorAll('.color-btn').forEach(b=>b.classList.toggle('active', b.dataset.color===currentTool.color && currentTool.mode==='pen'));
+  }
+
+  function setupCanvases(){
+    document.querySelectorAll('canvas.answer-canvas').forEach(canvas=>{
+      const id=canvas.dataset.canvas; const ctx=canvas.getContext('2d');
+      const wrap = canvas.closest('.canvas-wrap');
+      ctx.lineCap='round'; ctx.lineJoin='round';
+      restoreCanvas(id, canvas);
+      let drawing=false, last=null, lastSave=0, pointerSeen=false;
+
+      function eventPoint(e){
+        const src = (e.touches && e.touches[0]) || (e.changedTouches && e.changedTouches[0]) || e;
+        const rect=canvas.getBoundingClientRect();
+        return {
+          x:(src.clientX-rect.left)*(canvas.width/rect.width),
+          y:(src.clientY-rect.top)*(canvas.height/rect.height),
+          p:e.pressure || (src.force ? Math.max(0.35, src.force) : 0.5)
+        };
+      }
+      function prevent(e){ if(e && e.cancelable !== false) e.preventDefault(); }
+      function shouldIgnore(e){ return e && e.type && e.type.indexOf('touch')===0 && window.PointerEvent && pointerSeen; }
+      function begin(e){
+        if(e && e.type && e.type.indexOf('pointer')===0) pointerSeen=true;
+        if(shouldIgnore(e)) return;
+        ensureStarted(); prevent(e);
+        if(e.pointerId !== undefined && canvas.setPointerCapture){ try{ canvas.setPointerCapture(e.pointerId); }catch(err){} }
+        drawing=true; last=eventPoint(e); if(wrap) wrap.classList.add('drawing');
+      }
+      function move(e){
+        if(shouldIgnore(e)) return;
+        if(!drawing) return; prevent(e);
+        const p=eventPoint(e); drawLine(ctx,last,p); last=p;
+        const now=Date.now();
+        if(now-lastSave>1800){ saveCanvas(id, canvas); lastSave=now; }
+      }
+      function end(e){
+        if(shouldIgnore(e)) return;
+        if(!drawing) return; prevent(e);
+        drawing=false; last=null; if(wrap) wrap.classList.remove('drawing');
+        saveCanvas(id, canvas);
+      }
+
+      if(window.PointerEvent){
+        canvas.addEventListener('pointerdown', begin, {passive:false});
+        canvas.addEventListener('pointermove', move, {passive:false});
+        canvas.addEventListener('pointerup', end, {passive:false});
+        canvas.addEventListener('pointercancel', end, {passive:false});
+        canvas.addEventListener('pointerleave', end, {passive:false});
+      }
+      // Fallback for older iPad Safari / Files preview engines.
+      canvas.addEventListener('touchstart', begin, {passive:false});
+      canvas.addEventListener('touchmove', move, {passive:false});
+      canvas.addEventListener('touchend', end, {passive:false});
+      canvas.addEventListener('touchcancel', end, {passive:false});
+      canvas.addEventListener('mousedown', begin);
+      canvas.addEventListener('mousemove', move);
+      window.addEventListener('mouseup', end);
+    });
+  }
+  function drawLine(ctx,a,b){
+    ctx.save();
+    if(currentTool.mode==='eraser'){
+      ctx.globalCompositeOperation='destination-out'; ctx.strokeStyle='rgba(0,0,0,1)'; ctx.lineWidth=22;
+    }else{
+      ctx.globalCompositeOperation='source-over'; ctx.strokeStyle=currentTool.color; ctx.lineWidth=Math.max(1.8, currentTool.width*(0.6 + b.p));
+    }
+    ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke(); ctx.restore();
+  }
+  function saveCanvas(id, canvas){ state.canvas[id]=canvas.toDataURL('image/png'); saveState(); }
+  function restoreCanvas(id, canvas){
+    const dataUrl = state.canvas[id]; if(!dataUrl) return;
+    const img = new Image(); img.onload=()=>{ const ctx=canvas.getContext('2d'); ctx.clearRect(0,0,canvas.width,canvas.height); ctx.drawImage(img,0,0,canvas.width,canvas.height); }; img.src=dataUrl;
+  }
+  function clearCanvas(id){
+    if(!confirm('Clear this handwritten answer?')) return;
+    const canvas=document.getElementById('canvas-'+id); if(canvas){ canvas.getContext('2d').clearRect(0,0,canvas.width,canvas.height); }
+    delete state.canvas[id]; saveState();
+  }
+
+  window.addEventListener('storage',()=>{ state=loadState(); render(); });
+  render();
+})();
+</script>
+</body>
+</html>
