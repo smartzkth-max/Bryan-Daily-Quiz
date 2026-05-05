@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Bryan P4 100 Advanced Words</title>
+<style>
+:root{
+  --bg1:#eef7ff; --bg2:#fff4d6; --ink:#152f4f; --card:#fff; --blue:#3d78ff;
+  --orange:#ff7658; --green:#148a4a; --red:#d73737; --soft:#f6f9ff; --line:#dfeaff;
+  --shadow:0 18px 45px rgba(14,45,90,.16);
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0; min-height:100%; overflow-x:hidden; overflow-y:auto;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  color:var(--ink); background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  -webkit-tap-highlight-color:transparent; touch-action:pan-y; -ms-touch-action:pan-y;
+  overscroll-behavior-y:auto; -webkit-overflow-scrolling:touch;
+}
+button,select{font:inherit}
+.stage{width:100%; min-height:100vh; padding:12px; display:block;}
+.app{
+  width:min(960px,98vw); margin:0 auto; min-height:calc(100vh - 24px);
+  background:rgba(255,255,255,.94); border:3px solid rgba(255,255,255,.96);
+  border-radius:clamp(22px,3vmin,42px); box-shadow:var(--shadow); overflow:visible; position:relative;
+}
+.top{
+  position:sticky; top:0; z-index:20; display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center;
+  padding:clamp(12px,2vmin,22px); background:rgba(255,255,255,.97);
+  border-bottom:2px solid var(--line); border-radius:clamp(19px,3vmin,39px) clamp(19px,3vmin,39px) 0 0;
+}
+.title{font-weight:1000; font-size:clamp(22px,3.2vmin,42px); line-height:1.05}
+.pill{font-weight:1000; font-size:clamp(15px,2.2vmin,28px); background:#fff; border:2px solid #dce8ff; border-radius:999px; padding:8px 14px; white-space:nowrap;}
+.screen{display:none; padding:clamp(12px,2vmin,24px); min-height:calc(100vh - 110px);}
+.screen.active{display:block}
+.home{display:grid; gap:clamp(13px,2vmin,22px); min-height:calc(100vh - 150px); align-content:center;}
+.heroEmoji{font-size:clamp(78px,13vmin,160px); text-align:center; filter:drop-shadow(0 10px 14px rgba(0,0,0,.13))}
+h1{font-size:clamp(34px,5.6vmin,78px); line-height:1.02; text-align:center; margin:0}
+.desc{font-size:clamp(18px,2.5vmin,32px); line-height:1.25; text-align:center; margin:0 auto; max-width:850px; font-weight:750}
+.settings{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+.setting{background:var(--soft); border:2px solid var(--line); border-radius:22px; padding:14px}
+.setting label{display:block; font-weight:1000; margin-bottom:8px; font-size:clamp(15px,2vmin,24px)}
+.setting select{width:100%; border:2px solid #ccdaf4; border-radius:16px; background:#fff; padding:12px; font-weight:900; color:var(--ink); font-size:clamp(15px,2vmin,24px)}
+.buttons{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.btn{
+  border:0; border-radius:clamp(18px,2.8vmin,34px); padding:clamp(14px,2.2vmin,24px);
+  min-height:clamp(58px,7vmin,96px); font-size:clamp(19px,2.6vmin,36px); font-weight:1000;
+  box-shadow:0 10px 22px rgba(14,45,90,.14); touch-action:manipulation; cursor:pointer;
+}
+.btn:active{transform:scale(.985)}
+.primary{background:linear-gradient(180deg,#ff9f82,#ff6848); color:#fff}
+.blue{background:linear-gradient(180deg,#70a5ff,#407cff); color:#fff}
+.grey{background:#eef3ff; color:var(--ink)}
+.quiz{display:grid; grid-template-rows:auto auto auto auto auto; gap:14px; min-height:calc(100vh - 150px);}
+.progressInfo{display:grid; grid-template-columns:1fr auto; align-items:center; gap:10px; font-size:clamp(15px,2vmin,26px); font-weight:1000}
+.barWrap{height:clamp(14px,2vmin,24px); background:#eaf1ff; border:2px solid #dce8ff; border-radius:999px; overflow:hidden; margin-top:7px}
+.bar{height:100%; width:0%; background:linear-gradient(90deg,#ff7758,#ffd166,#407cff); transition:width .25s ease}
+.card{
+  display:grid; grid-template-rows:auto auto auto auto; gap:10px; background:linear-gradient(180deg,#fff,#f8fbff);
+  border:3px solid #e5eeff; border-radius:clamp(22px,3vmin,42px); padding:clamp(12px,2vmin,24px);
+}
+.catRow{display:flex; justify-content:space-between; gap:10px; align-items:center; flex-wrap:wrap}
+.category{font-weight:1000; font-size:clamp(15px,2vmin,26px); background:#fff4d6; border:2px solid #ffe08a; border-radius:999px; padding:7px 14px}
+.hint{font-size:clamp(14px,1.8vmin,24px); font-weight:900; color:#4d6786}
+.visual{display:grid; place-items:center; min-height:clamp(120px,23vh,310px); background:radial-gradient(circle at center,#fff 0 34%,#eaf3ff 35% 72%,#f9fbff 73%); border:2px solid #edf4ff; border-radius:clamp(20px,3vmin,36px)}
+.emoji{font-size:clamp(76px,15vmin,200px); line-height:1; animation:bounce 1.2s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-.7vmin) scale(1.04)}}
+.question{
+  font-size:clamp(25px,4.1vmin,58px); line-height:1.16; text-align:center; font-weight:1000;
+  background:#fff; border:2px dashed #c9dcff; border-radius:clamp(18px,2.8vmin,34px);
+  padding:clamp(12px,2vmin,28px);
+}
+.wordFocus{color:var(--orange)}
+.meta{text-align:center; font-size:clamp(16px,2.2vmin,28px); font-weight:900; color:#4d6786; min-height:1.3em}
+.options{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.option{
+  border:3px solid #dce8ff; background:#fff; border-radius:clamp(18px,2.8vmin,34px);
+  min-height:clamp(72px,10vh,120px); padding:clamp(10px,1.6vmin,20px);
+  font-size:clamp(21px,3.1vmin,46px); font-weight:1000; box-shadow:0 10px 22px rgba(14,45,90,.11);
+  touch-action:manipulation;
+}
+.option.correct{background:#eafff2; border-color:#2ecb74; color:#0e7939}
+.option.wrong{background:#fff0f0; border-color:#ff8b8b; color:#b71919}
+.option:disabled{opacity:.96}
+.explainBox{display:none; background:#f7fbff; border:2px solid #dbe9ff; border-radius:22px; padding:clamp(12px,2vmin,18px); font-size:clamp(17px,2.3vmin,30px); font-weight:850; line-height:1.25}
+.explainBox.show{display:block}
+.bottom{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.feedback{
+  position:fixed; left:50%; top:50%; transform:translate(-50%,-50%) scale(.95);
+  z-index:50; min-width:min(86%,780px); background:rgba(255,255,255,.97); border:4px solid #e5eeff;
+  border-radius:clamp(22px,3.6vmin,44px); padding:clamp(18px,3vmin,40px);
+  text-align:center; font-weight:1000; font-size:clamp(30px,5vmin,72px);
+  box-shadow:0 18px 55px rgba(14,45,90,.22); opacity:0; pointer-events:none; transition:.15s ease;
+}
+.feedback.show{opacity:1; transform:translate(-50%,-50%) scale(1)}
+.feedback.good{color:var(--green)} .feedback.bad{color:var(--red)}
+.finish{display:grid; gap:14px; min-height:calc(100vh - 155px)}
+.bigScore{font-size:clamp(46px,9vmin,130px); color:var(--green); text-align:center; font-weight:1000}
+.review{max-height:56vh; overflow:auto; background:#f7faff; border:2px solid #e0eaff; border-radius:24px; padding:12px}
+.reviewItem{background:white; border-radius:16px; padding:11px 13px; margin-bottom:9px; border-left:10px solid var(--green); font-size:clamp(14px,1.8vmin,22px); font-weight:850}
+.reviewItem.bad{border-left-color:var(--red)}
+.stars{position:fixed; inset:0; pointer-events:none; z-index:60; overflow:hidden}
+.star{position:absolute; top:-40px; font-size:clamp(22px,3vmin,44px); animation:fall 1.25s ease-out forwards}
+@keyframes fall{to{transform:translateY(120vh) rotate(360deg); opacity:0}}
+@media (orientation:landscape){.app{width:min(800px,88vw)}}
+@media (max-width:700px){.stage{padding:8px} .app{width:100%; border-radius:22px} .settings,.buttons,.bottom{grid-template-columns:1fr} .options{grid-template-columns:1fr} .question{font-size:clamp(25px,7vw,46px)}}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="stage">
+  <main class="app">
+    <div class="top">
+      <div class="title">Bryan P4 100 Advanced Words</div>
+      <div class="pill" id="scorePill">⭐ 0</div>
+    </div>
+
+    <section class="screen active" id="homeScreen">
+      <div class="home">
+        <div class="heroEmoji">📚🎮🧠</div>
+        <h1>P4 Word Power Challenge</h1>
+        <p class="desc">100 advanced P4-level words mixed across nouns, verbs, adjectives, adverbs, connectors and prepositions. Bryan reads or listens, chooses the best answer, and learns from the explanation.</p>
+        <div class="settings">
+          <div class="setting">
+            <label>Quiz length</label>
+            <select id="quizLength">
+              <option value="20">20 words</option>
+              <option value="50">50 words</option>
+              <option value="100" selected>100 words</option>
+            </select>
+          </div>
+          <div class="setting">
+            <label>Question order</label>
+            <select id="quizMode">
+              <option value="shuffle" selected>Shuffle questions</option>
+              <option value="inorder">In order by word type</option>
+            </select>
+          </div>
+        </div>
+        <div class="buttons">
+          <button class="btn primary" id="startBtn">▶️ Start</button>
+          <button class="btn blue" id="voiceBtn">🔊 Test Voice</button>
+        </div>
+        <p class="desc" style="font-size:clamp(14px,1.8vmin,22px)">Voice note: the app selects the most natural English voice available on the device. Safari/Chrome voices may sound different.</p>
+      </div>
+    </section>
+
+    <section class="screen" id="quizScreen">
+      <div class="quiz">
+        <div>
+          <div class="progressInfo">
+            <span id="counter">1 / 100</span>
+            <span id="scoreText">First-try correct 0</span>
+          </div>
+          <div class="barWrap"><div class="bar" id="bar"></div></div>
+        </div>
+        <div class="card">
+          <div class="catRow">
+            <div class="category" id="category">Vocabulary</div>
+            <div class="hint" id="hint">Choose the best answer</div>
+          </div>
+          <div class="visual"><div class="emoji" id="emoji">📚</div></div>
+          <div class="question" id="question">Question appears here</div>
+          <div class="meta" id="meta">Part of speech</div>
+        </div>
+        <div class="options" id="options"></div>
+        <div class="explainBox" id="explainBox"></div>
+        <div class="bottom">
+          <button class="btn blue" id="repeatBtn">🔊 Hear Question</button>
+          <button class="btn grey" id="exampleBtn">🗣️ Say Example</button>
+        </div>
+      </div>
+      <div class="feedback" id="feedback">Great!</div>
+    </section>
+
+    <section class="screen" id="finishScreen">
+      <div class="finish">
+        <h1>Well done, Bryan! 🎉</h1>
+        <div class="bigScore" id="finalScore">0 / 100</div>
+        <p class="desc" id="finishText">Great vocabulary practice.</p>
+        <div class="review" id="review"></div>
+        <div class="buttons">
+          <button class="btn primary" id="againBtn">▶️ Play Again</button>
+          <button class="btn blue" id="homeBtn">🏠 Home</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+const ITEMS = [{"word": "courage", "pos": "noun", "emoji": "🦁", "category": "Character", "type": "meaning", "question": "Which word means being brave even when something is difficult or scary?", "options": ["courage", "comfort", "silence", "hunger"], "sentence": "Bryan showed courage when he spoke confidently on stage.", "explanation": "Courage means bravery."}, {"word": "patience", "pos": "noun", "emoji": "⏳", "category": "Character", "type": "context", "question": "The queue was very long, but Bryan waited with ____.", "options": ["patience", "anger", "noise", "speed"], "sentence": "The queue was very long, but Bryan waited with patience.", "explanation": "Patience means staying calm while waiting."}, {"word": "responsibility", "pos": "noun", "emoji": "✅", "category": "Character", "type": "context", "question": "Feeding the class hamster every morning was Bryan's ____.", "options": ["responsibility", "umbrella", "memory", "shadow"], "sentence": "Feeding the class hamster every morning was Bryan's responsibility.", "explanation": "A responsibility is a duty or task you should do."}, {"word": "opportunity", "pos": "noun", "emoji": "🚪", "category": "School life", "type": "meaning", "question": "Which word means a good chance to do something?", "options": ["opportunity", "problem", "accident", "delay"], "sentence": "The competition was a good opportunity for Bryan to improve his English.", "explanation": "An opportunity is a chance."}, {"word": "evidence", "pos": "noun", "emoji": "🔍", "category": "Thinking", "type": "context", "question": "The detective looked for ____ to find out what happened.", "options": ["evidence", "furniture", "weather", "laughter"], "sentence": "The detective looked for evidence to find out what happened.", "explanation": "Evidence is information or clues that help prove something."}, {"word": "solution", "pos": "noun", "emoji": "💡", "category": "Thinking", "type": "meaning", "question": "Which word means an answer to a problem?", "options": ["solution", "journey", "neighbour", "treasure"], "sentence": "After thinking carefully, Bryan found a solution to the maths problem.", "explanation": "A solution is an answer or way to solve a problem."}, {"word": "decision", "pos": "noun", "emoji": "☑️", "category": "Thinking", "type": "context", "question": "Bryan had to make a ____ between reading and playing first.", "options": ["decision", "blanket", "whisper", "ladder"], "sentence": "Bryan had to make a decision between reading and playing first.", "explanation": "A decision is a choice."}, {"word": "invitation", "pos": "noun", "emoji": "✉️", "category": "Social", "type": "context", "question": "Ryan received an ____ to his friend's birthday party.", "options": ["invitation", "instruction", "insect", "instrument"], "sentence": "Ryan received an invitation to his friend's birthday party.", "explanation": "An invitation asks someone to come to an event."}, {"word": "permission", "pos": "noun", "emoji": "🙋", "category": "School life", "type": "context", "question": "Bryan asked for ____ before leaving the classroom.", "options": ["permission", "pollution", "position", "promise"], "sentence": "Bryan asked for permission before leaving the classroom.", "explanation": "Permission means approval to do something."}, {"word": "mystery", "pos": "noun", "emoji": "🕵️", "category": "Story words", "type": "meaning", "question": "Which word means something strange that is difficult to explain?", "options": ["mystery", "routine", "furniture", "habit"], "sentence": "The missing key was a mystery.", "explanation": "A mystery is something unknown or puzzling."}, {"word": "audience", "pos": "noun", "emoji": "👏", "category": "Performance", "type": "context", "question": "The ____ clapped loudly after the school concert.", "options": ["audience", "captain", "author", "visitor"], "sentence": "The audience clapped loudly after the school concert.", "explanation": "An audience is a group of people watching or listening."}, {"word": "habit", "pos": "noun", "emoji": "🔁", "category": "Daily life", "type": "meaning", "question": "Which word means something you do often without thinking?", "options": ["habit", "holiday", "harbour", "hammer"], "sentence": "Reading before bedtime is a good habit.", "explanation": "A habit is a regular action."}, {"word": "shelter", "pos": "noun", "emoji": "🏠", "category": "Safety", "type": "context", "question": "During the heavy rain, the children ran to a bus stop for ____.", "options": ["shelter", "sunshine", "treasure", "journey"], "sentence": "During the heavy rain, the children ran to a bus stop for shelter.", "explanation": "Shelter protects people from danger or bad weather."}, {"word": "journey", "pos": "noun", "emoji": "🚌", "category": "Travel", "type": "meaning", "question": "Which word means travelling from one place to another?", "options": ["journey", "argument", "signal", "reply"], "sentence": "The journey to Malaysia took three hours.", "explanation": "A journey is a trip."}, {"word": "treasure", "pos": "noun", "emoji": "💎", "category": "Story words", "type": "context", "question": "The pirates searched the island for hidden ____.", "options": ["treasure", "thunder", "traffic", "trouble"], "sentence": "The pirates searched the island for hidden treasure.", "explanation": "Treasure is something valuable, such as gold or jewels."}, {"word": "neighbour", "pos": "noun", "emoji": "🏘️", "category": "Community", "type": "context", "question": "Our ____ lives next door and often greets us politely.", "options": ["neighbour", "stranger", "tourist", "pilot"], "sentence": "Our neighbour lives next door and often greets us politely.", "explanation": "A neighbour is someone who lives near you."}, {"word": "effort", "pos": "noun", "emoji": "💪", "category": "Character", "type": "context", "question": "Bryan put in a lot of ____ to finish his homework neatly.", "options": ["effort", "shadow", "noise", "weather"], "sentence": "Bryan put in a lot of effort to finish his homework neatly.", "explanation": "Effort means hard work."}, {"word": "accident", "pos": "noun", "emoji": "⚠️", "category": "Safety", "type": "meaning", "question": "Which word means something bad that happens unexpectedly?", "options": ["accident", "appointment", "agreement", "achievement"], "sentence": "The broken vase was an accident.", "explanation": "An accident is not planned and often causes damage or injury."}, {"word": "promise", "pos": "noun", "emoji": "🤝", "category": "Character", "type": "context", "question": "Bryan made a ____ to return the book tomorrow.", "options": ["promise", "planet", "puzzle", "parcel"], "sentence": "Bryan made a promise to return the book tomorrow.", "explanation": "A promise is something you say you will do."}, {"word": "memory", "pos": "noun", "emoji": "🧠", "category": "Thinking", "type": "context", "question": "Grandma told us a happy ____ from her childhood.", "options": ["memory", "machine", "market", "mountain"], "sentence": "Grandma told us a happy memory from her childhood.", "explanation": "A memory is something remembered from the past."}, {"word": "persuade", "pos": "verb", "emoji": "🗣️", "category": "Action verbs", "type": "meaning", "question": "Which word means to make someone agree to do something?", "options": ["persuade", "protect", "pretend", "perform"], "sentence": "Bryan tried to persuade his brother to share the toy.", "explanation": "Persuade means to convince someone."}, {"word": "observe", "pos": "verb", "emoji": "👀", "category": "Science verbs", "type": "context", "question": "During Science, Bryan used a magnifying glass to ____ the leaf closely.", "options": ["observe", "ignore", "decorate", "borrow"], "sentence": "During Science, Bryan used a magnifying glass to observe the leaf closely.", "explanation": "Observe means to look carefully."}, {"word": "investigate", "pos": "verb", "emoji": "🔬", "category": "Science verbs", "type": "meaning", "question": "Which word means to find out more by checking carefully?", "options": ["investigate", "celebrate", "hesitate", "decorate"], "sentence": "The pupils investigated why the plant had wilted.", "explanation": "Investigate means to examine or find out."}, {"word": "compare", "pos": "verb", "emoji": "⚖️", "category": "Thinking verbs", "type": "context", "question": "The teacher asked us to ____ the two stories and find the differences.", "options": ["compare", "complain", "continue", "collect"], "sentence": "The teacher asked us to compare the two stories and find the differences.", "explanation": "Compare means to look for similarities and differences."}, {"word": "protect", "pos": "verb", "emoji": "🛡️", "category": "Safety verbs", "type": "context", "question": "A helmet can ____ your head when you ride a bicycle.", "options": ["protect", "polish", "promise", "prepare"], "sentence": "A helmet can protect your head when you ride a bicycle.", "explanation": "Protect means to keep safe."}, {"word": "rescue", "pos": "verb", "emoji": "🚑", "category": "Action verbs", "type": "meaning", "question": "Which word means to save someone from danger?", "options": ["rescue", "refuse", "repair", "repeat"], "sentence": "The firefighters rescued the kitten from the drain.", "explanation": "Rescue means to save from danger."}, {"word": "discover", "pos": "verb", "emoji": "🧭", "category": "Thinking verbs", "type": "context", "question": "Bryan was excited to ____ a new shortcut to the playground.", "options": ["discover", "disturb", "dislike", "disappear"], "sentence": "Bryan was excited to discover a new shortcut to the playground.", "explanation": "Discover means to find something for the first time."}, {"word": "explain", "pos": "verb", "emoji": "📝", "category": "School verbs", "type": "context", "question": "The teacher asked Bryan to ____ how he solved the problem.", "options": ["explain", "escape", "exchange", "exercise"], "sentence": "The teacher asked Bryan to explain how he solved the problem.", "explanation": "Explain means to make something clear."}, {"word": "improve", "pos": "verb", "emoji": "📈", "category": "Learning verbs", "type": "context", "question": "Bryan practised daily to ____ his spelling.", "options": ["improve", "invite", "include", "increase"], "sentence": "Bryan practised daily to improve his spelling.", "explanation": "Improve means to become better."}, {"word": "apologise", "pos": "verb", "emoji": "🙏", "category": "Social verbs", "type": "meaning", "question": "Which word means to say sorry?", "options": ["apologise", "announce", "argue", "arrive"], "sentence": "Ryan apologised after spilling the water.", "explanation": "Apologise means to say sorry."}, {"word": "admire", "pos": "verb", "emoji": "😍", "category": "Feeling verbs", "type": "context", "question": "Many pupils ____ the captain because he is honest and kind.", "options": ["admire", "avoid", "attack", "argue"], "sentence": "Many pupils admire the captain because he is honest and kind.", "explanation": "Admire means to respect or like someone for good qualities."}, {"word": "avoid", "pos": "verb", "emoji": "🚫", "category": "Safety verbs", "type": "context", "question": "We should ____ touching hot objects.", "options": ["avoid", "allow", "attack", "arrange"], "sentence": "We should avoid touching hot objects.", "explanation": "Avoid means to keep away from something."}, {"word": "gather", "pos": "verb", "emoji": "🧺", "category": "Action verbs", "type": "context", "question": "The children helped to ____ the fallen leaves into a pile.", "options": ["gather", "scatter", "forget", "borrow"], "sentence": "The children helped to gather the fallen leaves into a pile.", "explanation": "Gather means to collect together."}, {"word": "arrange", "pos": "verb", "emoji": "🗂️", "category": "Action verbs", "type": "meaning", "question": "Which word means to put things in order?", "options": ["arrange", "damage", "notice", "scream"], "sentence": "Bryan arranged the books neatly on the shelf.", "explanation": "Arrange means to put in a neat order."}, {"word": "interrupt", "pos": "verb", "emoji": "✋", "category": "Social verbs", "type": "context", "question": "It is rude to ____ someone while he is speaking.", "options": ["interrupt", "invite", "improve", "include"], "sentence": "It is rude to interrupt someone while he is speaking.", "explanation": "Interrupt means to stop someone while they are speaking or doing something."}, {"word": "realise", "pos": "verb", "emoji": "💭", "category": "Thinking verbs", "type": "context", "question": "Bryan did not ____ that he had left his wallet at home.", "options": ["realise", "repair", "refuse", "rescue"], "sentence": "Bryan did not realise that he had left his wallet at home.", "explanation": "Realise means to become aware of something."}, {"word": "imagine", "pos": "verb", "emoji": "🌈", "category": "Thinking verbs", "type": "meaning", "question": "Which word means to form a picture in your mind?", "options": ["imagine", "measure", "promise", "collect"], "sentence": "Bryan imagined a dragon flying over the school.", "explanation": "Imagine means to think of something in your mind."}, {"word": "describe", "pos": "verb", "emoji": "🖼️", "category": "Writing verbs", "type": "context", "question": "Use three adjectives to ____ the monster in the story.", "options": ["describe", "destroy", "deliver", "discover"], "sentence": "Use three adjectives to describe the monster in the story.", "explanation": "Describe means to say what something is like."}, {"word": "complete", "pos": "verb", "emoji": "🏁", "category": "School verbs", "type": "context", "question": "Bryan worked hard to ____ his project before Friday.", "options": ["complete", "compete", "compare", "complain"], "sentence": "Bryan worked hard to complete his project before Friday.", "explanation": "Complete means to finish."}, {"word": "hesitate", "pos": "verb", "emoji": "🤔", "category": "Thinking verbs", "type": "meaning", "question": "Which word means to pause because you are unsure?", "options": ["hesitate", "hurry", "handle", "harm"], "sentence": "Bryan hesitated before answering the difficult question.", "explanation": "Hesitate means to pause before doing something."}, {"word": "exhausted", "pos": "adjective", "emoji": "😮‍💨", "category": "Describing words", "type": "meaning", "question": "Which word means very tired?", "options": ["exhausted", "curious", "gentle", "ordinary"], "sentence": "After the football match, Bryan felt exhausted.", "explanation": "Exhausted means very tired."}, {"word": "delighted", "pos": "adjective", "emoji": "😄", "category": "Feelings", "type": "meaning", "question": "Which word means very happy?", "options": ["delighted", "miserable", "furious", "nervous"], "sentence": "Ryan was delighted when he received a new book.", "explanation": "Delighted means very happy."}, {"word": "furious", "pos": "adjective", "emoji": "😡", "category": "Feelings", "type": "context", "question": "The man was ____ when someone scratched his car.", "options": ["furious", "gentle", "tiny", "peaceful"], "sentence": "The man was furious when someone scratched his car.", "explanation": "Furious means very angry."}, {"word": "enormous", "pos": "adjective", "emoji": "🐘", "category": "Size", "type": "antonym", "question": "Which word is the opposite of tiny?", "options": ["enormous", "narrow", "ordinary", "careful"], "sentence": "The elephant is enormous.", "explanation": "Enormous means very big."}, {"word": "narrow", "pos": "adjective", "emoji": "🚪", "category": "Size", "type": "context", "question": "The path was so ____ that only one person could walk through at a time.", "options": ["narrow", "generous", "honest", "valuable"], "sentence": "The path was so narrow that only one person could walk through at a time.", "explanation": "Narrow means not wide."}, {"word": "curious", "pos": "adjective", "emoji": "❓", "category": "Character", "type": "meaning", "question": "Which word describes someone who wants to know more?", "options": ["curious", "careless", "crowded", "empty"], "sentence": "The curious boy asked many questions.", "explanation": "Curious means wanting to learn or know."}, {"word": "generous", "pos": "adjective", "emoji": "🎁", "category": "Character", "type": "context", "question": "The ____ girl shared her snacks with her classmates.", "options": ["generous", "selfish", "dangerous", "narrow"], "sentence": "The generous girl shared her snacks with her classmates.", "explanation": "Generous means willing to share or give."}, {"word": "cautious", "pos": "adjective", "emoji": "⚠️", "category": "Safety", "type": "meaning", "question": "Which word means being careful to avoid danger?", "options": ["cautious", "reckless", "delighted", "ordinary"], "sentence": "Bryan was cautious when crossing the wet floor.", "explanation": "Cautious means careful about danger."}, {"word": "confident", "pos": "adjective", "emoji": "😎", "category": "Character", "type": "context", "question": "After practising many times, Bryan felt ____ before his presentation.", "options": ["confident", "miserable", "careless", "crowded"], "sentence": "After practising many times, Bryan felt confident before his presentation.", "explanation": "Confident means sure of yourself."}, {"word": "crowded", "pos": "adjective", "emoji": "👥", "category": "Places", "type": "context", "question": "The MRT was very ____ during the morning rush hour.", "options": ["crowded", "gentle", "honest", "precious"], "sentence": "The MRT was very crowded during the morning rush hour.", "explanation": "Crowded means full of many people."}, {"word": "valuable", "pos": "adjective", "emoji": "💎", "category": "Describing words", "type": "meaning", "question": "Which word means worth a lot or very useful?", "options": ["valuable", "careless", "narrow", "furious"], "sentence": "The old watch was valuable to Grandpa.", "explanation": "Valuable can mean worth money or very important."}, {"word": "dangerous", "pos": "adjective", "emoji": "☠️", "category": "Safety", "type": "antonym", "question": "Which word is the opposite of safe?", "options": ["dangerous", "peaceful", "gentle", "honest"], "sentence": "Playing near the road is dangerous.", "explanation": "Dangerous means not safe."}, {"word": "ordinary", "pos": "adjective", "emoji": "🙂", "category": "Describing words", "type": "meaning", "question": "Which word means normal or not special?", "options": ["ordinary", "precious", "furious", "enormous"], "sentence": "It looked like an ordinary box, but it held a surprise.", "explanation": "Ordinary means usual or normal."}, {"word": "precious", "pos": "adjective", "emoji": "💖", "category": "Describing words", "type": "context", "question": "Bryan kept the ____ photo of his family safely in a drawer.", "options": ["precious", "careless", "narrow", "dangerous"], "sentence": "Bryan kept the precious photo of his family safely in a drawer.", "explanation": "Precious means very special or valuable."}, {"word": "honest", "pos": "adjective", "emoji": "🫶", "category": "Character", "type": "context", "question": "The ____ boy returned the wallet to its owner.", "options": ["honest", "lazy", "crowded", "narrow"], "sentence": "The honest boy returned the wallet to its owner.", "explanation": "Honest means truthful and fair."}, {"word": "grateful", "pos": "adjective", "emoji": "🙏", "category": "Feelings", "type": "meaning", "question": "Which word means feeling thankful?", "options": ["grateful", "furious", "careless", "ordinary"], "sentence": "Bryan was grateful for his teacher's help.", "explanation": "Grateful means thankful."}, {"word": "miserable", "pos": "adjective", "emoji": "😢", "category": "Feelings", "type": "antonym", "question": "Which word is the opposite of cheerful?", "options": ["miserable", "delighted", "confident", "curious"], "sentence": "Ryan felt miserable when he lost his toy.", "explanation": "Miserable means very unhappy."}, {"word": "stubborn", "pos": "adjective", "emoji": "😤", "category": "Character", "type": "meaning", "question": "Which word describes someone who refuses to change his mind?", "options": ["stubborn", "generous", "gentle", "peaceful"], "sentence": "The stubborn child refused to wear his raincoat.", "explanation": "Stubborn means not willing to change your mind."}, {"word": "peaceful", "pos": "adjective", "emoji": "🕊️", "category": "Describing words", "type": "context", "question": "The garden was quiet and ____ in the morning.", "options": ["peaceful", "furious", "crowded", "dangerous"], "sentence": "The garden was quiet and peaceful in the morning.", "explanation": "Peaceful means calm and quiet."}, {"word": "fragile", "pos": "adjective", "emoji": "🥚", "category": "Describing words", "type": "meaning", "question": "Which word means easily broken?", "options": ["fragile", "enormous", "brave", "crowded"], "sentence": "The glass vase is fragile.", "explanation": "Fragile means easily broken or damaged."}, {"word": "carefully", "pos": "adverb", "emoji": "🚧", "category": "Adverbs", "type": "context", "question": "Bryan crossed the road ____ after looking both ways.", "options": ["carefully", "loudly", "hungrily", "angrily"], "sentence": "Bryan crossed the road carefully after looking both ways.", "explanation": "Carefully tells how Bryan crossed the road."}, {"word": "suddenly", "pos": "adverb", "emoji": "⚡", "category": "Adverbs", "type": "context", "question": "____, the lights went out during the storm.", "options": ["Suddenly", "Politely", "Patiently", "Rarely"], "sentence": "Suddenly, the lights went out during the storm.", "explanation": "Suddenly means quickly and unexpectedly."}, {"word": "silently", "pos": "adverb", "emoji": "🤫", "category": "Adverbs", "type": "context", "question": "The cat walked ____ into the room.", "options": ["silently", "brightly", "greedily", "heavily"], "sentence": "The cat walked silently into the room.", "explanation": "Silently means without making sound."}, {"word": "politely", "pos": "adverb", "emoji": "🙇", "category": "Adverbs", "type": "context", "question": "Ryan asked ____ if he could borrow the pencil.", "options": ["politely", "carelessly", "roughly", "angrily"], "sentence": "Ryan asked politely if he could borrow the pencil.", "explanation": "Politely means in a respectful way."}, {"word": "eagerly", "pos": "adverb", "emoji": "🤩", "category": "Adverbs", "type": "meaning", "question": "Which word means doing something with excitement and interest?", "options": ["eagerly", "lazily", "rarely", "seriously"], "sentence": "Bryan eagerly opened his birthday present.", "explanation": "Eagerly means with excitement."}, {"word": "rarely", "pos": "adverb", "emoji": "🦄", "category": "Adverbs", "type": "meaning", "question": "Which word means not often?", "options": ["rarely", "usually", "immediately", "clearly"], "sentence": "Ryan rarely eats spicy food.", "explanation": "Rarely means not often."}, {"word": "usually", "pos": "adverb", "emoji": "📅", "category": "Adverbs", "type": "antonym", "question": "Which word is the opposite of rarely?", "options": ["usually", "silently", "slowly", "accidentally"], "sentence": "Bryan usually packs his bag before bedtime.", "explanation": "Usually means most of the time."}, {"word": "patiently", "pos": "adverb", "emoji": "⏳", "category": "Adverbs", "type": "context", "question": "The children waited ____ for their turn.", "options": ["patiently", "noisily", "carelessly", "greedily"], "sentence": "The children waited patiently for their turn.", "explanation": "Patiently means calmly while waiting."}, {"word": "bravely", "pos": "adverb", "emoji": "🦸", "category": "Adverbs", "type": "context", "question": "The firefighter ____ entered the smoky room.", "options": ["bravely", "lazily", "rudely", "quietly"], "sentence": "The firefighter bravely entered the smoky room.", "explanation": "Bravely means with courage."}, {"word": "accidentally", "pos": "adverb", "emoji": "😬", "category": "Adverbs", "type": "context", "question": "Ryan ____ knocked over the cup of water.", "options": ["accidentally", "deliberately", "politely", "proudly"], "sentence": "Ryan accidentally knocked over the cup of water.", "explanation": "Accidentally means not on purpose."}, {"word": "immediately", "pos": "adverb", "emoji": "⏱️", "category": "Adverbs", "type": "meaning", "question": "Which word means at once or without delay?", "options": ["immediately", "eventually", "rarely", "silently"], "sentence": "When the bell rang, the pupils immediately lined up.", "explanation": "Immediately means right away."}, {"word": "finally", "pos": "adverb", "emoji": "🏁", "category": "Adverbs", "type": "context", "question": "After many tries, Bryan ____ solved the puzzle.", "options": ["finally", "usually", "rarely", "carelessly"], "sentence": "After many tries, Bryan finally solved the puzzle.", "explanation": "Finally means after a long time or at the end."}, {"word": "gently", "pos": "adverb", "emoji": "🧸", "category": "Adverbs", "type": "context", "question": "Ryan held the baby bird ____ in his hands.", "options": ["gently", "roughly", "loudly", "greedily"], "sentence": "Ryan held the baby bird gently in his hands.", "explanation": "Gently means softly and carefully."}, {"word": "seriously", "pos": "adverb", "emoji": "🧐", "category": "Adverbs", "type": "context", "question": "The teacher spoke ____ about safety near the road.", "options": ["seriously", "playfully", "lazily", "hungrily"], "sentence": "The teacher spoke seriously about safety near the road.", "explanation": "Seriously means in an important or thoughtful way."}, {"word": "clearly", "pos": "adverb", "emoji": "📢", "category": "Adverbs", "type": "context", "question": "Bryan spoke ____ so everyone could hear him.", "options": ["clearly", "silently", "roughly", "accidentally"], "sentence": "Bryan spoke clearly so everyone could hear him.", "explanation": "Clearly means in a way that is easy to understand."}, {"word": "lazily", "pos": "adverb", "emoji": "😴", "category": "Adverbs", "type": "antonym", "question": "Which word is the opposite of energetically?", "options": ["lazily", "bravely", "carefully", "politely"], "sentence": "The cat stretched lazily in the sun.", "explanation": "Lazily means without much energy."}, {"word": "proudly", "pos": "adverb", "emoji": "🏆", "category": "Adverbs", "type": "context", "question": "Bryan smiled ____ when he received the certificate.", "options": ["proudly", "sadly", "roughly", "quietly"], "sentence": "Bryan smiled proudly when he received the certificate.", "explanation": "Proudly means with pride."}, {"word": "calmly", "pos": "adverb", "emoji": "🧘", "category": "Adverbs", "type": "context", "question": "Even though the room was noisy, Bryan spoke ____.", "options": ["calmly", "angrily", "wildly", "carelessly"], "sentence": "Even though the room was noisy, Bryan spoke calmly.", "explanation": "Calmly means in a peaceful and controlled way."}, {"word": "wisely", "pos": "adverb", "emoji": "🦉", "category": "Adverbs", "type": "context", "question": "Bryan spent his pocket money ____ and saved some for later.", "options": ["wisely", "carelessly", "angrily", "noisily"], "sentence": "Bryan spent his pocket money wisely and saved some for later.", "explanation": "Wisely means using good judgement."}, {"word": "safely", "pos": "adverb", "emoji": "🛡️", "category": "Adverbs", "type": "context", "question": "The children crossed the road ____ at the traffic light.", "options": ["safely", "dangerously", "loudly", "rarely"], "sentence": "The children crossed the road safely at the traffic light.", "explanation": "Safely means without danger."}, {"word": "although", "pos": "conjunction", "emoji": "🔗", "category": "Connectors", "type": "context", "question": "____ it was raining, Bryan still went for training.", "options": ["Although", "Because", "Unless", "Before"], "sentence": "Although it was raining, Bryan still went for training.", "explanation": "Although shows contrast."}, {"word": "unless", "pos": "conjunction", "emoji": "🚪", "category": "Connectors", "type": "context", "question": "You cannot play outside ____ you finish your homework.", "options": ["unless", "although", "while", "because"], "sentence": "You cannot play outside unless you finish your homework.", "explanation": "Unless means if not."}, {"word": "because", "pos": "conjunction", "emoji": "❓", "category": "Connectors", "type": "context", "question": "Ryan brought an umbrella ____ the sky looked dark.", "options": ["because", "although", "unless", "before"], "sentence": "Ryan brought an umbrella because the sky looked dark.", "explanation": "Because gives a reason."}, {"word": "while", "pos": "conjunction", "emoji": "⏰", "category": "Connectors", "type": "context", "question": "Bryan listened to music ____ he cleaned his room.", "options": ["while", "unless", "because", "although"], "sentence": "Bryan listened to music while he cleaned his room.", "explanation": "While means during the same time."}, {"word": "therefore", "pos": "adverb/connective", "emoji": "➡️", "category": "Connectors", "type": "context", "question": "Bryan forgot his water bottle. ____, he felt thirsty after PE.", "options": ["Therefore", "However", "Although", "Unless"], "sentence": "Bryan forgot his water bottle. Therefore, he felt thirsty after PE.", "explanation": "Therefore shows a result."}, {"word": "however", "pos": "adverb/connective", "emoji": "↔️", "category": "Connectors", "type": "context", "question": "The puzzle looked easy. ____, it was quite difficult.", "options": ["However", "Therefore", "Because", "Unless"], "sentence": "The puzzle looked easy. However, it was quite difficult.", "explanation": "However shows contrast."}, {"word": "before", "pos": "preposition/conjunction", "emoji": "⬅️", "category": "Time words", "type": "context", "question": "Bryan washes his hands ____ eating dinner.", "options": ["before", "after", "during", "between"], "sentence": "Bryan washes his hands before eating dinner.", "explanation": "Before means earlier than."}, {"word": "after", "pos": "preposition/conjunction", "emoji": "➡️", "category": "Time words", "type": "context", "question": "Ryan brushed his teeth ____ breakfast.", "options": ["after", "before", "until", "unless"], "sentence": "Ryan brushed his teeth after breakfast.", "explanation": "After means later than."}, {"word": "beneath", "pos": "preposition", "emoji": "⬇️", "category": "Position words", "type": "meaning", "question": "Which word means under?", "options": ["beneath", "beyond", "beside", "between"], "sentence": "The cat slept beneath the table.", "explanation": "Beneath means under."}, {"word": "beside", "pos": "preposition", "emoji": "↔️", "category": "Position words", "type": "context", "question": "Bryan sat ____ his best friend during assembly.", "options": ["beside", "beneath", "above", "through"], "sentence": "Bryan sat beside his best friend during assembly.", "explanation": "Beside means next to."}, {"word": "reluctant", "pos": "adjective", "emoji": "😕", "category": "Feelings", "type": "meaning", "question": "Which word means not willing to do something?", "options": ["reluctant", "eager", "grateful", "ordinary"], "sentence": "Bryan was reluctant to try the new food at first.", "explanation": "Reluctant means unwilling or not keen."}, {"word": "timid", "pos": "adjective", "emoji": "🐭", "category": "Character", "type": "meaning", "question": "Which word describes someone who is shy and nervous?", "options": ["timid", "furious", "generous", "confident"], "sentence": "The timid kitten hid behind the sofa.", "explanation": "Timid means shy or easily frightened."}, {"word": "sturdy", "pos": "adjective", "emoji": "🪑", "category": "Describing words", "type": "context", "question": "The chair was ____ enough to hold the heavy box.", "options": ["sturdy", "fragile", "empty", "narrow"], "sentence": "The chair was sturdy enough to hold the heavy box.", "explanation": "Sturdy means strong and firm."}, {"word": "vanish", "pos": "verb", "emoji": "🪄", "category": "Story verbs", "type": "meaning", "question": "Which word means to disappear suddenly?", "options": ["vanish", "appear", "gather", "arrange"], "sentence": "The magician made the coin vanish.", "explanation": "Vanish means to disappear."}, {"word": "tremble", "pos": "verb", "emoji": "🥶", "category": "Action verbs", "type": "context", "question": "Ryan began to ____ because the room was very cold.", "options": ["tremble", "celebrate", "admire", "compare"], "sentence": "Ryan began to tremble because the room was very cold.", "explanation": "Tremble means to shake slightly."}, {"word": "inspect", "pos": "verb", "emoji": "🔎", "category": "Thinking verbs", "type": "meaning", "question": "Which word means to check something carefully?", "options": ["inspect", "ignore", "interrupt", "imagine"], "sentence": "The teacher inspected the model before the presentation.", "explanation": "Inspect means to check or look at carefully."}, {"word": "reply", "pos": "verb", "emoji": "💬", "category": "Speaking verbs", "type": "context", "question": "Bryan raised his hand to ____ to the teacher's question.", "options": ["reply", "rescue", "repair", "refuse"], "sentence": "Bryan raised his hand to reply to the teacher's question.", "explanation": "Reply means to answer."}, {"word": "frequently", "pos": "adverb", "emoji": "🔁", "category": "Adverbs", "type": "meaning", "question": "Which word means often?", "options": ["frequently", "rarely", "silently", "accidentally"], "sentence": "Bryan frequently visits the library after school.", "explanation": "Frequently means often."}, {"word": "eventually", "pos": "adverb", "emoji": "🏁", "category": "Adverbs", "type": "meaning", "question": "Which word means in the end after some time?", "options": ["eventually", "immediately", "rarely", "carelessly"], "sentence": "After searching for ten minutes, Ryan eventually found his pencil.", "explanation": "Eventually means finally, after some time."}, {"word": "accurate", "pos": "adjective", "emoji": "🎯", "category": "School words", "type": "context", "question": "Bryan checked his answer again to make sure it was ____.", "options": ["accurate", "careless", "ordinary", "miserable"], "sentence": "Bryan checked his answer again to make sure it was accurate.", "explanation": "Accurate means correct and exact."}];
+const el = {
+  home:document.getElementById("homeScreen"), quiz:document.getElementById("quizScreen"), finish:document.getElementById("finishScreen"),
+  scorePill:document.getElementById("scorePill"), startBtn:document.getElementById("startBtn"), voiceBtn:document.getElementById("voiceBtn"),
+  quizLength:document.getElementById("quizLength"), quizMode:document.getElementById("quizMode"), counter:document.getElementById("counter"),
+  scoreText:document.getElementById("scoreText"), bar:document.getElementById("bar"), category:document.getElementById("category"), hint:document.getElementById("hint"),
+  emoji:document.getElementById("emoji"), question:document.getElementById("question"), meta:document.getElementById("meta"), options:document.getElementById("options"),
+  repeatBtn:document.getElementById("repeatBtn"), exampleBtn:document.getElementById("exampleBtn"), explainBox:document.getElementById("explainBox"), feedback:document.getElementById("feedback"),
+  finalScore:document.getElementById("finalScore"), finishText:document.getElementById("finishText"), review:document.getElementById("review"), againBtn:document.getElementById("againBtn"),
+  homeBtn:document.getElementById("homeBtn"), stars:document.getElementById("stars")
+};
+let quiz=[], index=0, score=0, review=[], locked=false, attempts=0;
+
+function show(screen){
+  [el.home, el.quiz, el.finish].forEach(s=>s.classList.remove("active"));
+  screen.classList.add("active");
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+function shuffle(arr){
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]];}
+  return a;
+}
+function chooseVoice(){
+  const voices = window.speechSynthesis && window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
+  if(!voices.length) return null;
+  const priorities = [
+    /Microsoft.*(Natural|Jenny|Aria|Libby|Sonia)/i,
+    /Google.*(UK|US).*English/i,
+    /Samantha|Karen|Serena|Moira|Daniel|Kate|Alex/i,
+    /English.*(Singapore|United Kingdom|Australia|United States)/i,
+    /^en/i
+  ];
+  for(const p of priorities){ const v = voices.find(x => p.test(x.name + " " + x.lang)); if(v) return v; }
+  return voices.find(x=>/^en/i.test(x.lang)) || voices[0];
+}
+function speak(text, rate=0.84){
+  try{
+    if(!("speechSynthesis" in window)) return;
+    window.speechSynthesis.cancel();
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang="en-SG"; u.rate=rate; u.pitch=1.0; u.volume=1;
+    const v=chooseVoice(); if(v) u.voice=v;
+    window.speechSynthesis.speak(u);
+  }catch(e){}
+}
+function beep(type){
+  try{
+    const C=window.AudioContext||window.webkitAudioContext; const ctx=new C();
+    const osc=ctx.createOscillator(); const gain=ctx.createGain(); osc.connect(gain); gain.connect(ctx.destination);
+    const now=ctx.currentTime; osc.type="sine"; osc.frequency.value=type==="good"?740:190;
+    gain.gain.setValueAtTime(0.001, now); gain.gain.exponentialRampToValueAtTime(0.18, now+0.02); gain.gain.exponentialRampToValueAtTime(0.001, now+0.22);
+    osc.start(now); osc.stop(now+0.24);
+  }catch(e){}
+}
+function stars(){
+  const symbols=["⭐","✨","🌟","🎉","💫"];
+  for(let i=0;i<20;i++){
+    const s=document.createElement("div"); s.className="star"; s.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    s.style.left=(Math.random()*100)+"vw"; s.style.animationDelay=(Math.random()*0.25)+"s"; el.stars.appendChild(s); setTimeout(()=>s.remove(),1500);
+  }
+}
+function htmlQuestion(q){
+  let text = q.question.replace(/____/g, '<span class="wordFocus">____</span>');
+  const w = q.word.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp('\\b' + w + '\\b', 'gi');
+  text = text.replace(re, m => '<span class="wordFocus">' + m + '</span>');
+  return text;
+}
+function cleanQuestion(q){ return q.question.replace(/____/g, "blank"); }
+function correctText(q){
+  const match = q.options.find(o => o.toLowerCase() === q.word.toLowerCase());
+  return match || q.word;
+}
+function buildQuiz(){
+  const length=Number(el.quizLength.value);
+  const pool = el.quizMode.value === "shuffle" ? shuffle(ITEMS) : ITEMS.slice();
+  quiz=pool.slice(0,length).map(q=>({...q, options:shuffle(q.options)}));
+  index=0; score=0; review=[]; attempts=0;
+}
+function render(){
+  locked=false; attempts=0;
+  const q=quiz[index];
+  el.counter.textContent=`${index+1} / ${quiz.length}`;
+  el.scoreText.textContent=`First-try correct ${score}`;
+  el.scorePill.textContent=`⭐ ${score}`;
+  el.bar.style.width=`${(index/quiz.length)*100}%`;
+  el.category.textContent=q.category;
+  el.hint.textContent=q.type === "antonym" ? "Choose the opposite" : q.type === "meaning" ? "Choose the word" : q.type === "context" ? "Complete the sentence" : "Choose the best answer";
+  el.emoji.textContent=q.emoji;
+  el.question.innerHTML=htmlQuestion(q);
+  el.meta.textContent=`${q.pos.toUpperCase()} • ${q.type.toUpperCase()}`;
+  el.explainBox.classList.remove("show"); el.explainBox.textContent="";
+  el.options.innerHTML="";
+  q.options.forEach(opt=>{
+    const b=document.createElement("button"); b.className="option"; b.textContent=opt; b.addEventListener("click",()=>answer(opt,b)); el.options.appendChild(b);
+  });
+  setTimeout(()=>speak(`Question ${index+1}. ${cleanQuestion(q)}. Choose the best answer.`),260);
+}
+function feedback(text, good){
+  el.feedback.textContent=text; el.feedback.className="feedback show " + (good ? "good" : "bad");
+  setTimeout(()=>el.feedback.classList.remove("show"),800);
+}
+function answer(choice, btn){
+  if(locked) return;
+  const q=quiz[index]; const correct=correctText(q); const good=choice.toLowerCase()===correct.toLowerCase();
+  if(good){
+    locked=true;
+    [...el.options.querySelectorAll("button")].forEach(b=>{ b.disabled=true; if(b.textContent.toLowerCase()===correct.toLowerCase()) b.classList.add("correct"); });
+    if(attempts===0) score++;
+    beep("good"); stars(); feedback("Correct! ⭐", true);
+    el.explainBox.innerHTML=`<b>${correct}</b> — ${q.explanation}<br><span>${q.sentence}</span>`; el.explainBox.classList.add("show");
+    speak(`Correct. Great job. ${q.sentence}. ${q.explanation}`);
+    review.push({word:q.word, chosen:choice, firstTry:attempts===0, sentence:q.sentence, explanation:q.explanation, pos:q.pos, category:q.category, emoji:q.emoji});
+    setTimeout(()=>{ index++; if(index>=quiz.length) finish(); else render(); }, 2300);
+  }else{
+    attempts++;
+    btn.classList.add("wrong"); setTimeout(()=>btn.classList.remove("wrong"),650);
+    beep("bad"); feedback("Try again", false);
+    speak("Wrong. Try again. Read the question carefully and choose the best answer.");
+  }
+}
+function repeat(){ const q=quiz[index]; if(q) speak(`Question ${index+1}. ${cleanQuestion(q)}. Choose the best answer.`); }
+function sayExample(){ const q=quiz[index]; if(q) speak(q.sentence); }
+function finish(){
+  el.bar.style.width="100%"; show(el.finish);
+  el.finalScore.textContent=`${score} / ${quiz.length}`;
+  const pct=Math.round(score/quiz.length*100);
+  el.finishText.textContent = pct>=90 ? "Excellent P4 vocabulary power!" : pct>=70 ? "Good work. Review the words that needed more than one try." : "Good effort. Try 20 words first, then build up to 50 and 100.";
+  el.review.innerHTML="";
+  review.forEach((r,i)=>{
+    const div=document.createElement("div"); div.className="reviewItem " + (r.firstTry ? "good" : "bad");
+    div.innerHTML=`<b>${i+1}. ${r.emoji} ${r.word}</b> <span style="text-transform:uppercase">(${r.pos})</span> — ${r.firstTry?"First try ✅":"Needed practice 🔁"}<br><span>${r.sentence}</span><br><small>${r.explanation}</small>`;
+    el.review.appendChild(div);
+  });
+  try{localStorage.setItem("bryanP4AdvancedWordsLast", JSON.stringify({score,total:quiz.length,review,date:new Date().toISOString()}));}catch(e){}
+  setTimeout(()=>speak(`Well done Bryan. Your first try score is ${score} out of ${quiz.length}.`),300);
+}
+el.startBtn.addEventListener("click",()=>{buildQuiz(); show(el.quiz); render();});
+el.voiceBtn.addEventListener("click",()=>speak("Hello Bryan. Welcome to your P4 word power challenge. Listen carefully and choose the best answer."));
+el.repeatBtn.addEventListener("click",repeat); el.exampleBtn.addEventListener("click",sayExample);
+el.againBtn.addEventListener("click",()=>{buildQuiz(); show(el.quiz); render();}); el.homeBtn.addEventListener("click",()=>show(el.home));
+if("speechSynthesis" in window) window.speechSynthesis.onvoiceschanged=()=>{};
+try{ const last=JSON.parse(localStorage.getItem("bryanP4AdvancedWordsLast")||"null"); if(last) el.scorePill.textContent=`Last ⭐ ${last.score}/${last.total}`;}catch(e){}
+</script>
+</body>
+</html>
