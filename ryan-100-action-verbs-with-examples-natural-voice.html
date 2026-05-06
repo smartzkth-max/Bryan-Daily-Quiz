@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Ryan 100 Action Verbs + Examples</title>
+<style>
+:root {
+  --bg1:#fff5cc; --bg2:#dff6ff; --ink:#18324d; --blue:#407cff;
+  --orange:#ff7758; --green:#18a058; --red:#d92d2d; --soft:#f5f8ff;
+  --shadow:0 18px 45px rgba(14,45,90,.16);
+}
+*{box-sizing:border-box}
+html,body{
+  margin:0; min-height:100%; overflow-x:hidden; overflow-y:auto;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+  color:var(--ink); background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  -webkit-tap-highlight-color:transparent; touch-action:pan-y; -ms-touch-action:pan-y;
+  overscroll-behavior-y:auto; -webkit-overflow-scrolling:touch;
+}
+button,select{font:inherit}
+.stage{width:100%; min-height:100vh; padding:12px; display:block;}
+.app{
+  width:min(920px,98vw); margin:0 auto; min-height:calc(100vh - 24px);
+  background:rgba(255,255,255,.94); border:3px solid rgba(255,255,255,.98);
+  border-radius:clamp(22px,3vmin,42px); box-shadow:var(--shadow); overflow:visible; position:relative;
+}
+.top{
+  position:sticky; top:0; z-index:20; display:grid; grid-template-columns:1fr auto; gap:10px; align-items:center;
+  padding:clamp(12px,2vmin,22px); background:rgba(255,255,255,.97);
+  border-bottom:2px solid #e1ebff; border-radius:clamp(19px,3vmin,39px) clamp(19px,3vmin,39px) 0 0;
+}
+.title{font-weight:1000; font-size:clamp(21px,3vmin,40px); line-height:1.05}
+.pill{font-weight:1000; font-size:clamp(15px,2.2vmin,28px); background:#fff; border:2px solid #dce8ff; border-radius:999px; padding:8px 14px; white-space:nowrap;}
+.screen{display:none; padding:clamp(12px,2vmin,24px); min-height:calc(100vh - 110px);}
+.screen.active{display:block}
+.home{display:grid; gap:clamp(13px,2vmin,22px); min-height:calc(100vh - 150px); align-content:center;}
+.heroEmoji{font-size:clamp(78px,13vmin,160px); text-align:center; filter:drop-shadow(0 10px 14px rgba(0,0,0,.13))}
+h1{font-size:clamp(32px,5.3vmin,72px); line-height:1.02; text-align:center; margin:0}
+.desc{font-size:clamp(17px,2.35vmin,30px); line-height:1.28; text-align:center; margin:0 auto; max-width:850px; font-weight:750}
+.settings{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+.setting{background:var(--soft); border:2px solid #dfeaff; border-radius:22px; padding:14px}
+.setting label{display:block; font-weight:1000; margin-bottom:8px; font-size:clamp(15px,2vmin,24px)}
+.setting select{width:100%; border:2px solid #ccdaf4; border-radius:16px; background:#fff; padding:12px; font-weight:900; color:var(--ink); font-size:clamp(15px,2vmin,24px)}
+.buttons{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.btn{
+  border:0; border-radius:clamp(18px,2.8vmin,34px); padding:clamp(14px,2.2vmin,24px);
+  min-height:clamp(58px,7vmin,96px); font-size:clamp(18px,2.45vmin,34px); font-weight:1000;
+  box-shadow:0 10px 22px rgba(14,45,90,.14); touch-action:manipulation; cursor:pointer;
+}
+.btn:active{transform:scale(.985)}
+.primary{background:linear-gradient(180deg,#ff9f82,#ff6848); color:#fff}
+.blue{background:linear-gradient(180deg,#70a5ff,#407cff); color:#fff}
+.grey{background:#eef3ff; color:var(--ink)}
+.green{background:linear-gradient(180deg,#5edb91,#18a058); color:#fff}
+.quiz{display:grid; grid-template-rows:auto auto auto auto; gap:14px; min-height:calc(100vh - 150px);}
+.progressInfo{display:grid; grid-template-columns:1fr auto; align-items:center; gap:10px; font-size:clamp(15px,2vmin,26px); font-weight:1000}
+.barWrap{height:clamp(14px,2vmin,24px); background:#eaf1ff; border:2px solid #dce8ff; border-radius:999px; overflow:hidden; margin-top:7px}
+.bar{height:100%; width:0%; background:linear-gradient(90deg,#ff7758,#ffd166,#407cff); transition:width .25s ease}
+.card{
+  display:grid; grid-template-rows:auto auto auto auto; gap:10px; background:linear-gradient(180deg,#fff,#f8fbff);
+  border:3px solid #e5eeff; border-radius:clamp(22px,3vmin,42px); padding:clamp(12px,2vmin,24px);
+}
+.catRow{display:flex; justify-content:space-between; gap:10px; align-items:center; flex-wrap:wrap}
+.category{font-weight:1000; font-size:clamp(15px,2vmin,26px); background:#fff4d6; border:2px solid #ffe08a; border-radius:999px; padding:7px 14px}
+.hint{font-size:clamp(14px,1.8vmin,24px); font-weight:900; color:#4d6786}
+.visual{display:grid; place-items:center; min-height:clamp(130px,24vh,320px); background:radial-gradient(circle at center,#fff 0 34%,#eaf3ff 35% 72%,#f9fbff 73%); border:2px solid #edf4ff; border-radius:clamp(20px,3vmin,36px)}
+.emoji{font-size:clamp(84px,16vmin,210px); line-height:1; animation:bounce 1.2s ease-in-out infinite}
+@keyframes bounce{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-.7vmin) scale(1.04)}}
+.question{
+  font-size:clamp(27px,4.4vmin,64px); line-height:1.12; text-align:center; font-weight:1000;
+  background:#fff; border:2px dashed #c9dcff; border-radius:clamp(18px,2.8vmin,34px);
+  padding:clamp(12px,2vmin,28px);
+}
+.blank{color:var(--orange); white-space:nowrap}
+.examplesPreview{
+  display:none;
+  background:#f5f8ff; border:2px solid #dfeaff; border-radius:18px; padding:12px;
+  font-size:clamp(16px,2.2vmin,28px); font-weight:850; line-height:1.3;
+}
+.examplesPreview.show{display:block}
+.options{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.option{
+  border:3px solid #dce8ff; background:#fff; border-radius:clamp(18px,2.8vmin,34px);
+  min-height:clamp(72px,10vh,120px); padding:clamp(10px,1.6vmin,20px);
+  font-size:clamp(24px,3.5vmin,52px); font-weight:1000; box-shadow:0 10px 22px rgba(14,45,90,.11);
+  touch-action:manipulation;
+}
+.option.correct{background:#eafff2; border-color:#2ecb74; color:#0e7939}
+.option.wrong{background:#fff0f0; border-color:#ff8b8b; color:#b71919}
+.option:disabled{opacity:.96}
+.bottom{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+.feedback{
+  position:fixed; left:50%; top:50%; transform:translate(-50%,-50%) scale(.95);
+  z-index:50; min-width:min(86%,780px); background:rgba(255,255,255,.98); border:4px solid #e5eeff;
+  border-radius:clamp(22px,3.6vmin,44px); padding:clamp(18px,3vmin,40px);
+  text-align:center; font-weight:1000; font-size:clamp(30px,5vmin,72px);
+  box-shadow:0 18px 55px rgba(14,45,90,.22); opacity:0; pointer-events:none; transition:.15s ease;
+}
+.feedback.show{opacity:1; transform:translate(-50%,-50%) scale(1)}
+.feedback.good{color:var(--green)} .feedback.bad{color:var(--red)}
+.speechStatus{text-align:center; min-height:1.2em; font-size:clamp(15px,2vmin,25px); font-weight:900; color:#4d6786}
+.finish{display:grid; gap:14px; min-height:calc(100vh - 155px)}
+.bigScore{font-size:clamp(46px,9vmin,130px); color:var(--green); text-align:center; font-weight:1000}
+.review{max-height:55vh; overflow:auto; background:#f7faff; border:2px solid #e0eaff; border-radius:24px; padding:12px}
+.reviewItem{background:white; border-radius:16px; padding:11px 13px; margin-bottom:9px; border-left:10px solid var(--green); font-size:clamp(14px,1.8vmin,22px); font-weight:850}
+.stars{position:fixed; inset:0; pointer-events:none; z-index:60; overflow:hidden}
+.star{position:absolute; top:-40px; font-size:clamp(22px,3vmin,44px); animation:fall 1.25s ease-out forwards}
+@keyframes fall{to{transform:translateY(120vh) rotate(360deg); opacity:0}}
+.note{background:#fff8ed; border:2px solid #ffd9a8; border-radius:20px; padding:12px; font-size:clamp(13px,1.8vmin,22px); font-weight:760; line-height:1.35}
+@media (orientation:landscape){.app{width:min(760px,86vw)}}
+@media (max-width:700px){.stage{padding:8px} .app{width:100%; border-radius:22px} .settings,.buttons,.bottom{grid-template-columns:1fr} .options{grid-template-columns:1fr} .question{font-size:clamp(26px,7.6vw,46px)}}
+</style>
+</head>
+<body>
+<div class="stars" id="stars"></div>
+<div class="stage">
+  <main class="app">
+    <div class="top">
+      <div class="title">Ryan 100 Action Verbs + Examples</div>
+      <div class="pill" id="scorePill">⭐ 0</div>
+    </div>
+
+    <section class="screen active" id="homeScreen">
+      <div class="home">
+        <div class="heroEmoji">🏃🗣️📚</div>
+        <h1>Choose, Listen, Repeat</h1>
+        <p class="desc">After Ryan chooses correctly, the app reads the answer, the usage sentence, and two more short example sentences before moving to the next quiz.</p>
+        <div class="settings">
+          <div class="setting">
+            <label>Quiz length</label>
+            <select id="quizLength">
+              <option value="20">20 verbs</option>
+              <option value="50">50 verbs</option>
+              <option value="100" selected>100 verbs</option>
+            </select>
+          </div>
+          <div class="setting">
+            <label>Voice</label>
+            <select id="voiceSelect">
+              <option value="">Auto best voice</option>
+            </select>
+          </div>
+          <div class="setting">
+            <label>Voice speed</label>
+            <select id="rateSelect">
+              <option value="0.68">Slow and clear</option>
+              <option value="0.76" selected>Natural child practice</option>
+              <option value="0.86">Faster</option>
+            </select>
+          </div>
+          <div class="setting">
+            <label>After correct answer</label>
+            <select id="afterCorrect">
+              <option value="full" selected>Verb + 3 sentences</option>
+              <option value="short">Verb + main sentence only</option>
+            </select>
+          </div>
+        </div>
+        <div class="buttons">
+          <button class="btn primary" id="startBtn">▶️ Start</button>
+          <button class="btn blue" id="voiceBtn">🔊 Test Voice</button>
+        </div>
+        <div class="note">
+          For the most natural voice, open this in Safari/Chrome on the device that has the best system voices installed. The app uses browser speech voices, so quality depends on the TV/iPad/Mac voice engine.
+        </div>
+      </div>
+    </section>
+
+    <section class="screen" id="quizScreen">
+      <div class="quiz">
+        <div>
+          <div class="progressInfo">
+            <span id="counter">1 / 100</span>
+            <span id="scoreText">Correct 0</span>
+          </div>
+          <div class="barWrap"><div class="bar" id="bar"></div></div>
+        </div>
+        <div class="card">
+          <div class="catRow">
+            <div class="category" id="category">Action words</div>
+            <div class="hint" id="hint">Choose the missing action word</div>
+          </div>
+          <div class="visual"><div class="emoji" id="emoji">🍎</div></div>
+          <div class="question" id="question">Ryan uses his teeth to <span class="blank">____</span> the apple.</div>
+          <div class="examplesPreview" id="examplesPreview"></div>
+        </div>
+        <div class="options" id="options"></div>
+        <div>
+          <div class="bottom">
+            <button class="btn blue" id="repeatBtn">🔊 Hear Question</button>
+            <button class="btn grey" id="skipAudioBtn">⏭️ Skip Audio</button>
+          </div>
+          <div class="speechStatus" id="speechStatus"></div>
+        </div>
+      </div>
+      <div class="feedback" id="feedback">Great!</div>
+    </section>
+
+    <section class="screen" id="finishScreen">
+      <div class="finish">
+        <h1>Well done, Ryan! 🎉</h1>
+        <div class="bigScore" id="finalScore">0 / 100</div>
+        <p class="desc" id="finishText">Great action verb practice.</p>
+        <div class="review" id="review"></div>
+        <div class="buttons">
+          <button class="btn primary" id="againBtn">▶️ Play Again</button>
+          <button class="btn blue" id="homeBtn">🏠 Home</button>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+const ITEMS = [{"verb": "chew", "emoji": "🍎", "blank": "Ryan uses his teeth to ____ the apple.", "sentence": "Ryan chews the apple.", "examples": ["I chew my food slowly.", "The cow chews grass."], "category": "Mouth actions", "distractors": ["blink", "throw", "sleep"]}, {"verb": "bite", "emoji": "🍪", "blank": "Ryan opens his mouth to ____ the cookie.", "sentence": "Ryan bites the cookie.", "examples": ["The puppy bites the toy.", "Do not bite your pencil."], "category": "Mouth actions", "distractors": ["jump", "wipe", "carry"]}, {"verb": "sip", "emoji": "🥤", "blank": "Ryan uses a straw to ____ his juice.", "sentence": "Ryan sips his juice.", "examples": ["I sip warm soup.", "She sips water slowly."], "category": "Mouth actions", "distractors": ["kick", "clap", "fold"]}, {"verb": "swallow", "emoji": "😋", "blank": "Ryan chews the food and then ____ it.", "sentence": "Ryan swallows the food.", "examples": ["I swallow the medicine.", "The baby swallows milk."], "category": "Mouth actions", "distractors": ["bounce", "draw", "hide"]}, {"verb": "lick", "emoji": "🍦", "blank": "Ryan uses his tongue to ____ the ice cream.", "sentence": "Ryan licks the ice cream.", "examples": ["The cat licks its paw.", "Do not lick dirty things."], "category": "Mouth actions", "distractors": ["push", "read", "dig"]}, {"verb": "blow", "emoji": "🌬️", "blank": "Ryan uses his mouth to ____ the bubbles.", "sentence": "Ryan blows the bubbles.", "examples": ["I blow out the candle.", "The wind blows the leaves."], "category": "Mouth actions", "distractors": ["cut", "sleep", "ride"]}, {"verb": "cough", "emoji": "🤧", "blank": "Ryan covers his mouth when he needs to ____.", "sentence": "Ryan coughs into his elbow.", "examples": ["Please cough softly.", "The sick boy coughs."], "category": "Mouth actions", "distractors": ["paint", "climb", "count"]}, {"verb": "sneeze", "emoji": "🤧", "blank": "Ryan uses tissue when he is going to ____.", "sentence": "Ryan sneezes into a tissue.", "examples": ["I sneeze when I have a cold.", "The dust makes me sneeze."], "category": "Mouth actions", "distractors": ["stir", "open", "build"]}, {"verb": "yawn", "emoji": "🥱", "blank": "Ryan feels sleepy and starts to ____.", "sentence": "Ryan yawns when he is sleepy.", "examples": ["I yawn at bedtime.", "The baby yawns loudly."], "category": "Mouth actions", "distractors": ["jump", "throw", "sweep"]}, {"verb": "breathe", "emoji": "🫁", "blank": "Ryan uses his nose and mouth to ____ air.", "sentence": "Ryan breathes in fresh air.", "examples": ["Breathe slowly.", "Fish breathe in water."], "category": "Mouth actions", "distractors": ["write", "kick", "fold"]}, {"verb": "blink", "emoji": "👀", "blank": "Ryan closes and opens his eyes to ____.", "sentence": "Ryan blinks his eyes.", "examples": ["I blink when dust comes near.", "The baby blinks slowly."], "category": "Body actions", "distractors": ["chew", "throw", "cook"]}, {"verb": "nod", "emoji": "🙂", "blank": "Ryan moves his head up and down to ____ yes.", "sentence": "Ryan nods his head.", "examples": ["I nod to say yes.", "The teacher nods and smiles."], "category": "Body actions", "distractors": ["shake", "eat", "draw"]}, {"verb": "shake", "emoji": "🙅", "blank": "Ryan moves his head side to side to ____ no.", "sentence": "Ryan shakes his head.", "examples": ["Shake the bottle gently.", "The dog shakes its body."], "category": "Body actions", "distractors": ["nod", "drink", "sleep"]}, {"verb": "stretch", "emoji": "🙆", "blank": "Ryan lifts his arms to ____ his body.", "sentence": "Ryan stretches his arms.", "examples": ["I stretch after waking up.", "The cat stretches on the mat."], "category": "Body actions", "distractors": ["bite", "read", "pour"]}, {"verb": "bend", "emoji": "🤸", "blank": "Ryan moves his knees to ____ down.", "sentence": "Ryan bends down.", "examples": ["Bend your knees.", "The branch bends in the wind."], "category": "Body actions", "distractors": ["fly", "sleep", "taste"]}, {"verb": "kneel", "emoji": "🧎", "blank": "Ryan puts his knees on the floor to ____.", "sentence": "Ryan kneels on the floor.", "examples": ["I kneel to tie my shoe.", "The boy kneels beside the puppy."], "category": "Body actions", "distractors": ["swim", "eat", "read"]}, {"verb": "wave", "emoji": "👋", "blank": "Ryan uses his hand to ____ goodbye.", "sentence": "Ryan waves goodbye.", "examples": ["I wave to my friend.", "The girl waves at the bus."], "category": "Body actions", "distractors": ["sleep", "chew", "cut"]}, {"verb": "clap", "emoji": "👏", "blank": "Ryan uses both hands to ____ loudly.", "sentence": "Ryan claps his hands.", "examples": ["We clap after the show.", "The children clap happily."], "category": "Body actions", "distractors": ["drink", "crawl", "wipe"]}, {"verb": "point", "emoji": "☝️", "blank": "Ryan uses his finger to ____ at the picture.", "sentence": "Ryan points at the picture.", "examples": ["Point to the red ball.", "She points at the sky."], "category": "Body actions", "distractors": ["cook", "sleep", "swallow"]}, {"verb": "touch", "emoji": "👉", "blank": "Ryan uses his finger to ____ the screen.", "sentence": "Ryan touches the screen.", "examples": ["Do not touch the hot pan.", "The baby touches the toy."], "category": "Body actions", "distractors": ["bite", "run", "read"]}, {"verb": "tap", "emoji": "👆", "blank": "Ryan uses his finger to ____ the button.", "sentence": "Ryan taps the button.", "examples": ["Tap the screen gently.", "The dancer taps her feet."], "category": "Hand actions", "distractors": ["swim", "chew", "sleep"]}, {"verb": "press", "emoji": "🔘", "blank": "Ryan uses his finger to ____ the doorbell.", "sentence": "Ryan presses the doorbell.", "examples": ["Press the green button.", "She presses the switch."], "category": "Hand actions", "distractors": ["lick", "run", "draw"]}, {"verb": "knock", "emoji": "🚪", "blank": "Ryan uses his hand to ____ on the door.", "sentence": "Ryan knocks on the door.", "examples": ["Knock before you enter.", "Someone knocks loudly."], "category": "Hand actions", "distractors": ["sleep", "eat", "fly"]}, {"verb": "grab", "emoji": "✊", "blank": "Ryan uses his hand to ____ the toy quickly.", "sentence": "Ryan grabs the toy.", "examples": ["Grab the rope tightly.", "The monkey grabs a banana."], "category": "Hand actions", "distractors": ["blink", "read", "yawn"]}, {"verb": "grip", "emoji": "✊", "blank": "Ryan uses both hands to ____ the handle tightly.", "sentence": "Ryan grips the handle tightly.", "examples": ["Grip the pencil properly.", "The climber grips the rock."], "category": "Hand actions", "distractors": ["drink", "jump", "sleep"]}, {"verb": "lift", "emoji": "🏋️", "blank": "Ryan uses his arms to ____ the box.", "sentence": "Ryan lifts the box.", "examples": ["Lift the bag carefully.", "Daddy lifts the baby."], "category": "Hand actions", "distractors": ["bite", "sing", "crawl"]}, {"verb": "drop", "emoji": "⬇️", "blank": "Ryan lets go and the ball will ____.", "sentence": "Ryan drops the ball.", "examples": ["Do not drop the glass.", "The leaf drops to the ground."], "category": "Hand actions", "distractors": ["climb", "eat", "listen"]}, {"verb": "place", "emoji": "📦", "blank": "Ryan uses his hands to ____ the book on the table.", "sentence": "Ryan places the book on the table.", "examples": ["Place the cup here.", "She places flowers in a vase."], "category": "Hand actions", "distractors": ["swallow", "jump", "sleep"]}, {"verb": "move", "emoji": "↔️", "blank": "Ryan uses his hands to ____ the chair.", "sentence": "Ryan moves the chair.", "examples": ["Move the toy away.", "The car moves fast."], "category": "Hand actions", "distractors": ["chew", "sleep", "read"]}, {"verb": "fix", "emoji": "🛠️", "blank": "Daddy uses tools to ____ the broken toy.", "sentence": "Daddy fixes the broken toy.", "examples": ["I fix the loose wheel.", "The worker fixes the pipe."], "category": "Hand actions", "distractors": ["drink", "sleep", "yawn"]}, {"verb": "type", "emoji": "⌨️", "blank": "Ryan uses a keyboard to ____ letters.", "sentence": "Ryan types letters.", "examples": ["I type my name.", "Mummy types an email."], "category": "Tech actions", "distractors": ["kick", "chew", "swim"]}, {"verb": "click", "emoji": "🖱️", "blank": "Ryan uses a mouse to ____ on the icon.", "sentence": "Ryan clicks the icon.", "examples": ["Click the blue button.", "Daddy clicks the link."], "category": "Tech actions", "distractors": ["sleep", "eat", "throw"]}, {"verb": "swipe", "emoji": "📱", "blank": "Ryan uses his finger to ____ the screen.", "sentence": "Ryan swipes the screen.", "examples": ["Swipe left to see more.", "She swipes the photo away."], "category": "Tech actions", "distractors": ["bite", "run", "drink"]}, {"verb": "scroll", "emoji": "📜", "blank": "Ryan moves the page up and down to ____.", "sentence": "Ryan scrolls the page.", "examples": ["Scroll down slowly.", "I scroll to the next question."], "category": "Tech actions", "distractors": ["jump", "cook", "chew"]}, {"verb": "record", "emoji": "🎤", "blank": "Ryan uses a microphone to ____ his voice.", "sentence": "Ryan records his voice.", "examples": ["Record the song again.", "The teacher records the lesson."], "category": "Tech actions", "distractors": ["sleep", "kick", "taste"]}, {"verb": "replay", "emoji": "▶️", "blank": "Ryan taps the button to ____ the sound.", "sentence": "Ryan replays the sound.", "examples": ["Replay the video please.", "I replay my recording."], "category": "Tech actions", "distractors": ["bite", "wash", "climb"]}, {"verb": "watch", "emoji": "📺", "blank": "Ryan sits on the sofa to ____ cartoons.", "sentence": "Ryan watches cartoons.", "examples": ["We watch a movie.", "The cat watches the bird."], "category": "Tech actions", "distractors": ["smell", "cut", "sleep"]}, {"verb": "pause", "emoji": "⏸️", "blank": "Ryan taps the button to ____ the video.", "sentence": "Ryan pauses the video.", "examples": ["Pause the song first.", "Daddy pauses the game."], "category": "Tech actions", "distractors": ["chew", "run", "dig"]}, {"verb": "start", "emoji": "▶️", "blank": "Ryan taps play to ____ the game.", "sentence": "Ryan starts the game.", "examples": ["Start the car carefully.", "The race starts now."], "category": "Tech actions", "distractors": ["sleep", "lick", "fold"]}, {"verb": "finish", "emoji": "🏁", "blank": "Ryan works hard to ____ the quiz.", "sentence": "Ryan finishes the quiz.", "examples": ["Finish your milk.", "She finishes her homework."], "category": "Tech actions", "distractors": ["drink", "throw", "crawl"]}, {"verb": "rinse", "emoji": "🚿", "blank": "Ryan uses water to ____ the cup.", "sentence": "Ryan rinses the cup.", "examples": ["Rinse your mouth.", "Mummy rinses the vegetables."], "category": "Cleaning", "distractors": ["jump", "read", "bite"]}, {"verb": "scrub", "emoji": "🧽", "blank": "Ryan uses a sponge to ____ the dirty plate.", "sentence": "Ryan scrubs the dirty plate.", "examples": ["Scrub the floor hard.", "He scrubs his shoes."], "category": "Cleaning", "distractors": ["sleep", "sing", "kick"]}, {"verb": "dry", "emoji": "🧻", "blank": "Ryan uses a towel to ____ his hands.", "sentence": "Ryan dries his hands.", "examples": ["Dry your hair.", "The sun dries the clothes."], "category": "Cleaning", "distractors": ["drink", "jump", "read"]}, {"verb": "dust", "emoji": "🪶", "blank": "Mummy uses a cloth to ____ the shelf.", "sentence": "Mummy dusts the shelf.", "examples": ["Dust the table gently.", "He dusts the old books."], "category": "Cleaning", "distractors": ["eat", "swim", "cry"]}, {"verb": "vacuum", "emoji": "🧹", "blank": "Daddy uses a machine to ____ the floor.", "sentence": "Daddy vacuums the floor.", "examples": ["Vacuum the carpet.", "The cleaner vacuums the room."], "category": "Cleaning", "distractors": ["sleep", "chew", "draw"]}, {"verb": "spray", "emoji": "💦", "blank": "Ryan uses a bottle to ____ water on the plant.", "sentence": "Ryan sprays water on the plant.", "examples": ["Spray the window cleaner.", "The hose sprays water."], "category": "Cleaning", "distractors": ["read", "kick", "yawn"]}, {"verb": "soak", "emoji": "🪣", "blank": "Mummy puts clothes in water to ____ them.", "sentence": "Mummy soaks the clothes.", "examples": ["Soak the beans overnight.", "I soak my feet in warm water."], "category": "Cleaning", "distractors": ["jump", "write", "bite"]}, {"verb": "polish", "emoji": "✨", "blank": "Daddy uses a cloth to ____ his shoes.", "sentence": "Daddy polishes his shoes.", "examples": ["Polish the table gently.", "She polishes the silver spoon."], "category": "Cleaning", "distractors": ["sleep", "eat", "run"]}, {"verb": "arrange", "emoji": "🧸", "blank": "Ryan puts his toys in order to ____ them.", "sentence": "Ryan arranges his toys.", "examples": ["Arrange the books neatly.", "We arrange the chairs in a row."], "category": "Cleaning", "distractors": ["chew", "swim", "drink"]}, {"verb": "collect", "emoji": "🧺", "blank": "Ryan uses a basket to ____ the clothes.", "sentence": "Ryan collects the clothes.", "examples": ["Collect the worksheets.", "The girl collects shells."], "category": "Cleaning", "distractors": ["sleep", "bite", "jump"]}, {"verb": "slice", "emoji": "🍞", "blank": "Daddy uses a knife to ____ the bread.", "sentence": "Daddy slices the bread.", "examples": ["Slice the tomato thinly.", "Mummy slices the cake."], "category": "Kitchen actions", "distractors": ["sleep", "run", "blink"]}, {"verb": "spread", "emoji": "🍞", "blank": "Ryan uses a knife to ____ jam on bread.", "sentence": "Ryan spreads jam on bread.", "examples": ["Spread butter on toast.", "The bird spreads its wings."], "category": "Kitchen actions", "distractors": ["jump", "cry", "kick"]}, {"verb": "squeeze", "emoji": "🍋", "blank": "Ryan uses his hand to ____ the lemon.", "sentence": "Ryan squeezes the lemon.", "examples": ["Squeeze the sponge.", "She squeezes my hand."], "category": "Kitchen actions", "distractors": ["read", "sleep", "swim"]}, {"verb": "shake", "emoji": "🧂", "blank": "Ryan uses his hand to ____ the bottle.", "sentence": "Ryan shakes the bottle.", "examples": ["Shake the juice first.", "The puppy shakes its tail."], "category": "Kitchen actions", "distractors": ["write", "sleep", "crawl"]}, {"verb": "boil", "emoji": "🍲", "blank": "Mummy uses a pot to ____ water.", "sentence": "Mummy boils water.", "examples": ["Boil the soup gently.", "The water boils quickly."], "category": "Kitchen actions", "distractors": ["jump", "read", "hide"]}, {"verb": "fry", "emoji": "🍳", "blank": "Mummy uses a pan to ____ an egg.", "sentence": "Mummy fries an egg.", "examples": ["Fry the fish carefully.", "Daddy fries noodles."], "category": "Kitchen actions", "distractors": ["sleep", "wash", "climb"]}, {"verb": "steam", "emoji": "🥟", "blank": "Mummy uses hot steam to ____ the buns.", "sentence": "Mummy steams the buns.", "examples": ["Steam the fish.", "Grandma steams dumplings."], "category": "Kitchen actions", "distractors": ["kick", "draw", "sleep"]}, {"verb": "pack", "emoji": "🥪", "blank": "Ryan puts food in a box to ____ his lunch.", "sentence": "Ryan packs his lunch.", "examples": ["Pack your school bag.", "Mummy packs the suitcase."], "category": "Kitchen actions", "distractors": ["swim", "blink", "bite"]}, {"verb": "share", "emoji": "🍪", "blank": "Ryan gives half a cookie to ____ with his brother.", "sentence": "Ryan shares the cookie.", "examples": ["Share your toys please.", "The boy shares his snack."], "category": "Kitchen actions", "distractors": ["sleep", "throw", "wash"]}, {"verb": "save", "emoji": "🍱", "blank": "Ryan keeps some food to ____ for later.", "sentence": "Ryan saves some food.", "examples": ["Save your work now.", "She saves money in a jar."], "category": "Kitchen actions", "distractors": ["jump", "lick", "draw"]}, {"verb": "chase", "emoji": "🐕", "blank": "The dog runs fast to ____ the ball.", "sentence": "The dog chases the ball.", "examples": ["The cat chases the mouse.", "Ryan chases bubbles."], "category": "Outdoor actions", "distractors": ["sleep", "read", "chew"]}, {"verb": "follow", "emoji": "👣", "blank": "Ryan walks behind Daddy to ____ him.", "sentence": "Ryan follows Daddy.", "examples": ["Follow the line.", "The ducklings follow their mother."], "category": "Outdoor actions", "distractors": ["drink", "bite", "draw"]}, {"verb": "lead", "emoji": "🧭", "blank": "Daddy walks in front to ____ the way.", "sentence": "Daddy leads the way.", "examples": ["The guide leads the group.", "The captain leads the team."], "category": "Outdoor actions", "distractors": ["sleep", "eat", "wash"]}, {"verb": "explore", "emoji": "🔍", "blank": "Ryan walks around the garden to ____ it.", "sentence": "Ryan explores the garden.", "examples": ["We explore the park.", "The children explore the cave."], "category": "Outdoor actions", "distractors": ["chew", "sleep", "kick"]}, {"verb": "search", "emoji": "🔎", "blank": "Ryan looks everywhere to ____ for his toy.", "sentence": "Ryan searches for his toy.", "examples": ["Search under the bed.", "The police search the area."], "category": "Outdoor actions", "distractors": ["sleep", "taste", "jump"]}, {"verb": "discover", "emoji": "💡", "blank": "Ryan opens the box to ____ what is inside.", "sentence": "Ryan discovers what is inside.", "examples": ["We discover a new path.", "She discovers a tiny shell."], "category": "Outdoor actions", "distractors": ["bite", "wash", "cry"]}, {"verb": "notice", "emoji": "👀", "blank": "Ryan uses his eyes to ____ the small ant.", "sentence": "Ryan notices the small ant.", "examples": ["Notice the red sign.", "I notice your new shoes."], "category": "Outdoor actions", "distractors": ["eat", "kick", "sleep"]}, {"verb": "protect", "emoji": "🛡️", "blank": "Ryan wears a helmet to ____ his head.", "sentence": "Ryan protects his head.", "examples": ["Protect your eyes from dust.", "The shell protects the turtle."], "category": "Outdoor actions", "distractors": ["drink", "draw", "chew"]}, {"verb": "escape", "emoji": "🏃‍♂️", "blank": "The mouse runs away to ____ from the cat.", "sentence": "The mouse escapes from the cat.", "examples": ["The bird escapes from the cage.", "Do not let the dog escape."], "category": "Outdoor actions", "distractors": ["sleep", "read", "wash"]}, {"verb": "return", "emoji": "↩️", "blank": "Ryan goes back to ____ the book to the shelf.", "sentence": "Ryan returns the book.", "examples": ["Return the toy to the box.", "She returns home after school."], "category": "Outdoor actions", "distractors": ["bite", "jump", "cook"]}, {"verb": "invite", "emoji": "💌", "blank": "Ryan asks his friend to come and ____ him.", "sentence": "Ryan invites his friend.", "examples": ["Invite Grandma to dinner.", "We invite friends to the party."], "category": "Social actions", "distractors": ["sleep", "chew", "kick"]}, {"verb": "visit", "emoji": "🏠", "blank": "Ryan goes to Grandma's house to ____ her.", "sentence": "Ryan visits Grandma.", "examples": ["We visit the zoo.", "I visit my cousin."], "category": "Social actions", "distractors": ["jump", "bite", "wash"]}, {"verb": "welcome", "emoji": "👋", "blank": "Ryan says hello to ____ his guest.", "sentence": "Ryan welcomes his guest.", "examples": ["Welcome to our home.", "The teacher welcomes the class."], "category": "Social actions", "distractors": ["sleep", "throw", "eat"]}, {"verb": "promise", "emoji": "🤝", "blank": "Ryan says he will do it to ____ Daddy.", "sentence": "Ryan promises Daddy.", "examples": ["I promise to be careful.", "She promises to help."], "category": "Social actions", "distractors": ["kick", "sleep", "wash"]}, {"verb": "agree", "emoji": "👍", "blank": "Ryan says yes because he ____ with Mummy.", "sentence": "Ryan agrees with Mummy.", "examples": ["I agree with you.", "The team agrees on the plan."], "category": "Social actions", "distractors": ["bite", "sleep", "throw"]}, {"verb": "refuse", "emoji": "🙅", "blank": "Ryan says no to ____ the extra sweet.", "sentence": "Ryan refuses the extra sweet.", "examples": ["I refuse to be rude.", "The boy refuses the medicine."], "category": "Social actions", "distractors": ["eat", "draw", "swim"]}, {"verb": "apologise", "emoji": "🙏", "blank": "Ryan says sorry to ____ to his friend.", "sentence": "Ryan apologises to his friend.", "examples": ["Please apologise to Mummy.", "He apologises for being late."], "category": "Social actions", "distractors": ["sleep", "kick", "read"]}, {"verb": "explain", "emoji": "🗣️", "blank": "Ryan uses words to ____ what happened.", "sentence": "Ryan explains what happened.", "examples": ["Explain your answer.", "The teacher explains the rule."], "category": "Social actions", "distractors": ["bite", "jump", "wash"]}, {"verb": "describe", "emoji": "🖼️", "blank": "Ryan uses words to ____ the picture.", "sentence": "Ryan describes the picture.", "examples": ["Describe the animal.", "She describes her house."], "category": "Social actions", "distractors": ["sleep", "chew", "throw"]}, {"verb": "remember", "emoji": "🧠", "blank": "Ryan tries to ____ the new word.", "sentence": "Ryan remembers the new word.", "examples": ["Remember your bag.", "I remember the song."], "category": "Social actions", "distractors": ["drink", "kick", "sleep"]}, {"verb": "pretend", "emoji": "🎭", "blank": "Ryan uses his imagination to ____ he is a doctor.", "sentence": "Ryan pretends he is a doctor.", "examples": ["I pretend to be a lion.", "The children pretend to cook."], "category": "Thinking actions", "distractors": ["sleep", "eat", "wash"]}, {"verb": "imagine", "emoji": "🌈", "blank": "Ryan closes his eyes to ____ a big castle.", "sentence": "Ryan imagines a big castle.", "examples": ["Imagine a flying car.", "She imagines a magic door."], "category": "Thinking actions", "distractors": ["kick", "bite", "pour"]}, {"verb": "guess", "emoji": "❓", "blank": "Ryan is not sure, so he will ____ the answer.", "sentence": "Ryan guesses the answer.", "examples": ["Guess what is in the box.", "I guess the number is ten."], "category": "Thinking actions", "distractors": ["sleep", "wash", "chew"]}, {"verb": "decide", "emoji": "☑️", "blank": "Ryan thinks carefully to ____ which toy to choose.", "sentence": "Ryan decides which toy to choose.", "examples": ["Decide what to eat.", "She decides to try again."], "category": "Thinking actions", "distractors": ["jump", "lick", "throw"]}, {"verb": "choose", "emoji": "✅", "blank": "Ryan looks at the options to ____ the answer.", "sentence": "Ryan chooses the answer.", "examples": ["Choose one colour.", "I choose the blue shirt."], "category": "Thinking actions", "distractors": ["sleep", "eat", "wash"]}, {"verb": "solve", "emoji": "🧩", "blank": "Ryan thinks hard to ____ the puzzle.", "sentence": "Ryan solves the puzzle.", "examples": ["Solve the problem.", "The boy solves the riddle."], "category": "Thinking actions", "distractors": ["bite", "run", "drink"]}, {"verb": "compare", "emoji": "⚖️", "blank": "Ryan looks at two pictures to ____ them.", "sentence": "Ryan compares the pictures.", "examples": ["Compare the two cups.", "We compare the animals."], "category": "Thinking actions", "distractors": ["sleep", "kick", "lick"]}, {"verb": "match", "emoji": "🧦", "blank": "Ryan finds the same socks to ____ them.", "sentence": "Ryan matches the socks.", "examples": ["Match the word to the picture.", "The shoes match the dress."], "category": "Thinking actions", "distractors": ["chew", "sleep", "throw"]}, {"verb": "sort", "emoji": "🧺", "blank": "Ryan puts toys into groups to ____ them.", "sentence": "Ryan sorts the toys.", "examples": ["Sort the blocks by colour.", "She sorts the books."], "category": "Thinking actions", "distractors": ["jump", "drink", "cry"]}, {"verb": "check", "emoji": "🔍", "blank": "Ryan looks again to ____ his answer.", "sentence": "Ryan checks his answer.", "examples": ["Check your spelling.", "Daddy checks the door."], "category": "Thinking actions", "distractors": ["sleep", "bite", "swim"]}, {"verb": "zip", "emoji": "🎒", "blank": "Ryan pulls the zipper to ____ his bag.", "sentence": "Ryan zips his bag.", "examples": ["Zip your jacket.", "She zips the suitcase."], "category": "Clothing actions", "distractors": ["eat", "jump", "read"]}, {"verb": "unzip", "emoji": "🎒", "blank": "Ryan pulls the zipper down to ____ his bag.", "sentence": "Ryan unzips his bag.", "examples": ["Unzip the pencil case.", "He unzips his jacket."], "category": "Clothing actions", "distractors": ["sleep", "kick", "drink"]}, {"verb": "button", "emoji": "👕", "blank": "Ryan uses his fingers to ____ his shirt.", "sentence": "Ryan buttons his shirt.", "examples": ["Button your coat.", "Daddy buttons the baby’s shirt."], "category": "Clothing actions", "distractors": ["chew", "swim", "throw"]}, {"verb": "unbutton", "emoji": "👔", "blank": "Ryan uses his fingers to ____ his shirt before changing.", "sentence": "Ryan unbuttons his shirt.", "examples": ["Unbutton your jacket.", "She unbuttons the coat."], "category": "Clothing actions", "distractors": ["sleep", "eat", "jump"]}, {"verb": "tie", "emoji": "👟", "blank": "Ryan uses his hands to ____ his shoelaces.", "sentence": "Ryan ties his shoelaces.", "examples": ["Tie the ribbon.", "I tie the string tightly."], "category": "Clothing actions", "distractors": ["bite", "drink", "read"]}, {"verb": "untie", "emoji": "👟", "blank": "Ryan pulls the lace to ____ his shoelaces.", "sentence": "Ryan unties his shoelaces.", "examples": ["Untie the knot.", "She unties the ribbon."], "category": "Clothing actions", "distractors": ["sleep", "wash", "kick"]}, {"verb": "cover", "emoji": "☂️", "blank": "Ryan uses an umbrella to ____ his head.", "sentence": "Ryan covers his head.", "examples": ["Cover the food.", "The blanket covers the baby."], "category": "Clothing actions", "distractors": ["chew", "run", "draw"]}, {"verb": "wrap", "emoji": "🧣", "blank": "Ryan uses a scarf to ____ his neck.", "sentence": "Ryan wraps the scarf around his neck.", "examples": ["Wrap the gift nicely.", "Mummy wraps the baby."], "category": "Clothing actions", "distractors": ["jump", "sleep", "taste"]}, {"verb": "remove", "emoji": "🧢", "blank": "Ryan uses his hand to ____ his cap.", "sentence": "Ryan removes his cap.", "examples": ["Remove your shoes.", "She removes the sticker."], "category": "Clothing actions", "distractors": ["eat", "read", "swim"]}, {"verb": "change", "emoji": "👚", "blank": "Ryan goes to his room to ____ his clothes.", "sentence": "Ryan changes his clothes.", "examples": ["Change your socks.", "The baby changes his shirt."], "category": "Clothing actions", "distractors": ["bite", "jump", "throw"]}];
+
+const el = {
+  home:document.getElementById("homeScreen"), quiz:document.getElementById("quizScreen"),
+  finish:document.getElementById("finishScreen"), scorePill:document.getElementById("scorePill"),
+  startBtn:document.getElementById("startBtn"), voiceBtn:document.getElementById("voiceBtn"),
+  quizLength:document.getElementById("quizLength"), voiceSelect:document.getElementById("voiceSelect"),
+  rateSelect:document.getElementById("rateSelect"), afterCorrect:document.getElementById("afterCorrect"),
+  counter:document.getElementById("counter"), scoreText:document.getElementById("scoreText"), bar:document.getElementById("bar"),
+  category:document.getElementById("category"), hint:document.getElementById("hint"), emoji:document.getElementById("emoji"),
+  question:document.getElementById("question"), examplesPreview:document.getElementById("examplesPreview"),
+  options:document.getElementById("options"), repeatBtn:document.getElementById("repeatBtn"), skipAudioBtn:document.getElementById("skipAudioBtn"),
+  feedback:document.getElementById("feedback"), speechStatus:document.getElementById("speechStatus"),
+  finalScore:document.getElementById("finalScore"), finishText:document.getElementById("finishText"),
+  review:document.getElementById("review"), againBtn:document.getElementById("againBtn"), homeBtn:document.getElementById("homeBtn"),
+  stars:document.getElementById("stars")
+};
+
+let quiz=[], index=0, score=0, review=[], locked=false, attemptsForCurrent=0, skipRequested=false;
+
+function show(screen) {
+  [el.home, el.quiz, el.finish].forEach(s=>s.classList.remove("active"));
+  screen.classList.add("active");
+  window.scrollTo({top:0, behavior:"smooth"});
+}
+
+function shuffle(arr) {
+  const a=arr.slice();
+  for(let i=a.length-1;i>0;i--) {
+    const j=Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function getVoicesSafe() {
+  return window.speechSynthesis && window.speechSynthesis.getVoices ? window.speechSynthesis.getVoices() : [];
+}
+
+function populateVoices() {
+  if(!("speechSynthesis" in window)) return;
+  const current = el.voiceSelect.value;
+  const voices = getVoicesSafe().filter(v => /^en/i.test(v.lang));
+  el.voiceSelect.innerHTML = '<option value="">Auto best voice</option>';
+  voices.forEach((v, i) => {
+    const opt=document.createElement("option");
+    opt.value = v.name + "||" + v.lang;
+    opt.textContent = v.name + " (" + v.lang + ")";
+    el.voiceSelect.appendChild(opt);
+  });
+  if(current) el.voiceSelect.value = current;
+}
+
+function pickVoice() {
+  const voices = getVoicesSafe();
+  const selected = el.voiceSelect.value;
+  if(selected) {
+    const [name, lang] = selected.split("||");
+    const chosen = voices.find(v => v.name === name && v.lang === lang);
+    if(chosen) return chosen;
+  }
+  const preferredNames = [
+    "Samantha","Karen","Moira","Tessa","Serena","Daniel","Oliver","Ava","Susan",
+    "Google UK English Female","Google US English","Microsoft Aria","Microsoft Jenny","Microsoft Sonia","Microsoft Libby"
+  ];
+  for (const name of preferredNames) {
+    const v = voices.find(x => x.name && x.name.toLowerCase().includes(name.toLowerCase()));
+    if(v) return v;
+  }
+  return voices.find(x => /^en/i.test(x.lang) && /natural|premium|enhanced|english|female/i.test(x.name)) || voices.find(x => /^en/i.test(x.lang)) || null;
+}
+
+function estimateMs(text, rate) {
+  const words = String(text).trim().split(/\s+/).filter(Boolean).length;
+  return Math.max(900, Math.min(6500, (words * 430) / Math.max(rate, 0.55) + 450));
+}
+
+function speakOne(text, rateOverride=null) {
+  return new Promise(resolve => {
+    if(skipRequested) return resolve();
+    try {
+      if(!("speechSynthesis" in window)) return resolve();
+      const rate = rateOverride || Number(el.rateSelect.value || 0.76);
+      const u = new SpeechSynthesisUtterance(text);
+      u.lang="en-SG"; u.rate=rate; u.pitch=1.02; u.volume=1;
+      const v=pickVoice(); if(v) u.voice=v;
+      let done=false;
+      const finish=()=>{ if(!done) { done=true; resolve(); } };
+      u.onend=finish; u.onerror=finish;
+      window.speechSynthesis.speak(u);
+      setTimeout(finish, estimateMs(text, rate));
+    } catch(e) {
+      resolve();
+    }
+  });
+}
+
+async function speakSequence(parts) {
+  skipRequested=false;
+  try { if("speechSynthesis" in window) window.speechSynthesis.cancel(); } catch(e) {}
+  for(const part of parts) {
+    if(skipRequested) break;
+    el.speechStatus.textContent = "🔊 " + part;
+    await speakOne(part);
+    await new Promise(r => setTimeout(r, 180));
+  }
+  el.speechStatus.textContent = "";
+}
+
+function beep(type) {
+  try {
+    const C=window.AudioContext||window.webkitAudioContext;
+    const ctx=new C(); const osc=ctx.createOscillator(); const gain=ctx.createGain();
+    osc.connect(gain); gain.connect(ctx.destination);
+    const now=ctx.currentTime; osc.type="sine"; osc.frequency.value=type==="good"?720:180;
+    gain.gain.setValueAtTime(0.001, now);
+    gain.gain.exponentialRampToValueAtTime(0.18, now+0.02);
+    gain.gain.exponentialRampToValueAtTime(0.001, now+0.22);
+    osc.start(now); osc.stop(now+0.24);
+  } catch(e) {}
+}
+
+function stars() {
+  const symbols=["⭐","✨","🌟","🎉","💫"];
+  for(let i=0;i<20;i++) {
+    const s=document.createElement("div");
+    s.className="star"; s.textContent=symbols[Math.floor(Math.random()*symbols.length)];
+    s.style.left=(Math.random()*100)+"vw"; s.style.animationDelay=(Math.random()*0.25)+"s";
+    el.stars.appendChild(s); setTimeout(()=>s.remove(),1500);
+  }
+}
+
+function buildQuiz() {
+  const length=Number(el.quizLength.value);
+  quiz=shuffle(ITEMS).slice(0,length).map(q=>({...q, options:shuffle([q.verb, ...shuffle(q.distractors).slice(0,3)])}));
+  index=0; score=0; review=[];
+}
+
+function blankHtml(text) {
+  return text.replace("____", '<span class="blank">____</span>');
+}
+function spokenBlank(text) {
+  return text.replace("____", "blank");
+}
+
+function render() {
+  locked=false; attemptsForCurrent=0; skipRequested=false;
+  const q=quiz[index];
+  el.counter.textContent=`${index+1} / ${quiz.length}`;
+  el.scoreText.textContent=`Correct ${score}`;
+  el.scorePill.textContent=`⭐ ${score}`;
+  el.bar.style.width=`${(index/quiz.length)*100}%`;
+  el.category.textContent=q.category;
+  el.emoji.textContent=q.emoji;
+  el.question.innerHTML=blankHtml(q.blank);
+  el.examplesPreview.classList.remove("show");
+  el.examplesPreview.innerHTML="";
+  el.options.innerHTML="";
+  q.options.forEach(opt=>{
+    const b=document.createElement("button");
+    b.className="option"; b.textContent=opt;
+    b.addEventListener("click",()=>answer(opt,b));
+    el.options.appendChild(b);
+  });
+  setTimeout(()=>speakSequence([spokenBlank(q.blank), "Choose the missing action word."]),250);
+}
+
+function feedback(text, good) {
+  el.feedback.textContent=text;
+  el.feedback.className="feedback show " + (good ? "good" : "bad");
+  setTimeout(()=>el.feedback.classList.remove("show"),850);
+}
+
+async function answer(choice, btn) {
+  if(locked) return;
+  const q=quiz[index];
+  const good=choice===q.verb;
+  attemptsForCurrent++;
+
+  if(good) {
+    locked=true;
+    const buttons=[...el.options.querySelectorAll("button")];
+    buttons.forEach(b=>{ b.disabled=true; if(b.textContent===q.verb) b.classList.add("correct"); });
+    score++;
+    beep("good"); stars(); feedback("Correct! ⭐", true);
+    el.examplesPreview.innerHTML = `
+      <b>${q.verb}</b><br>
+      1. ${q.sentence}<br>
+      2. ${q.examples[0]}<br>
+      3. ${q.examples[1]}
+    `;
+    el.examplesPreview.classList.add("show");
+    review.push({verb:q.verb, attempts:attemptsForCurrent, sentence:q.sentence, examples:q.examples, emoji:q.emoji, category:q.category});
+    const parts = el.afterCorrect.value === "full"
+      ? ["Correct.", q.verb + ".", q.sentence, q.examples[0], q.examples[1]]
+      : ["Correct.", q.verb + ".", q.sentence];
+    await speakSequence(parts);
+    if(skipRequested) {
+      try { if("speechSynthesis" in window) window.speechSynthesis.cancel(); } catch(e) {}
+    }
+    setTimeout(()=>{
+      index++;
+      if(index>=quiz.length) finish(); else render();
+    }, 350);
+  } else {
+    btn.classList.add("wrong");
+    setTimeout(()=>btn.classList.remove("wrong"),750);
+    beep("bad"); feedback("Try again", false);
+    await speakSequence([choice + ".", "Wrong. Try again. Choose the correct action word."]);
+  }
+}
+
+function repeat() {
+  const q=quiz[index]; if(!q) return;
+  speakSequence([spokenBlank(q.blank), "Choose the missing action word."]);
+}
+
+function finish() {
+  el.bar.style.width="100%"; show(el.finish);
+  el.finalScore.textContent=`${score} / ${quiz.length}`;
+  const totalAttempts = review.reduce((s,r)=>s+r.attempts,0);
+  el.finishText.textContent = `Great job. Ryan completed ${quiz.length} action verbs with ${totalAttempts} total attempts.`;
+  el.review.innerHTML="";
+  review.forEach((r,i)=>{
+    const div=document.createElement("div");
+    div.className="reviewItem";
+    div.innerHTML=`<b>${i+1}. ${r.emoji} ${r.verb}</b> — attempts: <b>${r.attempts}</b> ✅<br>
+      <span>${r.sentence}</span><br>
+      <span>Example 1: ${r.examples[0]}</span><br>
+      <span>Example 2: ${r.examples[1]}</span>`;
+    el.review.appendChild(div);
+  });
+  try { localStorage.setItem("ryanActionVerbsExamplesLast", JSON.stringify({score,total:quiz.length,review,date:new Date().toISOString()})); } catch(e) {}
+  setTimeout(()=>speakSequence([`Well done Ryan. You completed ${quiz.length} action verbs.`]),300);
+}
+
+el.startBtn.addEventListener("click",()=>{buildQuiz(); show(el.quiz); render();});
+el.voiceBtn.addEventListener("click",()=>speakSequence(["Hello Ryan.", "Choose the action word.", "After you answer correctly, I will read more examples."]));
+el.repeatBtn.addEventListener("click",repeat);
+el.skipAudioBtn.addEventListener("click",()=>{skipRequested=true; try{window.speechSynthesis.cancel();}catch(e){} el.speechStatus.textContent="Audio skipped."; });
+el.againBtn.addEventListener("click",()=>{buildQuiz(); show(el.quiz); render();});
+el.homeBtn.addEventListener("click",()=>show(el.home));
+
+if("speechSynthesis" in window) {
+  populateVoices();
+  window.speechSynthesis.onvoiceschanged = populateVoices;
+  setTimeout(populateVoices, 500);
+  setTimeout(populateVoices, 1500);
+}
+try {
+  const last=JSON.parse(localStorage.getItem("ryanActionVerbsExamplesLast")||"null");
+  if(last) el.scorePill.textContent=`Last ⭐ ${last.score}/${last.total}`;
+} catch(e) {}
+</script>
+</body>
+</html>
