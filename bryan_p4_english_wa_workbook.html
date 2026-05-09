@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Bryan P4 English WA Quest</title>
+<style>
+  :root {
+    --bg:#f6f8ff;
+    --card:#ffffff;
+    --ink:#18233f;
+    --muted:#667085;
+    --primary:#536dfe;
+    --primary2:#00a3a3;
+    --accent:#ffb703;
+    --good:#138a36;
+    --bad:#c1121f;
+    --soft:#e8edff;
+    --soft2:#e8fbf8;
+    --line:#d9e0f5;
+  }
+  * { box-sizing:border-box; }
+  body {
+    margin:0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+    background: radial-gradient(circle at top left, #dff3ff 0, transparent 30%), linear-gradient(135deg, #f7f9ff 0%, #eef7ff 100%);
+    color:var(--ink);
+    min-height:100vh;
+  }
+  header {
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(255,255,255,0.9);
+    backdrop-filter: blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:14px 18px;
+  }
+  .topbar {
+    max-width:1180px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:16px;
+  }
+  .brand {
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .logo {
+    width:48px;
+    height:48px;
+    border-radius:16px;
+    background:linear-gradient(135deg,var(--primary),#8c52ff);
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:900;
+    font-size:24px;
+    box-shadow:0 10px 24px rgba(83,109,254,.25);
+  }
+  h1 { font-size:24px; margin:0; line-height:1.15; }
+  .subtitle { margin:2px 0 0; color:var(--muted); font-size:14px; }
+  .pill {
+    padding:9px 12px;
+    border-radius:999px;
+    background:var(--soft);
+    font-weight:700;
+    color:#3441a1;
+    white-space:nowrap;
+  }
+  main {
+    max-width:1180px;
+    margin:0 auto;
+    padding:24px 18px 80px;
+  }
+  .hero {
+    display:grid;
+    grid-template-columns: 1.25fr .75fr;
+    gap:18px;
+    align-items:stretch;
+  }
+  .card {
+    background:rgba(255,255,255,.92);
+    border:1px solid var(--line);
+    border-radius:24px;
+    padding:22px;
+    box-shadow:0 12px 30px rgba(16,24,40,.08);
+  }
+  .hero h2 { font-size:34px; margin:0 0 10px; }
+  .hero p { color:var(--muted); line-height:1.55; margin:8px 0; }
+  .stats {
+    display:grid;
+    grid-template-columns: repeat(3,1fr);
+    gap:12px;
+    margin-top:16px;
+  }
+  .stat {
+    border-radius:18px;
+    padding:14px;
+    background:#f7f9ff;
+    border:1px solid var(--line);
+  }
+  .stat b { font-size:28px; display:block; }
+  .stat span { color:var(--muted); font-size:13px; }
+  .daily-plan {
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+  }
+  .daily-plan .row {
+    display:flex;
+    justify-content:space-between;
+    gap:10px;
+    padding:10px 12px;
+    background:#f8fbff;
+    border:1px solid var(--line);
+    border-radius:14px;
+  }
+  .row small { color:var(--muted); }
+  .toolbar {
+    display:flex;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:22px 0 14px;
+  }
+  button, .btn {
+    border:0;
+    border-radius:16px;
+    padding:12px 16px;
+    font-weight:800;
+    cursor:pointer;
+    background:var(--primary);
+    color:white;
+    box-shadow:0 8px 20px rgba(83,109,254,.22);
+    transition:.15s ease transform, .15s ease opacity;
+    font-size:15px;
+  }
+  button:hover { transform: translateY(-1px); }
+  button.secondary { background:white; color:var(--ink); border:1px solid var(--line); box-shadow:none; }
+  button.good { background:var(--good); }
+  button.warning { background:#f77f00; }
+  button.bad { background:var(--bad); }
+  button:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+  .session-grid {
+    display:grid;
+    grid-template-columns: repeat(4,1fr);
+    gap:14px;
+    margin:14px 0 24px;
+  }
+  .session-tile {
+    background:white;
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:16px;
+    cursor:pointer;
+    min-height:156px;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    box-shadow:0 8px 22px rgba(16,24,40,.06);
+  }
+  .session-tile:hover { outline:3px solid rgba(83,109,254,.18); }
+  .session-tile.active { border-color:var(--primary); outline:3px solid rgba(83,109,254,.18); }
+  .session-title { font-weight:900; line-height:1.25; margin-bottom:8px; }
+  .session-focus { font-size:13px; color:var(--muted); line-height:1.35; }
+  .progressbar {
+    width:100%; height:10px; background:#ecf0ff; border-radius:999px; overflow:hidden; margin-top:10px;
+  }
+  .progressbar > div { height:100%; width:0; background:linear-gradient(90deg,var(--primary),var(--primary2)); transition:.3s; }
+  .workspace {
+    display:grid;
+    grid-template-columns: .85fr 1.15fr;
+    gap:18px;
+    align-items:start;
+  }
+  .lesson-flow .step {
+    display:grid;
+    grid-template-columns:78px 1fr;
+    gap:12px;
+    padding:12px 0;
+    border-bottom:1px dashed var(--line);
+  }
+  .lesson-flow .step:last-child { border-bottom:0; }
+  .badge {
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:6px 10px;
+    border-radius:999px;
+    background:var(--soft2);
+    color:#05756f;
+    font-weight:900;
+    font-size:13px;
+    white-space:nowrap;
+  }
+  .notes {
+    margin:14px 0 0;
+    padding:14px 16px;
+    background:#fff8e6;
+    border:1px solid #ffe0a3;
+    border-radius:18px;
+  }
+  .notes h4 { margin:0 0 8px; }
+  .notes ul { margin:8px 0 0 18px; padding:0; line-height:1.45; }
+  .passage {
+    background:#f8fbff;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:16px;
+    margin-bottom:14px;
+    line-height:1.65;
+    white-space:pre-line;
+  }
+  .quiz-head {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:12px;
+  }
+  .scorebox {
+    padding:10px 12px;
+    border-radius:15px;
+    background:var(--soft);
+    font-weight:900;
+    color:#3441a1;
+  }
+  .question-card {
+    border:1px solid var(--line);
+    background:white;
+    border-radius:22px;
+    padding:18px;
+    margin:14px 0;
+    box-shadow:0 8px 18px rgba(16,24,40,.05);
+  }
+  .qtop {
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .qnum {
+    font-weight:900;
+    color:var(--primary);
+  }
+  .qtype {
+    font-size:12px;
+    color:var(--muted);
+    background:#f2f4ff;
+    padding:5px 8px;
+    border-radius:999px;
+    font-weight:800;
+  }
+  .question { font-size:18px; font-weight:800; line-height:1.35; margin:10px 0 14px; }
+  .options { display:grid; gap:10px; }
+  .option {
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    padding:12px;
+    border-radius:15px;
+    background:#f8fbff;
+    border:1px solid var(--line);
+    cursor:pointer;
+  }
+  .option input { margin-top:4px; transform:scale(1.2); }
+  textarea, input[type="text"] {
+    width:100%;
+    min-height:54px;
+    padding:13px;
+    border-radius:15px;
+    border:1px solid var(--line);
+    font-size:17px;
+    font-family:inherit;
+    outline:none;
+    background:#fcfdff;
+  }
+  textarea:focus, input[type="text"]:focus { border-color:var(--primary); box-shadow:0 0 0 3px rgba(83,109,254,.13); }
+  .feedback {
+    margin-top:12px;
+    padding:12px;
+    border-radius:15px;
+    display:none;
+    line-height:1.45;
+  }
+  .feedback.correct { display:block; background:#e9f8ee; border:1px solid #b9e4c6; color:#0b6126; }
+  .feedback.incorrect { display:block; background:#fff1f1; border:1px solid #ffc8c8; color:#8a0611; }
+  .feedback.open { display:block; background:#fff8e6; border:1px solid #ffe0a3; color:#6b4900; }
+  .answerkey {
+    display:none;
+    background:#101828;
+    color:white;
+    border-radius:22px;
+    padding:18px;
+    margin-top:18px;
+    line-height:1.6;
+  }
+  .answerkey h3 { margin-top:0; }
+  .answerkey ol { padding-left:22px; }
+  .answerkey code { color:#ffdd80; white-space:normal; }
+  .print-note {
+    color:var(--muted);
+    font-size:13px;
+    margin-top:8px;
+  }
+  .timer {
+    font-size:28px;
+    font-weight:900;
+    letter-spacing:1px;
+  }
+  .teacher-note {
+    background:#f0fffb;
+    border:1px solid #c6f3ea;
+    border-radius:18px;
+    padding:14px;
+    line-height:1.45;
+  }
+  .hidden { display:none !important; }
+  footer {
+    margin-top:26px;
+    text-align:center;
+    color:var(--muted);
+    font-size:12px;
+  }
+  @media (max-width: 920px) {
+    .hero, .workspace { grid-template-columns:1fr; }
+    .session-grid { grid-template-columns: repeat(2,1fr); }
+    .stats { grid-template-columns:1fr; }
+    .topbar { align-items:flex-start; }
+    .pill { display:none; }
+  }
+  @media (max-width: 560px) {
+    header { padding:10px; }
+    main { padding:14px 10px 60px; }
+    .session-grid { grid-template-columns:1fr; }
+    .hero h2 { font-size:28px; }
+    .card { padding:16px; border-radius:18px; }
+    .question { font-size:16px; }
+  }
+  @media print {
+    header, .toolbar, .session-grid, button { display:none !important; }
+    body { background:white; }
+    main { max-width:none; }
+    .hero { display:none; }
+    .workspace { display:block; }
+    .card, .question-card { box-shadow:none; break-inside:avoid; }
+    .answerkey { display:block !important; color:black; background:white; border:1px solid #aaa; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">B</div>
+      <div>
+        <h1>Bryan P4 English WA Quest</h1>
+        <p class="subtitle">1-hour sessions • Grammar • Vocabulary • Cloze • S&T • Comprehension</p>
+      </div>
+    </div>
+    <div class="pill">MOE-aligned practice workbook</div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="card">
+      <h2>Next Week WA Preparation Plan</h2>
+      <p>This workbook is designed for Primary 4 English practice up to the mid-year period. It follows the MOE-style skill areas: grammar, vocabulary, reading/viewing, writing/representing and language use in context. It is not an official MOE paper.</p>
+      <p><b>How to use:</b> choose one session, teach the mini rule, let Bryan answer, then use the Check button. Open answers need parent marking.</p>
+      <div class="stats">
+        <div class="stat"><b>8</b><span>1-hour sessions</span></div>
+        <div class="stat"><b>80</b><span>interactive questions</span></div>
+        <div class="stat"><b>WA</b><span>mini simulation included</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Recommended 1-hour Timeline</h3>
+      <div class="daily-plan">
+        <div class="row"><b>Day 1</b><small>Baseline + connectors</small></div>
+        <div class="row"><b>Day 2</b><small>ought to / modals</small></div>
+        <div class="row"><b>Day 3</b><small>tenses + since/for</small></div>
+        <div class="row"><b>Day 4</b><small>Synthesis & transformation</small></div>
+        <div class="row"><b>Day 5</b><small>Cloze strategies</small></div>
+        <div class="row"><b>Day 6</b><small>Comprehension OE</small></div>
+        <div class="row"><b>Day 7</b><small>Editing + mini WA</small></div>
+      </div>
+      <p class="print-note">Tip: For TV use, open browser full screen and zoom to 110–125%.</p>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <button onclick="startTimer(60)">Start 60-min Timer</button>
+    <button class="secondary" onclick="pauseTimer()">Pause</button>
+    <button class="secondary" onclick="resetTimer()">Reset Timer</button>
+    <button class="secondary" onclick="toggleTeacher()">Teacher Notes</button>
+    <button class="secondary" onclick="toggleAnswerKey()">Show / Hide Answer Key</button>
+    <button class="warning" onclick="window.print()">Print / Save as PDF</button>
+    <button class="bad" onclick="clearProgress()">Clear Progress</button>
+    <span class="scorebox timer" id="timer">60:00</span>
+  </div>
+
+  <section class="card teacher-note hidden" id="teacherNote">
+    <b>Teacher / Parent Method:</b> Ask Bryan to say the reason for every answer. For MCQ, he should eliminate two wrong options. For open-ended questions, check whether the answer is complete, specific and grammatically correct. Do not over-teach; focus on his top 2 weak areas after each session.
+  </section>
+
+  <section class="session-grid" id="sessionGrid"></section>
+
+  <section class="workspace">
+    <div class="card" id="lessonPane"></div>
+    <div class="card" id="quizPane"></div>
+  </section>
+
+  <footer>
+    Created for home revision. Question set is original practice material inspired by common Primary 4 English WA components.
+  </footer>
+</main>
+
+<script>
+const SESSIONS = [{"id": 1, "title": "Session 1 — WA Baseline + Linking Ideas", "focus": "Conjunctions: but, although, because, so, since", "objective": "Bryan can choose the correct connector and explain why it fits the meaning.", "flow": [["Warm-up", "5 min", "Ask Bryan to say one good thing and one difficult thing about school. Turn them into one sentence with but / although."], ["Teach", "12 min", "Mini rules: but = contrast; although = contrast but more formal; because/since = reason; so = result."], ["Guided practice", "15 min", "Do 6 examples together. Ask: Is the second idea opposite, reason, or result?"], ["Independent quiz", "20 min", "Bryan completes the interactive questions."], ["Correction talk", "8 min", "For every wrong answer, Bryan must say the clue word or meaning."]], "mini_notes": ["Use although at the beginning or middle: Although it was raining, we continued the game. / We continued the game although it was raining.", "Do not use but and although together in the same sentence: Although he was tired, he finished his homework. Not: Although he was tired, but...", "Since can mean because, especially when giving a reason: Since you are early, you may help me."], "questions": [{"type": "MCQ", "q": "Choose the best word: Bryan wanted to play football, ___ it started to rain heavily.", "options": ["because", "but", "so", "since"], "answer": "but", "explain": "The two ideas are opposite: he wanted to play, but rain stopped him."}, {"type": "MCQ", "q": "Choose the best word: ___ Mei was nervous, she spoke clearly during the presentation.", "options": ["Although", "So", "Because", "And"], "answer": "Although", "explain": "Although shows contrast between being nervous and speaking clearly."}, {"type": "MCQ", "q": "Choose the best word: ___ the library was closed, we borrowed books from the classroom shelf.", "options": ["Since", "But", "Or", "Unless"], "answer": "Since", "explain": "Since gives the reason for borrowing from the classroom shelf."}, {"type": "MCQ", "q": "Choose the best word: The floor was wet, ___ Mr Tan placed a warning sign near the door.", "options": ["but", "so", "although", "unless"], "answer": "so", "explain": "So shows the result of the wet floor."}, {"type": "Text", "q": "Join the sentences using although. Sentence 1: The question was difficult. Sentence 2: Bryan solved it.", "answer": ["Although the question was difficult, Bryan solved it.", "Bryan solved it although the question was difficult."], "explain": "Use although to show contrast. Do not add but."}, {"type": "Text", "q": "Join the sentences using since. Sentence 1: You have finished your work. Sentence 2: You may read quietly.", "answer": ["Since you have finished your work, you may read quietly.", "You may read quietly since you have finished your work."], "explain": "Since gives a reason here."}, {"type": "MCQ", "q": "Which sentence is correct?", "options": ["Although he was tired, but he kept running.", "Although he was tired, he kept running.", "He was tired although but he kept running.", "He kept running although but he was tired."], "answer": "Although he was tired, he kept running.", "explain": "Do not use although and but together."}, {"type": "Text", "q": "Complete the sentence with but or so: The bus arrived late, ___ we missed the first five minutes of the show.", "answer": ["so"], "explain": "Missing the first five minutes is the result."}, {"type": "MCQ", "q": "Which connector means “reason” in this sentence? Since the test is next week, Bryan revises every evening.", "options": ["Since", "next week", "revises", "every"], "answer": "Since", "explain": "Since introduces the reason."}, {"type": "Text", "q": "Write one sentence using but about studying English.", "answer": "open", "explain": "Example: English can be challenging, but I can improve with practice."}]}, {"id": 2, "title": "Session 2 — Giving Advice and Obligation", "focus": "ought to, should, must, have to, need not", "objective": "Bryan can use modal verbs correctly for advice, duty, strong rule, and no necessity.", "flow": [["Warm-up", "5 min", "Ask: What ought a good student do before a test?"], ["Teach", "12 min", "should/ought to = advice; must = strong rule; have to = requirement; need not = no need."], ["Guided practice", "15 min", "Sort sentences into advice / rule / not necessary."], ["Independent quiz", "20 min", "Complete the modal quiz."], ["Speaking wrap-up", "8 min", "Bryan gives 3 exam advice sentences using ought to."]], "mini_notes": ["Use base verb after ought to: ought to revise, ought to sleep, ought to listen.", "Need not means it is not necessary: You need not bring your dictionary.", "Must not means not allowed: You must not run in the corridor."], "questions": [{"type": "MCQ", "q": "Choose the best phrase: Bryan ___ revise his grammar before the WA.", "options": ["ought to", "ought", "oughts to", "oughted to"], "answer": "ought to", "explain": "The correct modal phrase is ought to + base verb."}, {"type": "MCQ", "q": "Choose the best word: Pupils ___ run across the road without looking.", "options": ["must not", "need not", "ought", "has to"], "answer": "must not", "explain": "Must not means it is not allowed and dangerous."}, {"type": "MCQ", "q": "Choose the best phrase: You ___ copy the whole passage if the teacher says it is optional.", "options": ["must", "need not", "ought to", "should"], "answer": "need not", "explain": "Need not means there is no need to do it."}, {"type": "Text", "q": "Correct the sentence: Bryan ought to studies harder before the test.", "answer": ["Bryan ought to study harder before the test."], "explain": "Use base verb after ought to: study."}, {"type": "Text", "q": "Complete with should or must not: You ___ check your answer before submitting your paper.", "answer": ["should"], "explain": "Checking answers is good advice."}, {"type": "MCQ", "q": "Which sentence shows strong obligation?", "options": ["You may leave now.", "You must wear your seat belt.", "You could try again.", "You ought to practise."], "answer": "You must wear your seat belt.", "explain": "Must shows a strong rule or obligation."}, {"type": "Text", "q": "Rewrite using ought to: It is a good idea for Ryan to speak politely.", "answer": ["Ryan ought to speak politely."], "explain": "Ought to gives advice."}, {"type": "MCQ", "q": "Choose the correct sentence.", "options": ["He ought clean his room.", "He ought to cleans his room.", "He ought to clean his room.", "He ought cleaning his room."], "answer": "He ought to clean his room.", "explain": "Ought to + base verb."}, {"type": "Text", "q": "Write one advice sentence for Bryan using ought to.", "answer": "open", "explain": "Example: Bryan ought to read the question carefully before answering."}, {"type": "MCQ", "q": "Which has the opposite meaning of need not?", "options": ["must", "may", "can", "could"], "answer": "must", "explain": "Need not = no need; must = compulsory."}]}, {"id": 3, "title": "Session 3 — Tenses and Time Clues", "focus": "Simple past, present perfect, since/for, subject-verb agreement", "objective": "Bryan can spot time clues and choose the correct tense.", "flow": [["Warm-up", "5 min", "Ask Bryan to name yesterday, today, and since last week actions."], ["Teach", "15 min", "Past: finished time. Present perfect: started in past and still connected to now. Since + starting point; for + duration."], ["Guided practice", "15 min", "Underline time clues: yesterday, already, since Monday, for three days."], ["Independent quiz", "18 min", "Complete tense questions."], ["Correction talk", "7 min", "Bryan explains the time clue in each answer."]], "mini_notes": ["Since is used with a starting point: since Monday, since 2023, since I was seven.", "For is used with a duration: for two days, for three years.", "Present perfect often uses has/have + past participle: has eaten, have seen."], "questions": [{"type": "MCQ", "q": "Choose the correct answer: Bryan ___ his homework yesterday.", "options": ["complete", "completed", "has completed", "completes"], "answer": "completed", "explain": "Yesterday is a finished past time, so use simple past."}, {"type": "MCQ", "q": "Choose the correct answer: Maple ___ asleep for two hours.", "options": ["is", "was", "has been", "have been"], "answer": "has been", "explain": "For two hours shows duration continuing to now."}, {"type": "MCQ", "q": "Choose the correct word: We have lived here ___ 2020.", "options": ["for", "since", "during", "by"], "answer": "since", "explain": "2020 is a starting point."}, {"type": "MCQ", "q": "Choose the correct word: Ryan has waited ___ ten minutes.", "options": ["since", "for", "from", "at"], "answer": "for", "explain": "Ten minutes is a duration."}, {"type": "Text", "q": "Correct the sentence: The boys plays football every Friday.", "answer": ["The boys play football every Friday."], "explain": "Plural subject boys takes play."}, {"type": "Text", "q": "Correct the sentence: She have eaten her lunch already.", "answer": ["She has eaten her lunch already."], "explain": "Use has with she/he/it."}, {"type": "MCQ", "q": "Which time clue usually needs the simple past?", "options": ["yesterday", "already", "since Monday", "for two years"], "answer": "yesterday", "explain": "Yesterday is a finished past time."}, {"type": "MCQ", "q": "Choose the correct sentence.", "options": ["He has went home.", "He has gone home.", "He have gone home.", "He has go home."], "answer": "He has gone home.", "explain": "Present perfect uses has + past participle: gone."}, {"type": "Text", "q": "Fill in the blank: My father ___ to Johor Bahru last weekend. (drive)", "answer": ["drove"], "explain": "Last weekend is finished past time. Drive becomes drove."}, {"type": "Text", "q": "Make a sentence using since about studying English.", "answer": "open", "explain": "Example: Bryan has revised English since Monday."}]}, {"id": 4, "title": "Session 4 — Synthesis and Transformation", "focus": "Combining sentences using although, but, since, ought to", "objective": "Bryan can rewrite sentences without changing the meaning.", "flow": [["Warm-up", "5 min", "Spot the keyword in 3 sample synthesis questions."], ["Teach", "15 min", "Keep the meaning. Change punctuation. Avoid repeating words. Do not add extra ideas."], ["Guided practice", "15 min", "Teacher and Bryan do 5 transformations aloud."], ["Independent quiz", "20 min", "Do S&T questions."], ["Review", "5 min", "Bryan says one rule for although and one rule for ought to."]], "mini_notes": ["Synthesis answers must keep the original meaning.", "With although, remove but.", "With ought to, use base verb after to."], "questions": [{"type": "Text", "q": "Rewrite using although: It was noisy. Bryan managed to concentrate.", "answer": ["Although it was noisy, Bryan managed to concentrate.", "Bryan managed to concentrate although it was noisy."], "explain": "Although joins contrasting ideas."}, {"type": "Text", "q": "Rewrite using but: Ryan wanted to continue playing. His mother asked him to rest.", "answer": ["Ryan wanted to continue playing, but his mother asked him to rest."], "explain": "But joins two contrasting ideas."}, {"type": "Text", "q": "Rewrite using since: The road was crowded. We took the train.", "answer": ["Since the road was crowded, we took the train.", "We took the train since the road was crowded."], "explain": "Since gives the reason."}, {"type": "Text", "q": "Rewrite using ought to: You should speak clearly during oral practice.", "answer": ["You ought to speak clearly during oral practice."], "explain": "Should and ought to can both give advice."}, {"type": "Text", "q": "Rewrite without changing the meaning: Although the bag was heavy, Bryan carried it himself. Start with: The bag was heavy,", "answer": ["The bag was heavy, but Bryan carried it himself."], "explain": "Although can be changed to but when keeping the contrast."}, {"type": "Text", "q": "Rewrite using so: The soup was too hot. Maple waited before eating it.", "answer": ["The soup was too hot, so Maple waited before eating it."], "explain": "So shows the result."}, {"type": "Text", "q": "Correct and rewrite: Although he was late, but he apologised to the teacher.", "answer": ["Although he was late, he apologised to the teacher.", "He was late, but he apologised to the teacher."], "explain": "Use either although or but, not both."}, {"type": "Text", "q": "Rewrite using since: Bryan had practised daily. He felt more confident.", "answer": ["Since Bryan had practised daily, he felt more confident.", "Bryan felt more confident since he had practised daily."], "explain": "Since gives the reason for feeling confident."}, {"type": "Text", "q": "Rewrite using ought not to: You should not interrupt others.", "answer": ["You ought not to interrupt others."], "explain": "Ought not to means should not."}, {"type": "Text", "q": "Rewrite using although: The lift was crowded. Everyone remained calm.", "answer": ["Although the lift was crowded, everyone remained calm.", "Everyone remained calm although the lift was crowded."], "explain": "Although shows contrast."}]}, {"id": 5, "title": "Session 5 — Grammar Cloze and Vocabulary Cloze", "focus": "Context clues, word class, grammar clues", "objective": "Bryan can use before/after clues to fill blanks accurately.", "flow": [["Warm-up", "5 min", "Read a short paragraph and predict the topic."], ["Teach", "12 min", "For each blank, ask: Is it grammar or meaning? What word class is needed?"], ["Guided practice", "18 min", "Do one cloze paragraph slowly with clues underlined."], ["Independent quiz", "20 min", "Complete cloze passage."], ["Correction", "5 min", "Bryan explains two answers using clues."]], "mini_notes": ["Read the whole passage once before filling blanks.", "Look before and after the blank.", "Check if the answer is a verb, noun, adjective, connector, pronoun, or preposition."], "questions": [{"type": "MCQ", "q": "Grammar cloze: The children ___ excited when the magician entered the hall.", "options": ["was", "were", "is", "be"], "answer": "were", "explain": "Children is plural, so use were."}, {"type": "MCQ", "q": "Vocabulary cloze: The kitten was so ___ that it hid under the sofa during the thunderstorm.", "options": ["brave", "frightened", "proud", "careless"], "answer": "frightened", "explain": "It hid during a thunderstorm, so frightened fits."}, {"type": "MCQ", "q": "Grammar cloze: Please put the books ___ the shelf.", "options": ["on", "in", "under", "between"], "answer": "on", "explain": "We usually put books on a shelf."}, {"type": "MCQ", "q": "Vocabulary cloze: The athlete trained daily because he was ___ to win the race.", "options": ["determined", "confused", "delayed", "ordinary"], "answer": "determined", "explain": "Training daily to win shows determination."}, {"type": "MCQ", "q": "Grammar cloze: Neither Ali nor his brothers ___ at home now.", "options": ["is", "are", "was", "be"], "answer": "are", "explain": "The nearer subject brothers is plural, so use are."}, {"type": "Text", "q": "Fill in the blank: Bryan packed his bag carefully ___ he did not want to forget his files.", "answer": ["because", "since"], "explain": "A reason is needed."}, {"type": "Text", "q": "Fill in the blank: The old bridge was narrow, ___ the cars moved slowly.", "answer": ["so"], "explain": "Slow movement is the result."}, {"type": "MCQ", "q": "Vocabulary cloze: The boy gave an ___ answer, so the teacher asked him to explain more clearly.", "options": ["unclear", "excellent", "honest", "accurate"], "answer": "unclear", "explain": "The teacher needed more explanation, so the answer was unclear."}, {"type": "Text", "q": "Fill in the blank with a suitable word: The pupils listened ___ while the principal was speaking.", "answer": ["attentively", "carefully", "quietly"], "explain": "An adverb is needed to describe how they listened."}, {"type": "Text", "q": "Fill in the blank: We have waited here ___ half an hour.", "answer": ["for"], "explain": "Half an hour is a duration, so use for."}]}, {"id": 6, "title": "Session 6 — Comprehension Open-Ended", "focus": "Literal, inference, sequencing, evidence from text", "objective": "Bryan can answer in complete sentences and support answers using clues.", "flow": [["Warm-up", "5 min", "Ask Bryan to tell you the main idea of a short story in one sentence."], ["Teach", "12 min", "Use the APE method: Answer, Prove with clue, Explain if needed."], ["Guided practice", "18 min", "Read the passage together and highlight clues."], ["Independent quiz", "20 min", "Bryan answers comprehension questions."], ["Review", "5 min", "Check if answers are complete and specific."]], "mini_notes": ["Literal questions: answer can be found directly.", "Inference questions: use clues and common sense.", "Do not copy a whole paragraph when only a short phrase is needed."], "passage": "A Rainy Morning\nBryan woke up to the sound of rain tapping on the window. He frowned because his class was supposed to visit the school garden that morning. At breakfast, his mother reminded him to pack his raincoat. Bryan sighed but placed it carefully into his bag. When he reached school, the rain had stopped. However, the ground was muddy, and some pupils complained. Bryan offered to share his raincoat with a classmate who had forgotten hers. During the garden visit, the class found tiny snails on the wet leaves. Their teacher explained that snails often appeared after rain because the ground was moist. By the end of the visit, Bryan was glad that the trip had not been cancelled.", "questions": [{"type": "Text", "q": "Why did Bryan frown when he woke up?", "answer": ["He frowned because it was raining and his class was supposed to visit the school garden that morning.", "Because it was raining and his class was supposed to visit the school garden."], "explain": "The answer is in the first two sentences."}, {"type": "MCQ", "q": "Which item did Bryan's mother remind him to pack?", "options": ["an umbrella", "a raincoat", "a water bottle", "a pair of boots"], "answer": "a raincoat", "explain": "The passage says his mother reminded him to pack his raincoat."}, {"type": "Text", "q": "What does the word 'moist' most likely mean?", "answer": ["slightly wet", "wet"], "explain": "The clue is that it had rained and snails appeared after rain."}, {"type": "MCQ", "q": "Which happened first?", "options": ["The class found snails.", "Bryan packed his raincoat.", "The rain stopped.", "Some pupils complained."], "answer": "Bryan packed his raincoat.", "explain": "He packed his raincoat at breakfast before going to school."}, {"type": "Text", "q": "What does Bryan's offer to share his raincoat tell us about him?", "answer": ["He was kind.", "He was helpful.", "He was considerate."], "explain": "He helped a classmate who had forgotten hers."}, {"type": "Text", "q": "Why did snails appear on the wet leaves?", "answer": ["Snails often appeared after rain because the ground was moist.", "Because the ground was moist after rain."], "explain": "The teacher explains this directly."}, {"type": "MCQ", "q": "How did Bryan feel at the end of the visit?", "options": ["angry", "glad", "jealous", "sleepy"], "answer": "glad", "explain": "The passage says he was glad."}, {"type": "Text", "q": "Give one reason why some pupils complained.", "answer": ["The ground was muddy.", "Because the ground was muddy."], "explain": "The text says the ground was muddy, and some pupils complained."}, {"type": "Text", "q": "What is the main idea of the passage?", "answer": "open", "explain": "Possible answer: A rainy morning turned into an interesting garden visit."}, {"type": "Text", "q": "Write one good title for the passage.", "answer": "open", "explain": "Possible title: A Rainy Morning / The Garden Visit / Snails After the Rain."}]}, {"id": 7, "title": "Session 7 — Editing and Punctuation", "focus": "Spelling, grammar and punctuation errors", "objective": "Bryan can detect common errors and correct them neatly.", "flow": [["Warm-up", "5 min", "Show one sentence with two errors and let Bryan be the teacher."], ["Teach", "12 min", "Check capitals, full stops, commas after fronted clauses, apostrophes, tense, SVA."], ["Guided practice", "15 min", "Correct 5 sentences together."], ["Independent quiz", "20 min", "Complete editing task."], ["Final review", "8 min", "Bryan explains three corrections."]], "mini_notes": ["Read the whole sentence first; do not correct too fast.", "Check one error type at a time: capital, punctuation, verb, spelling.", "After Although/Since at the start, a comma is often needed after the first clause."], "questions": [{"type": "Text", "q": "Correct the sentence: although it was late Bryan continued reading.", "answer": ["Although it was late, Bryan continued reading."], "explain": "Capitalise Although and add a comma after the first clause."}, {"type": "Text", "q": "Correct the sentence: The childrens were playing at the playground.", "answer": ["The children were playing at the playground."], "explain": "Children is already plural; do not add s."}, {"type": "Text", "q": "Correct the sentence: She dont like noisy places.", "answer": ["She doesn't like noisy places.", "She does not like noisy places."], "explain": "Use does not with she."}, {"type": "Text", "q": "Correct the sentence: Bryan has ate his lunch.", "answer": ["Bryan has eaten his lunch."], "explain": "Present perfect uses has + past participle: eaten."}, {"type": "Text", "q": "Correct the sentence: I went to the librery yesterday.", "answer": ["I went to the library yesterday."], "explain": "The correct spelling is library."}, {"type": "Text", "q": "Correct the sentence: My mother said please tidy your room.", "answer": ["My mother said, “Please tidy your room.”", "My mother said, 'Please tidy your room.'"], "explain": "Direct speech needs a comma and quotation marks."}, {"type": "Text", "q": "Correct the sentence: The puppy wagged it's tail.", "answer": ["The puppy wagged its tail."], "explain": "Its shows possession. It's means it is."}, {"type": "Text", "q": "Correct the sentence: Since Bryan was thirsty he drank a glass of water.", "answer": ["Since Bryan was thirsty, he drank a glass of water."], "explain": "Add a comma after the starting reason clause."}, {"type": "Text", "q": "Correct the sentence: We should to check our work carefully.", "answer": ["We should check our work carefully."], "explain": "Use should + base verb. Do not use to after should."}, {"type": "Text", "q": "Correct the sentence: The box of pencils are on the table.", "answer": ["The box of pencils is on the table."], "explain": "The main subject is box, so use is."}]}, {"id": 8, "title": "Session 8 — Mini WA Simulation", "focus": "Mixed Grammar, Vocabulary, S&T, Editing, Comprehension", "objective": "Bryan can complete a timed mixed practice and review weak areas.", "flow": [["Set up", "5 min", "Tell Bryan this is exam practice. No hints for the first attempt."], ["Timed practice", "35 min", "Complete all questions independently."], ["Marking", "10 min", "Use the Check button and review score."], ["Weak-area repair", "10 min", "Redo only questions answered wrongly and write one rule for each."]], "mini_notes": ["Read the question carefully before looking at the options.", "Use elimination for MCQ.", "For open-ended answers, make sure the meaning is complete."], "passage": "The Lost Wallet\nDuring recess, Ryan noticed a small brown wallet under a bench. He wanted to run to the canteen, but he stopped and picked it up. Inside the wallet, there was a library card with a pupil's name on it. Since Ryan knew that someone would be worried, he brought the wallet to the general office. Later, a Primary Four pupil came to collect it. She thanked Ryan politely. Although Ryan missed a few minutes of recess, he felt proud because he had done the right thing.", "questions": [{"type": "MCQ", "q": "Choose the best word: Ryan wanted to run to the canteen, ___ he stopped to pick up the wallet.", "options": ["because", "but", "so", "since"], "answer": "but", "explain": "The ideas contrast."}, {"type": "MCQ", "q": "Choose the best word: ___ Ryan knew someone would be worried, he brought the wallet to the office.", "options": ["Since", "But", "Although", "Unless"], "answer": "Since", "explain": "Since gives the reason."}, {"type": "MCQ", "q": "Choose the correct sentence.", "options": ["Ryan ought return the wallet.", "Ryan ought to return the wallet.", "Ryan ought returning the wallet.", "Ryan ought returns the wallet."], "answer": "Ryan ought to return the wallet.", "explain": "Ought to + base verb."}, {"type": "Text", "q": "Rewrite using although: Ryan missed a few minutes of recess. He felt proud.", "answer": ["Although Ryan missed a few minutes of recess, he felt proud.", "Ryan felt proud although he missed a few minutes of recess."], "explain": "Although shows contrast."}, {"type": "Text", "q": "Correct the sentence: The wallet belong to a Primary Four pupil.", "answer": ["The wallet belonged to a Primary Four pupil.", "The wallet belongs to a Primary Four pupil."], "explain": "Both can be acceptable depending on tense, but in the story context simple past is best: belonged."}, {"type": "MCQ", "q": "What was inside the wallet?", "options": ["a bus ticket", "a library card", "a photograph", "a key"], "answer": "a library card", "explain": "The passage says there was a library card."}, {"type": "Text", "q": "Why did Ryan bring the wallet to the general office?", "answer": ["He brought it to the general office because he knew someone would be worried.", "Because he knew someone would be worried."], "explain": "This reason is stated in the passage."}, {"type": "Text", "q": "What does Ryan's action tell us about his character?", "answer": ["He was honest.", "He was responsible.", "He was helpful."], "explain": "Returning a lost wallet shows honesty and responsibility."}, {"type": "Text", "q": "Fill in the blank: The pupil thanked Ryan ___.", "answer": ["politely"], "explain": "The passage says she thanked him politely."}, {"type": "Text", "q": "Write one sentence explaining what Bryan ought to do if he finds a lost item.", "answer": "open", "explain": "Example: Bryan ought to hand the lost item to a teacher or the general office."}]}];
+let current = 0;
+let timerInterval = null;
+let secondsLeft = 60 * 60;
+
+function normalise(s) {
+  return (s || "")
+    .toLowerCase()
+    .replace(/[“”]/g, '"')
+    .replace(/[‘’]/g, "'")
+    .replace(/[.,!?;:]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function getProgress() {
+  try { return JSON.parse(localStorage.getItem("bryanP4EnglishProgress") || "{}"); }
+  catch(e) { return {}; }
+}
+
+function setProgress(p) {
+  localStorage.setItem("bryanP4EnglishProgress", JSON.stringify(p));
+}
+
+function renderSessionGrid() {
+  const grid = document.getElementById("sessionGrid");
+  const progress = getProgress();
+  grid.innerHTML = "";
+  SESSIONS.forEach((s, idx) => {
+    const done = progress[s.id]?.done || 0;
+    const total = s.questions.length;
+    const pct = Math.round(done/total*100);
+    const tile = document.createElement("div");
+    tile.className = "session-tile" + (idx === current ? " active" : "");
+    tile.onclick = () => { current = idx; renderAll(); };
+    tile.innerHTML = `
+      <div>
+        <div class="badge">Session ${s.id}</div>
+        <div class="session-title">${s.title}</div>
+        <div class="session-focus">${s.focus}</div>
+      </div>
+      <div>
+        <div class="progressbar"><div style="width:${pct}%"></div></div>
+        <div class="print-note">${done}/${total} checked</div>
+      </div>`;
+    grid.appendChild(tile);
+  });
+}
+
+function renderLesson() {
+  const s = SESSIONS[current];
+  const lesson = document.getElementById("lessonPane");
+  lesson.innerHTML = `
+    <div class="badge">1-hour lesson plan</div>
+    <h2 style="margin:10px 0 6px">${s.title}</h2>
+    <p style="color:var(--muted);line-height:1.5"><b>Focus:</b> ${s.focus}<br><b>Learning objective:</b> ${s.objective}</p>
+    <div class="lesson-flow">
+      ${s.flow.map(step => `
+        <div class="step">
+          <div><span class="badge">${step[1]}</span></div>
+          <div><b>${step[0]}</b><br><span style="color:var(--muted)">${step[2]}</span></div>
+        </div>`).join("")}
+    </div>
+    <div class="notes">
+      <h4>Mini Teaching Notes</h4>
+      <ul>${s.mini_notes.map(n => `<li>${n}</li>`).join("")}</ul>
+    </div>`;
+}
+
+function questionHTML(q, i) {
+  let input = "";
+  if (q.type === "MCQ") {
+    input = `<div class="options">` + q.options.map((opt, j) => `
+      <label class="option">
+        <input type="radio" name="q${i}" value="${escapeHtml(opt)}">
+        <span><b>${String.fromCharCode(65+j)}.</b> ${escapeHtml(opt)}</span>
+      </label>
+    `).join("") + `</div>`;
+  } else {
+    input = `<textarea id="q${i}" placeholder="Type Bryan's answer here..."></textarea>`;
+  }
+  return `
+    <div class="question-card" id="card${i}">
+      <div class="qtop">
+        <div class="qnum">Question ${i+1}</div>
+        <div class="qtype">${q.type}</div>
+      </div>
+      <div class="question">${escapeHtml(q.q)}</div>
+      ${input}
+      <div class="feedback" id="fb${i}"></div>
+    </div>`;
+}
+
+function renderQuiz() {
+  const s = SESSIONS[current];
+  const quiz = document.getElementById("quizPane");
+  const passage = s.passage ? `<div class="passage"><b>Read the passage:</b>\n${escapeHtml(s.passage)}</div>` : "";
+  quiz.innerHTML = `
+    <div class="quiz-head">
+      <div>
+        <div class="badge">Practice Quiz</div>
+        <h2 style="margin:8px 0 0">${s.questions.length} Questions</h2>
+      </div>
+      <div class="scorebox" id="scoreBox">Score: —</div>
+    </div>
+    ${passage}
+    <div id="questions">${s.questions.map(questionHTML).join("")}</div>
+    <div class="toolbar">
+      <button class="good" onclick="checkAnswers()">Check Answers</button>
+      <button class="secondary" onclick="resetSession()">Reset This Session</button>
+    </div>
+    <div class="answerkey" id="answerKey">
+      <h3>Answer Key — ${s.title}</h3>
+      <ol>
+        ${s.questions.map(q => `<li><code>${answerText(q.answer)}</code><br><small>${escapeHtml(q.explain)}</small></li>`).join("")}
+      </ol>
+    </div>`;
+}
+
+function answerText(a) {
+  if (a === "open") return "Open answer — parent/teacher to mark.";
+  if (Array.isArray(a)) return a.join(" / ");
+  return String(a);
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function checkAnswers() {
+  const s = SESSIONS[current];
+  let correct = 0;
+  let checked = 0;
+  s.questions.forEach((q, i) => {
+    const fb = document.getElementById("fb" + i);
+    let user = "";
+    if (q.type === "MCQ") {
+      const selected = document.querySelector(`input[name="q${i}"]:checked`);
+      user = selected ? selected.value : "";
+    } else {
+      user = document.getElementById("q" + i).value;
+    }
+
+    if (!user.trim()) {
+      fb.className = "feedback incorrect";
+      fb.innerHTML = `<b>Not answered yet.</b> Try this question before checking.`;
+      return;
+    }
+
+    checked++;
+    if (q.answer === "open") {
+      fb.className = "feedback open";
+      fb.innerHTML = `<b>Parent marking needed.</b><br>${escapeHtml(q.explain)}`;
+      return;
+    }
+
+    let isCorrect = false;
+    if (Array.isArray(q.answer)) {
+      const nuser = normalise(user);
+      isCorrect = q.answer.some(a => normalise(a) === nuser);
+      // Accept partial for very short acceptable keyword answers
+      if (!isCorrect && nuser.length > 0) {
+        isCorrect = q.answer.some(a => normalise(a).includes(nuser) && nuser.split(" ").length <= 4);
+      }
+    } else {
+      isCorrect = normalise(user) === normalise(q.answer);
+    }
+
+    if (isCorrect) {
+      correct++;
+      fb.className = "feedback correct";
+      fb.innerHTML = `<b>Correct!</b><br>${escapeHtml(q.explain)}`;
+    } else {
+      fb.className = "feedback incorrect";
+      fb.innerHTML = `<b>Check again.</b><br><b>Suggested answer:</b> ${escapeHtml(answerText(q.answer))}<br>${escapeHtml(q.explain)}`;
+    }
+  });
+
+  const totalClosed = s.questions.filter(q => q.answer !== "open").length;
+  document.getElementById("scoreBox").textContent = `Score: ${correct}/${totalClosed} + open answers`;
+  const progress = getProgress();
+  progress[s.id] = { done: checked, lastScore: correct, totalClosed };
+  setProgress(progress);
+  renderSessionGrid();
+  window.scrollTo({ top: document.getElementById("quizPane").offsetTop - 80, behavior: "smooth" });
+}
+
+function resetSession() {
+  const s = SESSIONS[current];
+  s.questions.forEach((q, i) => {
+    const fb = document.getElementById("fb" + i);
+    fb.className = "feedback";
+    fb.innerHTML = "";
+    if (q.type === "MCQ") {
+      document.querySelectorAll(`input[name="q${i}"]`).forEach(r => r.checked = false);
+    } else {
+      document.getElementById("q" + i).value = "";
+    }
+  });
+  document.getElementById("scoreBox").textContent = "Score: —";
+}
+
+function toggleTeacher() {
+  document.getElementById("teacherNote").classList.toggle("hidden");
+}
+
+function toggleAnswerKey() {
+  const key = document.getElementById("answerKey");
+  key.style.display = key.style.display === "block" ? "none" : "block";
+}
+
+function startTimer(mins) {
+  secondsLeft = mins * 60;
+  updateTimer();
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    secondsLeft--;
+    updateTimer();
+    if (secondsLeft <= 0) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      alert("Time is up! Take a short break, then review Bryan's answers.");
+    }
+  }, 1000);
+}
+
+function pauseTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
+
+function resetTimer() {
+  pauseTimer();
+  secondsLeft = 60 * 60;
+  updateTimer();
+}
+
+function updateTimer() {
+  const m = Math.floor(secondsLeft / 60).toString().padStart(2, "0");
+  const s = Math.floor(secondsLeft % 60).toString().padStart(2, "0");
+  document.getElementById("timer").textContent = `${m}:${s}`;
+}
+
+function clearProgress() {
+  if (confirm("Clear saved progress for this workbook?")) {
+    localStorage.removeItem("bryanP4EnglishProgress");
+    renderSessionGrid();
+  }
+}
+
+function renderAll() {
+  renderSessionGrid();
+  renderLesson();
+  renderQuiz();
+}
+
+renderAll();
+updateTimer();
+</script>
+</body>
+</html>
