@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Bryan P4 English WA — 20 Exam Trap Questions</title>
+<style>
+  :root {
+    --bg1:#eef7ff;
+    --bg2:#fff7e9;
+    --card:#ffffff;
+    --ink:#152033;
+    --muted:#667085;
+    --primary:#3f5efb;
+    --primary2:#00a8a8;
+    --accent:#ffb703;
+    --good:#11823b;
+    --bad:#c1121f;
+    --warn:#f77f00;
+    --line:#dbe4f5;
+    --soft:#edf2ff;
+    --soft2:#e9fbf7;
+    --paper:#fffefa;
+  }
+  * { box-sizing:border-box; }
+  html, body { margin:0; min-height:100%; }
+  body {
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 0% 0%, #ccefff 0, transparent 32%),
+      radial-gradient(circle at 100% 0%, #ffe2b6 0, transparent 30%),
+      linear-gradient(135deg,var(--bg1),var(--bg2));
+  }
+  header {
+    position:sticky;
+    top:0;
+    z-index:20;
+    backdrop-filter:blur(14px);
+    background:rgba(255,255,255,.88);
+    border-bottom:1px solid var(--line);
+    padding:12px 16px;
+  }
+  .topbar {
+    max-width:980px;
+    margin:auto;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .brand { display:flex; align-items:center; gap:12px; }
+  .logo {
+    width:48px; height:48px; border-radius:16px;
+    display:grid; place-items:center;
+    font-size:24px; font-weight:950; color:white;
+    background:linear-gradient(135deg,var(--primary),#8c52ff);
+    box-shadow:0 10px 24px rgba(63,94,251,.25);
+  }
+  h1 { margin:0; font-size:22px; line-height:1.1; }
+  .subtitle { margin:2px 0 0; color:var(--muted); font-size:13px; }
+  .pill {
+    padding:9px 12px;
+    border-radius:999px;
+    background:var(--soft);
+    color:#3441a1;
+    font-weight:900;
+    white-space:nowrap;
+  }
+  main { max-width:980px; margin:auto; padding:18px 14px 90px; }
+  .hero {
+    display:grid;
+    grid-template-columns:1.1fr .9fr;
+    gap:14px;
+    margin-bottom:14px;
+  }
+  .card {
+    background:rgba(255,255,255,.94);
+    border:1px solid var(--line);
+    border-radius:24px;
+    padding:18px;
+    box-shadow:0 12px 30px rgba(16,24,40,.08);
+  }
+  .hero h2 { margin:0 0 8px; font-size:32px; line-height:1.05; }
+  .hero p { color:var(--muted); line-height:1.5; margin:8px 0; }
+  .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-top:14px; }
+  .stat {
+    background:#f8fbff;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:12px;
+  }
+  .stat b { display:block; font-size:26px; }
+  .stat span { color:var(--muted); font-size:12px; }
+  .lastday {
+    display:grid;
+    gap:9px;
+  }
+  .rule {
+    display:flex;
+    gap:10px;
+    align-items:flex-start;
+    padding:11px 12px;
+    border-radius:16px;
+    background:#fffaf0;
+    border:1px solid #ffe0a3;
+    line-height:1.35;
+  }
+  .rule b { color:#8a5a00; }
+  .toolbar {
+    display:flex;
+    flex-wrap:wrap;
+    align-items:center;
+    gap:10px;
+    margin:14px 0;
+  }
+  button {
+    border:0;
+    border-radius:16px;
+    padding:12px 16px;
+    font-size:15px;
+    font-weight:900;
+    color:white;
+    background:var(--primary);
+    box-shadow:0 8px 20px rgba(63,94,251,.20);
+    cursor:pointer;
+    transition:.15s ease transform,.15s ease opacity;
+    touch-action:manipulation;
+  }
+  button:hover { transform:translateY(-1px); }
+  button.secondary { background:white; color:var(--ink); border:1px solid var(--line); box-shadow:none; }
+  button.good { background:var(--good); }
+  button.warn { background:var(--warn); }
+  button.bad { background:var(--bad); }
+  button:disabled { opacity:.45; cursor:not-allowed; transform:none; }
+  .timer {
+    margin-left:auto;
+    padding:10px 14px;
+    border-radius:16px;
+    background:var(--soft);
+    color:#3441a1;
+    font-size:24px;
+    font-weight:950;
+    letter-spacing:1px;
+  }
+  .progress-wrap {
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:12px;
+    align-items:center;
+    margin-bottom:14px;
+  }
+  .progressbar {
+    height:14px;
+    background:#edf2ff;
+    border:1px solid var(--line);
+    border-radius:999px;
+    overflow:hidden;
+  }
+  .progressbar > div {
+    height:100%;
+    width:0%;
+    background:linear-gradient(90deg,var(--primary),var(--primary2));
+    transition:.25s ease width;
+  }
+  .score {
+    font-weight:950;
+    color:#3441a1;
+    background:var(--soft);
+    padding:9px 12px;
+    border-radius:999px;
+  }
+  .question-card {
+    background:white;
+    border:1px solid var(--line);
+    border-radius:28px;
+    padding:20px;
+    box-shadow:0 12px 28px rgba(16,24,40,.08);
+  }
+  .qhead {
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+    margin-bottom:12px;
+  }
+  .qnum {
+    font-size:15px;
+    font-weight:950;
+    color:var(--primary);
+    background:var(--soft);
+    border-radius:999px;
+    padding:8px 12px;
+  }
+  .tag {
+    font-size:13px;
+    font-weight:900;
+    color:#05756f;
+    background:var(--soft2);
+    border-radius:999px;
+    padding:8px 12px;
+  }
+  .question {
+    white-space:pre-line;
+    font-size:22px;
+    line-height:1.42;
+    font-weight:850;
+    margin:12px 0 16px;
+  }
+  .options { display:grid; gap:11px; margin-top:10px; }
+  .option {
+    display:flex;
+    gap:12px;
+    align-items:flex-start;
+    min-height:54px;
+    padding:14px;
+    border:2px solid var(--line);
+    border-radius:18px;
+    background:#f8fbff;
+    font-size:18px;
+    font-weight:750;
+    cursor:pointer;
+    transition:.12s ease;
+  }
+  .option:hover { border-color:#9fb1ff; background:#f4f7ff; }
+  .option input { margin-top:4px; transform:scale(1.35); }
+  textarea {
+    width:100%;
+    min-height:142px;
+    resize:vertical;
+    padding:18px;
+    border-radius:20px;
+    border:2px solid var(--line);
+    outline:none;
+    font-size:20px;
+    line-height:1.55;
+    font-family:"Comic Sans MS","Marker Felt",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    background:
+      repeating-linear-gradient(to bottom, var(--paper) 0px, var(--paper) 34px, #d8e7ff 35px, var(--paper) 36px);
+    box-shadow:inset 0 1px 0 rgba(0,0,0,.02);
+  }
+  textarea:focus { border-color:var(--primary); box-shadow:0 0 0 4px rgba(63,94,251,.13); }
+  .hint {
+    display:none;
+    margin:12px 0 0;
+    padding:13px 14px;
+    border-radius:18px;
+    background:#fff8e6;
+    border:1px solid #ffe0a3;
+    color:#6b4900;
+    line-height:1.45;
+  }
+  .feedback {
+    display:none;
+    margin-top:14px;
+    padding:14px;
+    border-radius:18px;
+    line-height:1.45;
+    font-size:16px;
+  }
+  .feedback.correct { display:block; background:#e9f8ee; border:1px solid #b9e4c6; color:#0b6126; }
+  .feedback.incorrect { display:block; background:#fff1f1; border:1px solid #ffc8c8; color:#8a0611; }
+  .feedback.open { display:block; background:#fff8e6; border:1px solid #ffe0a3; color:#6b4900; }
+  .navrow {
+    display:grid;
+    grid-template-columns:1fr 1fr 1.2fr;
+    gap:10px;
+    margin-top:14px;
+  }
+  .scratch {
+    margin-top:14px;
+    border:1px solid var(--line);
+    border-radius:22px;
+    overflow:hidden;
+    background:white;
+  }
+  .scratch-head {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+    padding:11px 13px;
+    background:#f8fbff;
+    border-bottom:1px solid var(--line);
+    color:var(--muted);
+    font-weight:850;
+  }
+  canvas {
+    display:block;
+    width:100%;
+    height:180px;
+    background:
+      linear-gradient(90deg, transparent 48px, rgba(255,112,112,.25) 49px, transparent 50px),
+      repeating-linear-gradient(to bottom,#fffef9 0,#fffef9 29px,#d8e7ff 30px,#fffef9 31px);
+    touch-action:none;
+  }
+  .thumbs {
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    margin:14px 0;
+  }
+  .thumb {
+    width:42px;height:42px;border-radius:14px;border:1px solid var(--line);
+    display:grid;place-items:center;
+    font-weight:950;
+    color:#3441a1;
+    background:white;
+    cursor:pointer;
+  }
+  .thumb.active { outline:3px solid rgba(63,94,251,.20); border-color:var(--primary); }
+  .thumb.done { background:#e9f8ee; color:#0b6126; }
+  .answerkey {
+    display:none;
+    background:#101828;
+    color:white;
+    border-radius:24px;
+    padding:18px;
+    margin-top:14px;
+    line-height:1.55;
+  }
+  .answerkey h3 { margin-top:0; }
+  .answerkey li { margin-bottom:8px; }
+  .answerkey code { color:#ffdd80; white-space:normal; }
+  .small { color:var(--muted); font-size:13px; line-height:1.4; }
+  footer { text-align:center; color:var(--muted); font-size:12px; margin-top:28px; }
+  @media (max-width:780px) {
+    .hero { grid-template-columns:1fr; }
+    .stats { grid-template-columns:1fr 1fr 1fr; }
+    .pill { display:none; }
+    .timer { margin-left:0; }
+    .question { font-size:20px; }
+    .navrow { grid-template-columns:1fr; }
+  }
+  @media (max-width:560px) {
+    main { padding:12px 10px 70px; }
+    .card, .question-card { border-radius:20px; padding:15px; }
+    .hero h2 { font-size:26px; }
+    .stats { grid-template-columns:1fr; }
+    h1 { font-size:18px; }
+    .logo { width:42px; height:42px; }
+    .question { font-size:18px; }
+    .option { font-size:16px; }
+    textarea { font-size:18px; }
+  }
+  @media print {
+    header,.toolbar,.scratch,.thumbs,.navrow button:not(.printshow) { display:none !important; }
+    body { background:white; }
+    main { max-width:none; }
+    .hero { display:none; }
+    .question-card,.card { box-shadow:none; break-inside:avoid; }
+    .answerkey { display:block !important; color:black; background:white; border:1px solid #aaa; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <div class="topbar">
+    <div class="brand">
+      <div class="logo">B</div>
+      <div>
+        <h1>Bryan P4 English WA — Trap 20</h1>
+        <p class="subtitle">Last-day exam traps • iPad / Pencil friendly • one question at a time</p>
+      </div>
+    </div>
+    <div class="pill">Tomorrow WA quick drill</div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="card">
+      <h2>20 high-risk traps before tomorrow</h2>
+      <p>This is not a full WA paper. It is a fast revision set for mistakes Primary 4 students commonly make: articles, although/but, ought to, since/for, has/have, subject-verb agreement, cloze clues, synthesis and punctuation.</p>
+      <p><b>Best use tonight:</b> 30 minutes only. Let Bryan answer first, then check and ask him to say the rule aloud.</p>
+      <div class="stats">
+        <div class="stat"><b>20</b><span>trap questions</span></div>
+        <div class="stat"><b>30</b><span>minute timer</span></div>
+        <div class="stat"><b>16+</b><span>target score</span></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3 style="margin-top:0">Last-day rules</h3>
+      <div class="lastday">
+        <div class="rule"><b>1</b><span>Read the whole sentence before choosing the answer.</span></div>
+        <div class="rule"><b>2</b><span>Underline the clue: time word, subject, connector, or meaning.</span></div>
+        <div class="rule"><b>3</b><span>Do not use “although” and “but” together.</span></div>
+        <div class="rule"><b>4</b><span>After “ought to”, use the base verb.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="toolbar">
+    <button onclick="startTimer(30)">Start 30-min Timer</button>
+    <button class="secondary" onclick="pauseTimer()">Pause</button>
+    <button class="secondary" onclick="resetTimer()">Reset</button>
+    <button class="secondary" onclick="toggleHint()">Show Trap Hint</button>
+    <button class="secondary" onclick="toggleAnswerKey()">Show / Hide Answer Key</button>
+    <button class="warn" onclick="window.print()">Print / Save PDF</button>
+    <button class="bad" onclick="clearProgress()">Clear</button>
+    <span class="timer" id="timer">30:00</span>
+  </div>
+
+  <div class="card">
+    <div class="progress-wrap">
+      <div class="progressbar"><div id="progressFill"></div></div>
+      <div class="score" id="scoreBox">Score: 0/0</div>
+    </div>
+    <div class="thumbs" id="thumbs"></div>
+  </div>
+
+  <section class="question-card" id="questionCard"></section>
+
+  <section class="answerkey" id="answerKey"></section>
+
+  <footer>
+    Original home revision material. Not an official MOE paper. Works offline after download.
+  </footer>
+</main>
+
+<script>
+const QUESTIONS = [
+  {
+    "id": 1,
+    "type": "MCQ",
+    "skill": "Articles",
+    "trap": "Silent h: honest starts with a vowel sound, so use “an”.",
+    "q": "Bryan admitted that he had made ___ honest mistake.",
+    "options": [
+      "a",
+      "an",
+      "the",
+      "— no article —"
+    ],
+    "answer": "an",
+    "explain": "Use “an” before a vowel sound. “Honest” begins with a silent h, so it sounds like “onest”."
+  },
+  {
+    "id": 2,
+    "type": "MCQ",
+    "skill": "Although / but",
+    "trap": "Do not use “although” and “but” together.",
+    "q": "Which sentence is correct?",
+    "options": [
+      "Although it was raining, but Bryan went to school.",
+      "Although it was raining, Bryan went to school.",
+      "It was raining although but Bryan went to school.",
+      "Bryan went to school although but it was raining."
+    ],
+    "answer": "Although it was raining, Bryan went to school.",
+    "explain": "Use either “although” or “but”, not both in the same contrast sentence."
+  },
+  {
+    "id": 3,
+    "type": "TEXT",
+    "skill": "Modal verb",
+    "trap": "After “ought to”, use the base verb. Not studies, studied, or studying.",
+    "q": "Correct the sentence:\nBryan ought to studies harder for his English WA.",
+    "answers": [
+      "Bryan ought to study harder for his English WA.",
+      "Bryan ought to study harder for his English WA"
+    ],
+    "explain": "Correct form: ought to + base verb. The base verb is “study”."
+  },
+  {
+    "id": 4,
+    "type": "MCQ",
+    "skill": "Present perfect",
+    "trap": "Singular subject “Maple” uses “has”, not “have”.",
+    "q": "Maple ___ sleeping for two hours.",
+    "options": [
+      "have been",
+      "has been",
+      "was been",
+      "is been"
+    ],
+    "answer": "has been",
+    "explain": "Use “has been” because Maple is singular and the time period continues up to now."
+  },
+  {
+    "id": 5,
+    "type": "MCQ",
+    "skill": "Since / for",
+    "trap": "Use “since” with a starting point.",
+    "q": "Bryan has revised English ___ Monday.",
+    "options": [
+      "for",
+      "since",
+      "from",
+      "during"
+    ],
+    "answer": "since",
+    "explain": "Monday is a starting point, so use “since”."
+  },
+  {
+    "id": 6,
+    "type": "MCQ",
+    "skill": "Since / for",
+    "trap": "Use “for” with a duration.",
+    "q": "Bryan has revised English ___ three days.",
+    "options": [
+      "since",
+      "for",
+      "from",
+      "at"
+    ],
+    "answer": "for",
+    "explain": "Three days is a duration, so use “for”."
+  },
+  {
+    "id": 7,
+    "type": "MCQ",
+    "skill": "Subject-verb agreement",
+    "trap": "“One of the boys” is singular because the main subject is “One”.",
+    "q": "One of the boys ___ left his water bottle in class.",
+    "options": [
+      "have",
+      "has",
+      "are",
+      "were"
+    ],
+    "answer": "has",
+    "explain": "The subject is “One”, so use the singular verb “has”."
+  },
+  {
+    "id": 8,
+    "type": "MCQ",
+    "skill": "Subject-verb agreement",
+    "trap": "Do not be tricked by the plural word after “of”. The subject is “box”.",
+    "q": "The box of pencils ___ on the table.",
+    "options": [
+      "are",
+      "were",
+      "is",
+      "have"
+    ],
+    "answer": "is",
+    "explain": "The main subject is “box”, which is singular. Use “is”."
+  },
+  {
+    "id": 9,
+    "type": "MCQ",
+    "skill": "Neither / nor",
+    "trap": "With neither/nor, the verb often follows the nearer subject.",
+    "q": "Neither Ryan nor Bryan ___ ready for school.",
+    "options": [
+      "are",
+      "is",
+      "were",
+      "be"
+    ],
+    "answer": "is",
+    "explain": "The nearer subject is “Bryan”, which is singular. Use “is”."
+  },
+  {
+    "id": 10,
+    "type": "MCQ",
+    "skill": "Past tense",
+    "trap": "“When the bell rang” is a past-time clue.",
+    "q": "The children ___ excited when the bell rang.",
+    "options": [
+      "are",
+      "was",
+      "were",
+      "is"
+    ],
+    "answer": "were",
+    "explain": "“Children” is plural and the event happened in the past, so use “were”."
+  },
+  {
+    "id": 11,
+    "type": "TEXT",
+    "skill": "Has / have",
+    "trap": "She/he/it uses “has”. I/you/we/they use “have”.",
+    "q": "Correct the sentence:\nShe have completed her homework already.",
+    "answers": [
+      "She has completed her homework already.",
+      "She has completed her homework already"
+    ],
+    "explain": "Use “has” with “she”."
+  },
+  {
+    "id": 12,
+    "type": "MCQ",
+    "skill": "Conditional sentence",
+    "trap": "After “if he”, use “does not / doesn’t” + base verb.",
+    "q": "If he ___ enough sleep, he will feel tired.",
+    "options": [
+      "do not get",
+      "does not get",
+      "did not got",
+      "has not get"
+    ],
+    "answer": "does not get",
+    "explain": "Use “does not get” with “he”. The verb after does not stays in base form."
+  },
+  {
+    "id": 13,
+    "type": "MCQ",
+    "skill": "Adverb",
+    "trap": "Describe how someone speaks: use an adverb.",
+    "q": "Please speak ___ during oral practice.",
+    "options": [
+      "clear",
+      "clearly",
+      "cleared",
+      "clearing"
+    ],
+    "answer": "clearly",
+    "explain": "“Clearly” describes how Bryan should speak."
+  },
+  {
+    "id": 14,
+    "type": "TEXT",
+    "skill": "Synthesis: so",
+    "trap": "“So” shows result. Do not reverse cause and result.",
+    "q": "Join the sentences using “so”.\nHe was careless. He lost his wallet.",
+    "answers": [
+      "He was careless, so he lost his wallet.",
+      "He was careless so he lost his wallet."
+    ],
+    "explain": "Being careless is the reason; losing the wallet is the result."
+  },
+  {
+    "id": 15,
+    "type": "TEXT",
+    "skill": "Synthesis: although",
+    "trap": "Although shows contrast. Do not add “but”.",
+    "q": "Join the sentences using “although”.\nThe question was difficult. Bryan answered it correctly.",
+    "answers": [
+      "Although the question was difficult, Bryan answered it correctly.",
+      "Bryan answered it correctly although the question was difficult.",
+      "Although the question was difficult Bryan answered it correctly."
+    ],
+    "explain": "The ideas contrast: difficult question, but Bryan still answered correctly."
+  },
+  {
+    "id": 16,
+    "type": "MCQ",
+    "skill": "Uncountable noun",
+    "trap": "“Advice” is uncountable. Do not write “advices”.",
+    "q": "The teacher gave Bryan useful ___ before the test.",
+    "options": [
+      "advices",
+      "an advice",
+      "advice",
+      "many advices"
+    ],
+    "answer": "advice",
+    "explain": "Use “advice”, not “advices”."
+  },
+  {
+    "id": 17,
+    "type": "MCQ",
+    "skill": "Uncountable noun",
+    "trap": "“Information” is uncountable. Do not add -s.",
+    "q": "The notice gives ___ about the exam venue.",
+    "options": [
+      "an information",
+      "many informations",
+      "information",
+      "informations"
+    ],
+    "answer": "information",
+    "explain": "Use “information”, not “informations”."
+  },
+  {
+    "id": 18,
+    "type": "TEXT",
+    "skill": "Editing",
+    "trap": "Remove “but” after an “although” clause.",
+    "q": "Correct the sentence:\nAlthough Bryan was sick, but he went to school.",
+    "answers": [
+      "Although Bryan was sick, he went to school.",
+      "Although Bryan was sick he went to school.",
+      "Bryan went to school although he was sick."
+    ],
+    "explain": "Do not use “although” and “but” together."
+  },
+  {
+    "id": 19,
+    "type": "KEYWORD",
+    "skill": "Comprehension inference",
+    "trap": "Do not just say “sad”. Use clues from the passage.",
+    "q": "Read the passage and answer.\n\nWhen Bryan opened his pencil case, his smile disappeared. He searched under his desk and whispered, “I packed it last night.” His teacher quietly placed a spare pen on his table.\n\nHow did Bryan probably feel? Give one reason.",
+    "keywordGroups": [
+      [
+        "worried",
+        "anxious",
+        "upset",
+        "panicked",
+        "nervous",
+        "frightened",
+        "concerned"
+      ],
+      [
+        "pen",
+        "pencil case",
+        "could not find",
+        "couldn't find",
+        "missing",
+        "lost",
+        "spare"
+      ]
+    ],
+    "sample": "Bryan probably felt worried because he could not find his pen in his pencil case.",
+    "explain": "Use emotion + evidence. His smile disappeared and the teacher gave him a spare pen."
+  },
+  {
+    "id": 20,
+    "type": "PUNCT",
+    "skill": "Punctuation & capital letters",
+    "trap": "Question sentence needs a capital letter, question mark, and speaker name capitalised.",
+    "q": "Rewrite with correct punctuation and capital letters:\nwhere is my ruler asked bryan",
+    "sample": "“Where is my ruler?” asked Bryan.",
+    "explain": "Use capital W, a question mark inside the speech marks, and capital B for Bryan."
+  }
+];
+
+let current = 0;
+let timerInterval = null;
+let secondsLeft = 30 * 60;
+let answers = {};
+let checked = {};
+let scoreState = {};
+let drawing = false;
+let last = null;
+
+function normalise(s) {
+  return (s || "")
+    .toLowerCase()
+    .replace(/[“”]/g, '"')
+    .replace(/[‘’]/g, "'")
+    .replace(/[.,!?;:"]/g, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+function escapeHtml(s) {
+  return (s || "").toString()
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+
+function loadState() {
+  try {
+    const saved = JSON.parse(localStorage.getItem("bryanTrap20State") || "{}");
+    answers = saved.answers || {};
+    checked = saved.checked || {};
+    scoreState = saved.scoreState || {};
+    current = saved.current || 0;
+  } catch(e) {}
+}
+
+function saveState() {
+  localStorage.setItem("bryanTrap20State", JSON.stringify({answers, checked, scoreState, current}));
+}
+
+function answerText(q) {
+  if (q.answer) return q.answer;
+  if (q.answers) return q.answers[0];
+  if (q.sample) return q.sample;
+  return "";
+}
+
+function renderThumbs() {
+  const el = document.getElementById("thumbs");
+  el.innerHTML = "";
+  QUESTIONS.forEach((q, i) => {
+    const b = document.createElement("button");
+    b.className = "thumb" + (i === current ? " active" : "") + (checked[q.id] ? " done" : "");
+    b.textContent = i + 1;
+    b.onclick = () => { current = i; saveState(); render(); };
+    el.appendChild(b);
+  });
+}
+
+function renderScore() {
+  const doneIds = Object.keys(checked);
+  const correct = Object.values(scoreState).filter(Boolean).length;
+  const total = doneIds.length;
+  document.getElementById("scoreBox").textContent = `Score: ${correct}/${total}`;
+  document.getElementById("progressFill").style.width = `${Math.round(total / QUESTIONS.length * 100)}%`;
+}
+
+function render() {
+  const q = QUESTIONS[current];
+  const userAnswer = answers[q.id] || "";
+  const card = document.getElementById("questionCard");
+  let inputHtml = "";
+
+  if (q.type === "MCQ") {
+    inputHtml = `<div class="options">${q.options.map(opt => `
+      <label class="option">
+        <input type="radio" name="qopt" value="${escapeHtml(opt)}" ${userAnswer === opt ? "checked" : ""} onchange="setAnswer(this.value)">
+        <span>${escapeHtml(opt)}</span>
+      </label>`).join("")}</div>`;
+  } else {
+    inputHtml = `<textarea id="textAnswer" placeholder="Write here with Apple Pencil or keyboard..." oninput="setAnswer(this.value)">${escapeHtml(userAnswer)}</textarea>`;
+  }
+
+  const feedbackClass = checked[q.id] ? (scoreState[q.id] ? "correct" : "incorrect") : "";
+  const feedback = checked[q.id] ? feedbackHtml(q, scoreState[q.id]) : "";
+
+  card.innerHTML = `
+    <div class="qhead">
+      <div class="qnum">Question ${current + 1} of ${QUESTIONS.length}</div>
+      <div class="tag">${escapeHtml(q.skill)} • ${escapeHtml(q.type)}</div>
+    </div>
+    <div class="question">${escapeHtml(q.q)}</div>
+    ${inputHtml}
+    <div class="hint" id="hintBox"><b>Trap:</b> ${escapeHtml(q.trap)}</div>
+    <div class="feedback ${feedbackClass}" id="feedbackBox">${feedback}</div>
+    <div class="navrow">
+      <button class="secondary" onclick="prevQ()" ${current === 0 ? "disabled" : ""}>← Previous</button>
+      <button class="good" onclick="checkAnswer()">Check Answer</button>
+      <button onclick="nextQ()" ${current === QUESTIONS.length - 1 ? "disabled" : ""}>Next →</button>
+    </div>
+    <div class="scratch">
+      <div class="scratch-head">
+        <span>Apple Pencil scratchpad</span>
+        <button class="secondary" style="padding:8px 12px;font-size:13px" onclick="clearCanvas()">Clear Scratchpad</button>
+      </div>
+      <canvas id="scratchCanvas" width="900" height="220"></canvas>
+    </div>
+  `;
+  setupCanvas();
+  renderThumbs();
+  renderScore();
+  saveState();
+}
+
+function setAnswer(v) {
+  const q = QUESTIONS[current];
+  answers[q.id] = v;
+  saveState();
+}
+
+function evaluate(q, user) {
+  if (q.type === "MCQ") return user === q.answer;
+  if (q.type === "TEXT") {
+    const n = normalise(user);
+    return (q.answers || []).some(a => normalise(a) === n);
+  }
+  if (q.type === "KEYWORD") {
+    const n = normalise(user);
+    return q.keywordGroups.every(group => group.some(k => n.includes(normalise(k))));
+  }
+  if (q.type === "PUNCT") {
+    const raw = (user || "").trim();
+    return /^["“]?Where is my ruler\?["”]? asked Bryan\.?$/i.test(raw);
+  }
+  return false;
+}
+
+function feedbackHtml(q, ok) {
+  if (ok) {
+    return `<b>Correct. Great job.</b><br>${escapeHtml(q.explain)}`;
+  }
+  return `<b>Check again.</b><br><b>Suggested answer:</b> ${escapeHtml(answerText(q))}<br>${escapeHtml(q.explain)}`;
+}
+
+function checkAnswer() {
+  const q = QUESTIONS[current];
+  let user = answers[q.id] || "";
+  if (q.type !== "MCQ") {
+    const txt = document.getElementById("textAnswer");
+    if (txt) user = txt.value;
+    answers[q.id] = user;
+  }
+  const ok = evaluate(q, user);
+  checked[q.id] = true;
+  scoreState[q.id] = ok;
+  const fb = document.getElementById("feedbackBox");
+  fb.className = "feedback " + (ok ? "correct" : "incorrect");
+  fb.innerHTML = feedbackHtml(q, ok);
+  document.getElementById("hintBox").style.display = "block";
+  saveState();
+  renderScore();
+  renderThumbs();
+}
+
+function toggleHint() {
+  const box = document.getElementById("hintBox");
+  if (!box) return;
+  box.style.display = box.style.display === "block" ? "none" : "block";
+}
+
+function nextQ() {
+  if (current < QUESTIONS.length - 1) {
+    current++;
+    render();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+}
+
+function prevQ() {
+  if (current > 0) {
+    current--;
+    render();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+}
+
+function renderAnswerKey() {
+  const key = document.getElementById("answerKey");
+  key.innerHTML = `<h3>Answer Key & Trap Notes</h3><ol>${QUESTIONS.map(q => `
+    <li><b>Q${q.id}.</b> <code>${escapeHtml(answerText(q))}</code><br><span style="color:#c7d7ff">${escapeHtml(q.trap)}</span></li>
+  `).join("")}</ol>`;
+}
+
+function toggleAnswerKey() {
+  const key = document.getElementById("answerKey");
+  key.style.display = key.style.display === "block" ? "none" : "block";
+}
+
+function clearProgress() {
+  if (!confirm("Clear all Bryan's answers and score?")) return;
+  localStorage.removeItem("bryanTrap20State");
+  answers = {};
+  checked = {};
+  scoreState = {};
+  current = 0;
+  render();
+}
+
+function startTimer(mins) {
+  secondsLeft = mins * 60;
+  updateTimer();
+  if (timerInterval) clearInterval(timerInterval);
+  timerInterval = setInterval(() => {
+    secondsLeft--;
+    updateTimer();
+    if (secondsLeft <= 0) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      alert("Time is up. Stop and review only the wrong answers.");
+    }
+  }, 1000);
+}
+
+function pauseTimer() {
+  if (timerInterval) {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+}
+
+function resetTimer() {
+  pauseTimer();
+  secondsLeft = 30 * 60;
+  updateTimer();
+}
+
+function updateTimer() {
+  const m = Math.floor(secondsLeft / 60).toString().padStart(2, "0");
+  const s = Math.floor(secondsLeft % 60).toString().padStart(2, "0");
+  document.getElementById("timer").textContent = `${m}:${s}`;
+}
+
+function setupCanvas() {
+  const canvas = document.getElementById("scratchCanvas");
+  if (!canvas) return;
+  const ctx = canvas.getContext("2d");
+  ctx.lineWidth = 3;
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+
+  function pos(e) {
+    const r = canvas.getBoundingClientRect();
+    const p = e.touches ? e.touches[0] : e;
+    return {
+      x: (p.clientX - r.left) * (canvas.width / r.width),
+      y: (p.clientY - r.top) * (canvas.height / r.height)
+    };
+  }
+
+  function start(e) {
+    e.preventDefault();
+    drawing = true;
+    last = pos(e);
+  }
+
+  function move(e) {
+    if (!drawing) return;
+    e.preventDefault();
+    const p = pos(e);
+    ctx.beginPath();
+    ctx.moveTo(last.x, last.y);
+    ctx.lineTo(p.x, p.y);
+    ctx.stroke();
+    last = p;
+  }
+
+  function end(e) {
+    drawing = false;
+    last = null;
+  }
+
+  canvas.addEventListener("pointerdown", start);
+  canvas.addEventListener("pointermove", move);
+  window.addEventListener("pointerup", end);
+  canvas.addEventListener("touchstart", start, {passive:false});
+  canvas.addEventListener("touchmove", move, {passive:false});
+  canvas.addEventListener("touchend", end);
+}
+
+function clearCanvas() {
+  const canvas = document.getElementById("scratchCanvas");
+  if (!canvas) return;
+  canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+}
+
+loadState();
+renderAnswerKey();
+render();
+updateTimer();
+</script>
+</body>
+</html>
